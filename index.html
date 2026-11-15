@@ -47,7 +47,7 @@ h1 em{font-style:normal;color:#a53a31}.sub{font:10px 'IBM Plex Mono',monospace;l
 .dots{display:flex;gap:6px;margin:25px 0}.dots i{height:2px;flex:1;background:#59452e}.dots i.on{background:#d2a76c;box-shadow:0 0 8px #d2a76c}
 .actions{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
 .actions .btn{font-size:18px;min-width:120px;justify-content:center}
-#game{display:none;position:absolute;inset:0}
+#game{display:none;position:absolute;inset:0}#game.active{display:block}
 .gameImage{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 2.4s ease,filter .4s}
 .gameImage.pulse{transform:scale(1.08)}
 .gameVeil{position:absolute;inset:0;background:linear-gradient(90deg,#030303b5,transparent 35%,transparent 70%,#03030399),linear-gradient(0deg,#030303b8,transparent 30%,#03030342);pointer-events:none}
@@ -97,7 +97,7 @@ h1 em{font-style:normal;color:#a53a31}.sub{font:10px 'IBM Plex Mono',monospace;l
   <div class="bottomHints"><span>◈ CINEMATIC WEB PLAYTEST</span><span>Рекомендуются наушники</span><span>Нажмите «Новая игра»</span></div>
  </section>
  <section class="screen" id="intro"><div class="film"><div class="filmVisual" id="filmVisual"><img id="filmImg" alt="Кинематографическая сцена пролога"></div><div class="filmCopy"><div class="kicker" id="filmMeta">ПРОЛОГ · 01 / 06</div><h2 id="filmTitle">02:17 · СТАРАЯ ТРАССА</h2><p id="filmText"></p><div class="dots" id="dots"></div><div class="actions"><button class="btn" id="skipIntro">Пропустить</button><button class="btn primary" id="nextIntro">Далее →</button></div></div></div></section>
- <section id="game">
+ <section class="screen" id="game">
   <div class="gameImage" id="gameImage"></div><div class="gameVeil"></div>
   <img id="maid" alt="Призрачная фигура в коридоре" src="https://media1.tenor.com/m/nlYV4at3ptgAAAAd/demon-ghost.gif">
   <img id="attack" alt="Внезапное появление призрака" src="https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif">
