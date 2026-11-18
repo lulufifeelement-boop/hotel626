@@ -2,341 +2,499 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#090806">
-<title>Ночной этаж 626 — Cinematic Web Playtest</title>
-<link rel="preconnect" href="https://images.unsplash.com">
-<link rel="preconnect" href="https://media1.tenor.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080706">
+<title>НОЧНОЙ ЭТАЖ — Deluxe Cinematic Horror</title>
 <style>
-:root{--gold:#c7a66c;--gold2:#81633c;--red:#9b302a;--cream:#e9dfca;--muted:#a99a80;--panel:#090806df;--line:#9a784a65}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050504;color:var(--cream);font-family:'Cormorant Garamond',Georgia,serif}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-#app{position:fixed;inset:0;background:#070605;isolation:isolate}
-.backdrop{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.04);transition:background-image .6s,transform 12s ease;filter:saturate(.78) contrast(1.06)}
-.backdrop.zoom{transform:scale(1.13)}
-#veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#050403ee 0%,#070605b8 35%,#05040340 75%,#05040366 100%),linear-gradient(0deg,#050403c9 0%,transparent 22%,transparent 75%,#0008 100%),radial-gradient(ellipse at center,transparent 30%,#0009 100%);z-index:2}
-#grain{position:absolute;inset:-40%;z-index:9;opacity:.1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");animation:grain .23s steps(2) infinite}@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(1%,-1%)}50%{transform:translate(-1%,1%)}75%{transform:translate(1%,1%)}100%{transform:translate(-1%,-1%)}}
-#rain{position:absolute;inset:0;z-index:3;pointer-events:none;opacity:.15;background-image:repeating-linear-gradient(104deg,transparent 0 21px,#b5c5d422 22px,#b5c5d422 23px,transparent 24px 45px);animation:rain .28s linear infinite}@keyframes rain{from{background-position:0 0}to{background-position:-20px 80px}}
-.screen{position:absolute;inset:0;z-index:4;display:none}.screen.active{display:flex}
-#menu{align-items:center;padding:clamp(24px,6vw,92px);gap:40px}
-.menuLeft{width:min(520px,48vw);position:relative;z-index:2}
-.kicker{font:10px 'IBM Plex Mono',monospace;letter-spacing:.34em;text-transform:uppercase;color:var(--gold)}
-h1{font-size:clamp(52px,8.2vw,114px);line-height:.8;font-weight:400;letter-spacing:.035em;margin:22px 0 18px;text-shadow:0 8px 44px #000}
-h1 em{font-style:normal;color:#a53a31}.sub{font:10px 'IBM Plex Mono',monospace;letter-spacing:.42em;color:#c6b89e}
-.tagline{font-size:clamp(18px,2vw,24px);line-height:1.38;max-width:440px;color:#d5c8b1;margin:30px 0 26px}
-.rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:24px 0}
-.menuButtons{display:grid;gap:8px;max-width:370px}
-.btn{border:1px solid var(--line);background:linear-gradient(90deg,#a33c302b,#080705a0);padding:13px 16px;text-align:left;font-size:21px;letter-spacing:.02em;transition:.2s;display:flex;justify-content:space-between;align-items:center;min-height:50px}
-.btn:hover,.btn.primary{background:linear-gradient(90deg,#9c332eae,#18100bc9);border-color:#bd8a58;box-shadow:0 0 26px #8e33273c;transform:translateX(4px)}
-.btn small{font:9px 'IBM Plex Mono',monospace;color:#b7a17e;letter-spacing:.12em}
-.menuRight{margin-left:auto;width:min(440px,36vw);align-self:center;position:relative;z-index:2}
-.previewCard{border:1px solid #ae8b5c76;background:#090806c4;backdrop-filter:blur(8px);padding:10px;box-shadow:0 20px 80px #0009}
-.previewImage{height:clamp(180px,25vw,300px);background-size:cover;background-position:center;position:relative;overflow:hidden}
-.previewImage:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#050403bb,transparent 65%)}
-.previewLabel{padding:15px 13px 10px}.previewLabel strong{display:block;font-size:27px;font-weight:400}.previewLabel p{margin:4px 0;color:#b7a98f;font-size:17px;line-height:1.25}
-.bottomHints{position:absolute;bottom:22px;left:clamp(24px,6vw,92px);right:clamp(24px,6vw,92px);z-index:3;display:flex;justify-content:space-between;gap:16px;color:#b8a98d;font:9px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase}
-#intro{align-items:center;justify-content:center;padding:20px;background:#050403e8;backdrop-filter:blur(4px)}
-.film{width:min(1160px,96vw);border:1px solid #99784c80;background:#090806;box-shadow:0 30px 100px #000;display:grid;grid-template-columns:1.45fr .8fr;min-height:min(620px,86vh)}
-.filmVisual{min-height:390px;position:relative;overflow:hidden;background:#17120d;background-size:cover;background-position:center}
-.filmVisual img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;animation:filmzoom 9s ease-in-out infinite alternate;filter:brightness(.78) saturate(.78)}@keyframes filmzoom{to{transform:scale(1.11)}}
-.filmVisual:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#0504039c,transparent 35%),radial-gradient(ellipse at center,transparent 40%,#0008 100%)}
-.filmCopy{padding:clamp(20px,3vw,42px);display:flex;flex-direction:column;justify-content:center}
-.filmCopy h2{font-size:clamp(32px,4vw,52px);line-height:.98;font-weight:400;margin:20px 0 14px}
-.filmCopy p{font-size:20px;line-height:1.38;color:#d2c4aa;margin:0}
-.dots{display:flex;gap:6px;margin:25px 0}.dots i{height:2px;flex:1;background:#59452e}.dots i.on{background:#d2a76c;box-shadow:0 0 8px #d2a76c}
-.actions{display:flex;gap:8px;margin-top:auto;flex-wrap:wrap}
-.actions .btn{font-size:18px;min-width:120px;justify-content:center}
-#game{display:none;position:absolute;inset:0}#game.active{display:block}
-.gameImage{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 2.4s ease,filter .4s}
-.gameImage.pulse{transform:scale(1.08)}
-.gameVeil{position:absolute;inset:0;background:linear-gradient(90deg,#030303b5,transparent 35%,transparent 70%,#03030399),linear-gradient(0deg,#030303b8,transparent 30%,#03030342);pointer-events:none}
-#maid{position:absolute;width:clamp(130px,18vw,255px);height:clamp(210px,31vw,385px);object-fit:contain;object-position:center bottom;left:50%;top:50%;transform:translate(-50%,-52%) scale(.72);opacity:0;filter:grayscale(.85) brightness(.63) contrast(1.2);mix-blend-mode:screen;transition:transform 1.2s cubic-bezier(.22,.75,.2,1),opacity 1s;pointer-events:none}
-#maid.visible{opacity:.95}
-.gameHud{position:absolute;inset:0;pointer-events:none;padding:20px;display:flex;flex-direction:column;justify-content:space-between}
-.hudTop{display:flex;justify-content:space-between;align-items:flex-start;text-shadow:0 2px 10px #000}
-.hudBrand{font-size:18px;letter-spacing:.18em}.hudBrand b{color:#a83b32}.timer{font:11px 'IBM Plex Mono';letter-spacing:.15em;text-align:right}
-.objective{position:absolute;left:20px;bottom:26px;border-left:2px solid var(--red);background:#070605c9;padding:12px 17px;max-width:min(440px,62vw);font:10px 'IBM Plex Mono';line-height:1.7;letter-spacing:.1em}
-.objective strong{font:22px 'Cormorant Garamond',serif;letter-spacing:0;display:block;color:#e8ddca}
-.photoPanel{position:absolute;right:20px;bottom:20px;background:#070605c9;border:1px solid #9a784a6b;padding:12px 16px;pointer-events:auto;text-align:right}
-.shots{font:10px 'IBM Plex Mono';color:var(--gold);margin-bottom:9px}
-#shoot{background:#8e302c;border:1px solid #d09a65;padding:10px 20px;font-size:19px}
-#shoot:hover{background:#bd4238}
-#flash{position:fixed;inset:0;background:#fff;opacity:0;z-index:40;pointer-events:none}
-#flash.go{animation:flash .45s ease-out}@keyframes flash{0%{opacity:.95}100%{opacity:0}}
-#attack{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;pointer-events:none;z-index:15;transition:opacity .1s}
-#attack.show{opacity:1}
-#pause,#episodes,#settings,#end{align-items:center;justify-content:center;padding:20px;background:#050403db;backdrop-filter:blur(8px)}
-.modal{width:min(680px,94vw);max-height:90vh;overflow:auto;border:1px solid #96754c88;background:linear-gradient(135deg,#100d09f7,#070605f7);box-shadow:0 30px 90px #000;padding:clamp(20px,4vw,42px)}
-.modal h2{font-size:46px;font-weight:400;margin:12px 0}.modal p{font-size:18px;color:#c7baa4;line-height:1.4}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.episode{background:#15100b;border:1px solid #82674666;padding:14px;text-align:left}.episode:hover{border-color:var(--gold);background:#332116}.episode b{display:block;font-weight:400;font-size:20px}.episode span{font:9px 'IBM Plex Mono';color:#a89474}
-.setting{padding:13px 0;border-bottom:1px solid #765c3d55;display:flex;justify-content:space-between;align-items:center;font:12px 'IBM Plex Mono';gap:12px}
-#toast{position:absolute;top:15%;left:50%;transform:translate(-50%,-10px);opacity:0;padding:12px 18px;border:1px solid #a68151;background:#080706ec;z-index:50;font:10px 'IBM Plex Mono';letter-spacing:.1em;transition:.25s;pointer-events:none}#toast.show{opacity:1;transform:translate(-50%,0)}
-.credit{position:absolute;bottom:15px;right:18px;color:#9d917d;font:9px 'IBM Plex Mono';z-index:3}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+:root{--brass:#b69a69;--blood:#963d35;--paper:#ded4bd;--muted:#958c7b;--glass:#0a0908d9}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050505;color:#e8dfcf;font-family:'Cormorant Garamond',Georgia,serif}button{font:inherit;color:inherit}#app{position:fixed;inset:0;overflow:hidden;background:#080706}#viewport{position:absolute;inset:0;display:block;width:100%;height:100%;outline:none;touch-action:none}
+#grade{position:absolute;inset:0;pointer-events:none;z-index:3;background:radial-gradient(ellipse at 50% 45%,transparent 28%,#0009 100%),linear-gradient(0deg,#08050455,transparent 20%,transparent 75%,#0007);mix-blend-mode:multiply}
+#scan{position:absolute;inset:0;pointer-events:none;z-index:4;opacity:.18;background:repeating-linear-gradient(0deg,#fff0 0 2px,#fff1 3px);}
+#grain{position:absolute;inset:-50%;pointer-events:none;z-index:5;opacity:.08;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.75'/%3E%3C/svg%3E");animation:grain .22s steps(2) infinite}@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(1%,-1%)}50%{transform:translate(-1%,1%)}75%{transform:translate(1%,1%)}100%{transform:translate(-1%,-1%)}}
+#hud{position:absolute;z-index:10;inset:0;pointer-events:none;display:none;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.08em;font-size:10px;text-shadow:0 1px 8px #000}
+.hudTop{position:absolute;top:0;left:0;right:0;padding:18px 24px;display:flex;align-items:flex-start;justify-content:space-between;background:linear-gradient(#050403d9,transparent)}.brand{font-family:'Cormorant Garamond',serif;font-size:24px;letter-spacing:.22em;color:#eee5d3}.brand b{color:var(--blood);font-weight:500}.stageMeta{text-align:right;color:#c5b79e;line-height:1.7}.stageMeta strong{color:#e8d2a6;font-weight:500}.hudBottom{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;align-items:end;padding:16px 22px;background:linear-gradient(transparent,#030303dd);gap:15px}.objective{max-width:min(460px,58vw);padding:10px 14px;border-left:2px solid var(--blood);background:linear-gradient(90deg,#0b0908c9,transparent);color:#d5ccb9;line-height:1.5}.objective small{display:block;color:var(--brass);font-size:9px;margin-bottom:4px}.objective strong{font:16px 'Cormorant Garamond',serif;letter-spacing:.03em;text-transform:none;color:#eee7d8}.status{display:flex;gap:16px;align-items:center;color:#c4b79f}.meter{width:100px;height:3px;background:#3b3228;display:inline-block;vertical-align:middle;margin-left:7px}.meter i{display:block;height:100%;width:100%;background:var(--blood);transition:width .25s}
+#crosshair{position:absolute;left:50%;top:50%;width:16px;height:16px;transform:translate(-50%,-50%);opacity:.6;display:none}#crosshair:before,#crosshair:after{content:"";position:absolute;background:#e4d4b6;box-shadow:0 0 5px #000}#crosshair:before{width:1px;height:16px;left:7px}#crosshair:after{height:1px;width:16px;top:7px}
+#prompt{position:absolute;left:50%;bottom:100px;transform:translateX(-50%);padding:10px 15px;border:1px solid #b3986966;background:#080706d9;color:#eadcc1;display:none;text-align:center;box-shadow:0 5px 30px #000;font-size:10px;letter-spacing:.12em}#prompt b{color:#fff}
+#title,#modal,#ending,#cinema,#loading,#help{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center}#title{background:linear-gradient(90deg,#050403f0 0%,#050403c9 34%,#05040375 62%,#05040332 100%),url('https://hangar1publishing.com/cdn/shop/articles/99ca073be3b597d1eb215d847cf6c484.png?v=1710346717') center/cover;transition:opacity .8s;isolation:isolate}
+#title:before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 72% 42%,transparent 18%,#0008 82%),linear-gradient(0deg,#050403b8,transparent 25%,transparent 75%,#05040355);z-index:-1}
+#title:after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.24;background:linear-gradient(110deg,transparent 30%,#caa36b12 48%,transparent 62%);animation:titleSweep 10s ease-in-out infinite}
+@keyframes titleSweep{0%,100%{transform:translateX(-8%);opacity:.08}50%{transform:translateX(8%);opacity:.3}}
+.titlePanel{position:relative;padding:clamp(22px,3vw,38px);margin-left:3vw;border:1px solid #c2a16b33;background:linear-gradient(135deg,#080706ba,#08070655);backdrop-filter:blur(3px);box-shadow:0 20px 90px #0008;max-height:92vh;overflow:auto}
+.titlePanel h1{text-shadow:0 6px 45px #000,0 1px 0 #c8b58f33}
+.mainBtn,.ghostBtn{box-shadow:inset 0 1px #e1c99b18,0 9px 24px #0006}
+.ghostBtn:hover{border-color:#b69a69;box-shadow:0 0 22px #a57e4930;transform:translateY(-1px)}
+.menuMusic{border-top:1px solid #a98b5b44;padding-top:13px;margin-top:20px}#title.hidden{opacity:0;pointer-events:none}.titlePanel{width:min(600px,92vw);margin-left:4vw}.eyebrow{font:10px 'IBM Plex Mono',monospace;color:var(--brass);letter-spacing:.45em;text-transform:uppercase}.titlePanel h1{font-size:clamp(58px,10vw,118px);font-weight:400;line-height:.82;letter-spacing:.05em;margin:18px 0 8px;text-shadow:0 5px 40px #000}.titlePanel h1 span{color:#ad3e35}.titlePanel p{font-size:19px;line-height:1.4;color:#c7baa4;max-width:430px;margin:24px 0}.thinRule{height:1px;width:min(430px,80vw);background:linear-gradient(90deg,#b19461,transparent);margin:26px 0}.menuBtns{display:flex;gap:10px;flex-wrap:wrap}.mainBtn,.ghostBtn{border:1px solid #a98b5b;padding:14px 22px;background:linear-gradient(110deg,#63251f,#26130f 70%);letter-spacing:.18em;text-transform:uppercase;font-size:11px;cursor:pointer;transition:.2s}.mainBtn:hover{filter:brightness(1.35);box-shadow:0 0 26px #853d2e66}.ghostBtn{background:#090807aa;border-color:#76674c}.smallprint{font:9px 'IBM Plex Mono',monospace;color:#8f8778;letter-spacing:.1em;line-height:1.7;margin-top:25px;max-width:440px}
+#modal,#help{display:none;background:#050403d9;backdrop-filter:blur(8px);z-index:35}.panel{width:min(430px,92vw);padding:26px;background:linear-gradient(145deg,#211a14,#0a0908);border:1px solid #9b805a;box-shadow:0 20px 80px #000;text-align:center}.panel h2{font-size:30px;font-weight:400;color:#e5d7bd;margin:0 0 10px}.panel p{font-size:16px;color:#bdb19e;line-height:1.45;margin:10px 0 18px}.input{width:100%;padding:13px;background:#080707;border:1px solid #766249;color:#f1e5ce;text-align:center;font:22px 'IBM Plex Mono',monospace;letter-spacing:.4em;outline:none}.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:14px 0}.keypad button{padding:13px;background:#18130f;border:1px solid #594933;font:16px 'IBM Plex Mono',monospace}.panelActions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.panelActions button{padding:11px 17px;background:#47221c;border:1px solid #9e7455;font-size:10px;letter-spacing:.15em;text-transform:uppercase}.panelActions .secondary{background:#15110e;border-color:#65563e}
+#cinema{z-index:50;display:none;background:#000;overflow:hidden}#cinema img{width:100%;height:100%;object-fit:cover;image-rendering:auto}#cinema img.reveal{animation:cinemaReveal .85s ease both}@keyframes cinemaReveal{from{opacity:.25;transform:scale(1.035);filter:blur(3px)}to{opacity:1;transform:scale(1);filter:blur(0)}}#cinema .cap{position:absolute;left:0;right:0;bottom:8%;text-align:center;font:12px 'IBM Plex Mono',monospace;letter-spacing:.18em;text-transform:uppercase;text-shadow:0 2px 12px #000;color:#f2e9d7}#cinemaSkip{position:absolute;z-index:56;right:28px;top:24px;border:1px solid #b69a6988;background:#080706aa;color:#eadcc1;padding:10px 16px;font:10px 'IBM Plex Mono',monospace;letter-spacing:.15em;cursor:pointer;display:none}#cinemaSkip:hover{background:#54251f}#cinema .cap{max-width:900px;margin:auto;padding:18px 24px;background:linear-gradient(transparent,#050403c9);font-size:13px;line-height:1.7;letter-spacing:.12em}#flash{position:absolute;inset:0;z-index:55;background:white;opacity:0;pointer-events:none}
+#help .panel{text-align:left}#help ul{padding-left:19px;color:#c9bea9;line-height:1.8;font-size:15px}#help .panelActions{justify-content:flex-end}
+#loading{background:#050403;z-index:100;flex-direction:column;gap:12px;font:10px 'IBM Plex Mono',monospace;letter-spacing:.25em;color:#b99d6d}#loading .bar{width:190px;height:2px;background:#30281e;overflow:hidden}#loading .bar i{display:block;width:35%;height:100%;background:#b99d6d;animation:load 1.2s infinite}@keyframes load{to{transform:translateX(550%)}}
+#ending{display:none;background:radial-gradient(ellipse at 50% 45%,#2b1d18,#050403 72%);z-index:60;text-align:center}.endingBox{max-width:620px;padding:20px}.endingBox h2{font-size:clamp(40px,7vw,72px);font-weight:400;margin:15px 0;color:#e6d6bd}.endingBox p{font-size:18px;color:#ab9f8e;line-height:1.6;margin-bottom:28px}
+#mobile{display:none;position:absolute;inset:0;z-index:15;pointer-events:none}#movePad{position:absolute;left:20px;bottom:26px;display:grid;grid-template-columns:46px 46px 46px;grid-template-rows:46px 46px 46px;gap:4px;pointer-events:auto}#movePad button,#mobileActions button{background:#0a0908aa;border:1px solid #a88a5c88;color:#e8dcc7;border-radius:50%;font:12px 'IBM Plex Mono',monospace;backdrop-filter:blur(4px);touch-action:none}#movePad [data-key=w]{grid-column:2}#movePad [data-key=a]{grid-column:1;grid-row:2}#movePad [data-key=s]{grid-column:2;grid-row:2}#movePad [data-key=d]{grid-column:3;grid-row:2}#mobileActions{position:absolute;right:18px;bottom:35px;display:flex;flex-direction:column;gap:10px;pointer-events:auto}#mobileActions button{width:58px;height:58px;border-radius:50%;font-size:10px;background:#3a1b16bb}#mobileActions button:active,#movePad button:active{background:#8a3e2c}
 
-#game{touch-action:none;overflow:hidden;cursor:crosshair}
-.gameImage{will-change:background-position,background-size,transform;transition:filter .25s;transform-origin:center center}
-.gameVeil{z-index:1}
-#maid{z-index:2;will-change:left,top,transform,opacity;user-select:none}
-#attack{z-index:8}
-.gameHud{z-index:6}
-#crosshair{position:absolute;z-index:5;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%);pointer-events:none;opacity:.82;transition:filter .12s,transform .12s}
-#crosshair:before,#crosshair:after{content:'';position:absolute;background:#e7ddc8;box-shadow:0 0 5px #000}
-#crosshair:before{width:1px;height:22px;left:11px;top:1px}
-#crosshair:after{height:1px;width:22px;top:11px;left:1px}
-#crosshair i,#crosshair b{position:absolute;width:4px;height:4px;border:1px solid #e7ddc8;border-radius:50%;left:9px;top:9px}
-#crosshair.target:before,#crosshair.target:after{background:#e1b56d;box-shadow:0 0 9px #e1b56d}
-#crosshair.target i{background:#b94a38;border-color:#ffd09a;transform:scale(1.8)}
-#controlOverlay{position:absolute;inset:0;z-index:12;background:#050403c9;backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:18px}
-.controlCard{width:min(590px,95vw);border:1px solid #a17b4b99;background:linear-gradient(145deg,#17110beF,#080706f5);box-shadow:0 30px 100px #000;padding:clamp(20px,4vw,38px)}
-.controlCard h2{font-size:clamp(30px,5vw,44px);font-weight:400;margin:14px 0 20px}
-.controlList{display:grid;gap:10px;margin:18px 0}
-.controlList>div{display:flex;align-items:center;gap:5px;min-height:29px}
-.controlList span{font:11px 'IBM Plex Mono',monospace;color:#d0c1a6;margin-left:9px;line-height:1.4}
-kbd{display:inline-grid;place-items:center;min-width:27px;height:25px;border:1px solid #a88659;background:#21180f;color:#e8d7b6;font:10px 'IBM Plex Mono',monospace;padding:0 6px}
-.controlCard p{font:15px/1.55 'Cormorant Garamond',serif;color:#d3c6ad;margin:18px 0}
-.controlCard p b{color:#e2bd7d}
-.controlFoot{font:9px 'IBM Plex Mono',monospace;color:#94856c;margin-top:15px;line-height:1.5}
-#startLook{width:100%;justify-content:center;text-align:center}
-#touchControls{display:none;position:absolute;z-index:7;left:12px;right:12px;bottom:110px;align-items:flex-end;justify-content:space-between;pointer-events:none}
-.touchPad{display:grid;gap:5px;pointer-events:auto}
-.touchPad>button{margin:auto}
-.touchPad>div{display:flex;gap:5px}
-.touchPad button,#touchPhoto{width:48px;height:44px;border:1px solid #c3a06a88;background:#090806bb;color:#f1e2c6;backdrop-filter:blur(6px);font:16px 'IBM Plex Mono';border-radius:5px;touch-action:none}
-#touchPhoto{pointer-events:auto;width:86px;height:54px;background:#8e302ccc;font-size:11px}
-#game.active #touchControls.mobile{display:flex}
-#gameImage{background-repeat:no-repeat;background-size:110% 110%;background-position:50% 50%}
-#game.active .gameHud{pointer-events:none}
-#game.active .photoPanel{pointer-events:auto}
-@media (pointer:coarse){#game.active #touchControls{display:flex}}
-@media(max-width:760px){.controlCard{max-height:92vh;overflow:auto}.controlList span{font-size:10px}#touchControls{bottom:105px}}
-@media(max-width:760px){#menu{align-items:flex-start;overflow:auto;display:none}#menu.active{display:block;padding:32px 22px}.menuLeft{width:100%;max-width:500px}.menuRight{width:100%;max-width:500px;margin:28px 0 60px}.bottomHints{position:static;margin:30px 0 0;flex-wrap:wrap}.film{grid-template-columns:1fr;max-height:94vh;overflow:auto}.filmVisual{min-height:240px;height:32vh}.filmCopy{min-height:340px}.objective{left:10px;bottom:10px;max-width:62vw;padding:9px}.photoPanel{right:10px;bottom:10px;padding:9px}.gameHud{padding:12px}.hudBrand{font-size:14px}}
+/* Professional pause / episode / audio screens */
+#pauseBtn{position:absolute;right:22px;top:18px;pointer-events:auto;z-index:12;border:1px solid #a78c60a8;background:linear-gradient(145deg,#17120fdc,#050403e8);color:#e9dcc5;padding:10px 15px;cursor:pointer;font:10px 'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;box-shadow:0 5px 24px #0009;backdrop-filter:blur(8px)}#pauseBtn:hover{border-color:#c7a36e;background:#3b211be8}
+#pauseMenu,#sceneSelect,#settingsPanel{position:absolute;inset:0;z-index:70;display:none;align-items:center;justify-content:center;background:linear-gradient(90deg,#050403e8,#050403b9),url('https://static.wixstatic.com/media/b03536_07f422bccec140e68fdb92cbcb714120~mv2.png/v1/fill/w_1400,h_900,al_c,q_90/usm_0.66_1.00_0.01/b03536_07f422bccec140e68fdb92cbcb714120~mv2.png') center/cover;backdrop-filter:blur(8px)}
+.screenCard{width:min(1040px,94vw);max-height:90vh;border-radius:2px;backdrop-filter:blur(18px);overflow:auto;padding:clamp(18px,3vw,34px);border:1px solid #9e825a;background:linear-gradient(135deg,#1b1510f2,#080706f5 72%);box-shadow:0 28px 100px #000;text-align:left;position:relative}
+.screenHead{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;border-bottom:1px solid #9b805544;padding-bottom:14px;margin-bottom:20px}.screenHead h2{font-size:clamp(30px,4vw,48px);font-weight:400;letter-spacing:.08em;margin:0;color:#e9ddc8}.screenHead p{color:#a99b83;font:10px 'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;margin:7px 0 0}.screenClose{border:1px solid #7f6b4c;background:#0b0907;color:#ddceb5;padding:9px 13px;cursor:pointer;font:10px 'IBM Plex Mono',monospace}
+.pauseLayout{display:grid;grid-template-columns:minmax(210px,.8fr) 1.2fr;gap:26px}.pauseMenuList{display:flex;flex-direction:column;gap:8px}.pauseMenuList button{border:1px solid #66523c;background:linear-gradient(90deg,#211712,#0b0908);padding:14px 16px;text-align:left;color:#e4d6be;cursor:pointer;font:11px 'IBM Plex Mono',monospace;letter-spacing:.11em;text-transform:uppercase}.pauseMenuList button.primary{border-color:#a8493c;background:linear-gradient(90deg,#64251f,#23110f)}.pauseMenuList button:hover,.sceneTile:hover{border-color:#c6a16a;filter:brightness(1.22)}.pauseInfo{border-left:1px solid #8a704b55;padding-left:24px;color:#bdb09a;font-size:17px;line-height:1.5}.pauseInfo .eyebrow{margin-bottom:12px}
+.sceneGrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.sceneTile{min-height:102px;border:1px solid #6f593f;background:linear-gradient(145deg,#241a14,#0c0908);color:#e7d9c2;text-align:left;padding:12px;cursor:pointer;position:relative;overflow:hidden;transition:filter .2s,border-color .2s}.sceneTile .num{font:10px 'IBM Plex Mono',monospace;color:#c19d66;display:block;margin-bottom:16px}.sceneTile strong{font:18px 'Cormorant Garamond',serif;font-weight:500;line-height:1.05;display:block}.sceneTile small{display:block;font:8px 'IBM Plex Mono',monospace;color:#8f8474;margin-top:7px}.sceneTile.active{border-color:#b54b3c;box-shadow:inset 0 0 24px #8e382a38}.sceneTile:after{content:'';position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,#8f342c,transparent)}
+.settingsGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 26px}.setting{padding:13px 0;border-bottom:1px solid #6b563d55;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#ddcfb7;font:11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.08em}.setting input[type=range]{width:min(210px,45%);accent-color:#a3493a}.setting select{background:#100d0a;border:1px solid #6f593f;color:#e5d6be;padding:9px;max-width:55%}.setting input[type=checkbox]{accent-color:#a3493a;width:17px;height:17px}.setting .value{font-size:10px;color:#bd9e6b;min-width:32px;text-align:right}.settingsFoot{display:flex;gap:10px;justify-content:flex-end;margin-top:22px}.screenAction{border:1px solid #9b7950;background:linear-gradient(110deg,#59231e,#1b100d);color:#f0e2c8;padding:12px 18px;cursor:pointer;font:10px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase}.screenAction.alt{background:#100d0a;border-color:#6e5c43}
+.menuMusic{display:flex;align-items:center;gap:10px;font:9px 'IBM Plex Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#9f927e;margin-top:15px}.musicDot{width:6px;height:6px;border-radius:50%;background:#9b4035;box-shadow:0 0 12px #b43f31;display:inline-block}.musicBars{display:inline-flex;gap:2px;align-items:center;height:13px;margin-left:2px}.musicBars i{width:2px;background:#b79a67;height:5px;animation:bars .8s ease-in-out infinite alternate}.musicBars i:nth-child(2){height:11px;animation-delay:.2s}.musicBars i:nth-child(3){height:7px;animation-delay:.4s}.musicBars i:nth-child(4){height:10px;animation-delay:.1s}@keyframes bars{to{transform:scaleY(.35);opacity:.45}}
+.toast{position:absolute;top:82px;left:50%;transform:translateX(-50%);z-index:25;padding:9px 13px;background:#080706dc;border:1px solid #92754e;color:#e5d5b8;font:10px 'IBM Plex Mono',monospace;letter-spacing:.13em;display:none;pointer-events:none}
+@media(max-width:760px){#pauseBtn{top:56px;right:10px;padding:8px 10px;font-size:8px}.pauseLayout{grid-template-columns:1fr;gap:16px}.pauseInfo{border-left:0;border-top:1px solid #8a704b55;padding:15px 0 0}.sceneGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.sceneTile{min-height:82px}.settingsGrid{grid-template-columns:1fr}.screenCard{max-height:94vh;padding:18px}.screenHead h2{font-size:28px}}
 
-/* UX Pro Max pass: explicit controls, focus, readable HUD and reduced motion */
-:root{--ux-space-1:4px;--ux-space-2:8px;--ux-space-3:12px;--ux-space-4:16px;--ux-space-6:24px;--ux-motion:180ms}
-button,input{font:inherit}
-button{min-height:44px;touch-action:manipulation}
-button:focus-visible,input:focus-visible{outline:2px solid #e2bd7d;outline-offset:3px}
-.btn:active,#shoot:active,.touchPad button:active,#touchPhoto:active{transform:scale(.97);filter:brightness(1.18)}
-#menu .menuButtons{gap:10px}
-#menu .tagline{max-width:42ch}
-.objective{max-width:min(500px,58vw);font-size:11px;line-height:1.65;padding:14px 18px;backdrop-filter:blur(7px)}
-.objective strong{font-size:23px;line-height:1.16;margin:5px 0}
-#objHint{display:block;color:#d0b98e;margin-top:5px;font-size:10px;letter-spacing:.06em}
-.photoPanel{min-width:210px;backdrop-filter:blur(8px);border-color:#c6a66c88}
-#shoot{width:100%;min-height:48px;border-radius:2px;font:12px 'IBM Plex Mono';letter-spacing:.07em;transition:background .15s,opacity .15s,transform .15s}
-#shoot:disabled{cursor:not-allowed;filter:grayscale(.5)}
-#crosshair{width:28px;height:28px}
-#crosshair:before{height:26px;left:13px}
-#crosshair:after{width:26px;top:13px}
-#crosshair i,#crosshair b{left:11px;top:11px}
-#controlOverlay{background:#050403dc}
-.controlCard{border-color:#c1a06b9c;max-width:620px}
-.controlCard h2{line-height:1.02}
-.controlList>div{gap:6px}
-.controlList kbd{min-width:30px}
-.controlCard p{font-size:17px}
-.controlFoot{font-size:10px}
-#startLook{min-height:52px;font-size:19px}
-#touchControls{bottom:calc(126px + env(safe-area-inset-bottom));left:18px;right:18px}
-.touchPad button,#touchPhoto{width:54px;height:50px;font-size:17px;background:#100d09d9;border-color:#d0ad75}
-#touchPhoto{width:96px;height:58px;background:#8e302ce8}
-.gameHud{padding:clamp(14px,2vw,24px)}
-.hudBrand{font-size:20px}
-#toast{max-width:min(92vw,520px);text-align:center;line-height:1.45}
-@media(max-width:760px){
- .objective{max-width:calc(100vw - 20px);bottom:calc(92px + env(safe-area-inset-bottom));left:10px;right:10px}
- .photoPanel{right:10px;bottom:calc(205px + env(safe-area-inset-bottom));min-width:0}
- .photoPanel #shoot{min-height:44px;padding:9px 12px}
- #touchControls{bottom:calc(14px + env(safe-area-inset-bottom))}
- .hudTop{padding:3px}
- .timer{font-size:10px}
-}
-@media(prefers-reduced-motion:reduce){
- *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
- #grain,#rain{animation:none}
-}
+@media(max-width:760px){.titlePanel{margin:0 auto}.titlePanel h1{font-size:62px}.titlePanel p{font-size:16px}.hudTop{padding:12px}.brand{font-size:17px}.stageMeta{font-size:8px}.hudBottom{padding:9px}.objective{max-width:70vw;padding:7px 9px}.objective strong{font-size:14px}.status{font-size:8px;gap:5px}.meter{width:55px}#prompt{bottom:175px;font-size:9px;white-space:nowrap}#mobile{display:block}#crosshair{width:12px;height:12px}#movePad{transform:scale(.85);transform-origin:bottom left}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
 
+#dialoguePanel{position:absolute;z-index:28;left:50%;bottom:5.4vh;transform:translateX(-50%);width:min(930px,92vw);display:none;pointer-events:auto}
+#dialoguePanel.show{display:block;animation:dialogueIn .48s cubic-bezier(.2,.8,.2,1)}
+@keyframes dialogueIn{from{opacity:0;transform:translate(-50%,18px);filter:blur(4px)}to{opacity:1;transform:translate(-50%,0);filter:blur(0)}}
+.dialogueCard{display:grid;grid-template-columns:116px 1fr;min-height:146px;border:1px solid #ac8c5c88;background:linear-gradient(110deg,#090806f2,#17110deF 65%,#080706f2);box-shadow:0 18px 70px #000c,inset 0 1px #e8d4ad22;backdrop-filter:blur(12px)}
+.dialoguePortrait{display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 35%,#6c4930,#1a120e 70%);border-right:1px solid #a98a5b55;color:#c0a477;letter-spacing:.28em;font-size:28px;text-shadow:0 0 20px #bd8c4a66}
+.dialoguePortrait small{font:8px 'IBM Plex Mono',monospace;letter-spacing:.14em;margin-top:8px;color:#82745f}
+.dialogueBody{padding:18px 24px 14px;display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.dialogueTop{display:flex;justify-content:space-between;gap:12px;color:#b99b68;font:9px 'IBM Plex Mono',monospace;letter-spacing:.2em}
+#dialogueText{font-size:clamp(17px,2vw,22px);line-height:1.3;color:#eee3d0;margin:12px 0 16px;min-height:44px}
+.dialogueFoot{display:flex;align-items:center;justify-content:space-between;gap:15px;border-top:1px solid #9d825344;padding-top:10px}
+.dialogueFoot small{font:8px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#8b806e}
+#dialogueNext{border:1px solid #9e7953;background:linear-gradient(110deg,#48201b,#1a100c);padding:9px 14px;color:#ead8b7;font:10px 'IBM Plex Mono',monospace;letter-spacing:.12em;cursor:pointer}
+#dialogueNext:hover{border-color:#e0bd80;box-shadow:0 0 18px #a36a3c55}
+#dialogueNext b{font-size:18px;margin-left:9px;color:#ca9870}
+@media(max-width:620px){#dialoguePanel{bottom:16px;width:calc(100vw - 22px)}.dialogueCard{grid-template-columns:66px 1fr;min-height:160px}.dialoguePortrait{font-size:19px}.dialogueBody{padding:13px}.dialogueFoot small{display:none}#dialogueText{font-size:17px}}
 </style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"}}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
 </head>
 <body>
 <div id="app">
- <div class="backdrop" id="backdrop"></div><div id="veil"></div><div id="rain"></div><div id="grain"></div>
- <section class="screen active" id="menu">
-  <div class="menuLeft">
-   <div class="kicker">интерактивный хоррор · web playtest</div>
-   <h1>НОЧНОЙ<br>ЭТАЖ <em>626</em></h1><div class="sub">HOTEL · AFTER MIDNIGHT</div>
-   <p class="tagline">Ты свернул с трассы, чтобы переждать ливень. У отеля горел свет. На стойке уже лежал ключ с твоим номером.</p>
-   <div class="rule"></div>
-   <div class="menuButtons">
-    <button class="btn primary" id="newGame">Новая игра <small>НАЧАТЬ</small></button>
-    <button class="btn" id="continue">Продолжить <small>С ЭПИЗОДА 2</small></button>
-    <button class="btn" id="episodeOpen">Выбор эпизода <small>ДЕМО</small></button>
-    <button class="btn" id="settingsOpen">Настройки <small>ЗВУК · ЭКРАН</small></button>
-   </div>
-   <div class="rule"></div><div class="kicker">WASD — перемещение · E — действие · F — фото · ESC — меню</div>
-  </div>
-  <div class="menuRight"><div class="previewCard"><div class="previewImage" style="background-image:url('https://ik.imagekit.io/storybird/images/d907395c-5a94-448d-a2e2-6cefc6f22a4d/0_386520460.webp?tr=q-85')"></div><div class="previewLabel"><div class="kicker">ТЕКУЩАЯ ГЛАВА · 03</div><strong>Горничная</strong><p>Она не любит, когда её фотографируют. Сделайте три удачных снимка и не позволяйте ей приблизиться.</p></div></div></div>
-  <div class="bottomHints"><span>◈ CINEMATIC WEB PLAYTEST</span><span>Рекомендуются наушники</span><span>Нажмите «Новая игра»</span></div>
- </section>
- <section class="screen" id="intro"><div class="film"><div class="filmVisual" id="filmVisual"><img id="filmImg" alt="Кинематографическая сцена пролога"></div><div class="filmCopy"><div class="kicker" id="filmMeta">ПРОЛОГ · 01 / 06</div><h2 id="filmTitle">02:17 · СТАРАЯ ТРАССА</h2><p id="filmText"></p><div class="dots" id="dots"></div><div class="actions"><button class="btn" id="skipIntro">Пропустить</button><button class="btn primary" id="nextIntro">Далее →</button></div></div></div></section>
- <section class="screen" id="game">
-  <div class="gameImage" id="gameImage"></div><div class="gameVeil"></div>
-  <img id="maid" alt="Призрачная горничная" src="https://media1.tenor.com/m/nlYV4at3ptgAAAAd/demon-ghost.gif">
-  <img id="attack" alt="Внезапное появление призрака" src="https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif">
-  <div id="crosshair" aria-hidden="true"><i></i><b></b></div>
-  <div class="gameHud"><div class="hudTop"><div class="hudBrand">НОЧНОЙ ЭТАЖ <b>626</b><div class="kicker" id="chapter">ЭПИЗОД 3 · ГОРНИЧНАЯ</div></div><div class="timer"><span id="clock">02:17</span><br><span id="distanceLabel">ДИСТАНЦИЯ: 10 М</span></div></div>
-   <div class="objective"><span class="kicker" id="objNo">ЭПИЗОД 3 / 10</span><strong id="objective">Найди горничную: подойди на 4–10 м, наведи прицел и сделай 3 снимка.</strong><span id="objHint">WASD — ходьба · мышь — осмотр · F — фото · S — отступить</span></div>
-   <div class="photoPanel" id="photoPanel" style="display:none"><div class="shots" id="shots">СНИМКИ · 0 / 3</div><button id="shoot">◉ СДЕЛАТЬ СНИМОК · F</button></div>
-  </div>
-  <div id="controlOverlay"><div class="controlCard"><div class="kicker">УПРАВЛЕНИЕ · ПЕРВОЕ ЛИЦО</div><h2>Осмотрись. Она где-то впереди.</h2><div class="controlList"><div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Передвижение по коридору</span></div><div><kbd>МЫШЬ</kbd><span>Оглядеться по сторонам</span></div><div><kbd>SHIFT</kbd><span>Бежать быстрее</span></div><div><kbd>F</kbd><span>Сделать снимок, когда горничная в центре прицела</span></div><div><kbd>ESC</kbd><span>Пауза и меню</span></div></div><p><b>Задание:</b> найди её взглядом, подойди на расстояние примерно 4–10 метров, наведи центральный прицел и сделай три удачных фотографии. Если она подойдёт слишком близко — отступай клавишей S.</p><button class="btn primary" id="startLook">НАЧАТЬ ОСМОТР</button><div class="controlFoot">На телефоне — проведи пальцем по экрану, двигайся экранными стрелками.</div></div></div>
-  <div id="touchControls"><div class="touchPad"><button data-move="KeyW">▲</button><div><button data-move="KeyA">◀</button><button data-move="KeyS">▼</button><button data-move="KeyD">▶</button></div></div><button id="touchPhoto">◉ ФОТО</button></div>
- </section>
- <section class="screen" id="pause"><div class="modal"><div class="kicker">СИСТЕМА ОТЕЛЯ · ПАУЗА</div><h2>Остановись.</h2><p>Коридор никуда не исчезнет. Он просто ждёт.</p><div class="menuButtons"><button class="btn primary" id="resume">Продолжить</button><button class="btn" id="replay">Переиграть сцену</button><button class="btn" id="pauseEpisodes">Выбор эпизода</button><button class="btn" id="toMenu">В главное меню</button></div></div></section>
- <section class="screen" id="episodes"><div class="modal"><div class="kicker">АРХИВ · ДОСТУПНЫЕ СЦЕНЫ</div><h2>Выбор эпизода</h2><div class="grid" id="episodeGrid"></div><p class="kicker">Остальные главы будут добавляться по мере разработки.</p><button class="btn" id="episodesBack">Назад</button></div></section>
- <section class="screen" id="settings"><div class="modal"><div class="kicker">ПАРАМЕТРЫ</div><h2>Настройки</h2><div class="setting"><span>Атмосферный звук</span><input type="checkbox" id="soundToggle" checked></div><div class="setting"><span>Дождь и звуковые эффекты</span><input type="checkbox" id="sfxToggle" checked></div><div class="setting"><span>Уменьшить анимацию</span><input type="checkbox" id="motionToggle"></div><div class="setting"><span>Громкость</span><input type="range" min="0" max="1" step=".05" value=".45" id="volume"></div><button class="btn primary" id="settingsBack">Готово</button></div></section>
- <section class="screen" id="end"><div class="modal"><div class="kicker">ЭПИЗОД ЗАВЕРШЁН</div><h2>Она запомнила тебя.</h2><p>На фотографии за твоим плечом видна ещё одна фигура. Но в коридоре никого нет.</p><div class="menuButtons"><button class="btn primary" id="again">Переиграть эпизод</button><button class="btn" id="endMenu">Главное меню</button></div></div></section>
- <div id="toast"></div><div id="flash"></div><div class="credit"><a href="https://unsplash.com/@robert_lens" target="_blank" rel="noreferrer">Фото коридора: Robert / Unsplash</a> · <a href="https://tenor.com/view/demon-ghost-scary-horror-creepy-gif-17585832" target="_blank" rel="noreferrer">GIF: ErinKupay / Tenor</a></div>
+<canvas id="viewport"></canvas><div id="grade"></div><div id="scan"></div><div id="grain"></div>
+<div id="hud">
+ <div class="hudTop"><div class="brand">NOCHNOY <b>ETAZH</b></div><div class="stageMeta"><strong id="stageName">ПРОБУЖДЕНИЕ</strong><br><span id="stageNum">ИСПЫТАНИЕ 01 / 10</span><br><span id="clock">02:59</span></div></div>
+ <div class="hudBottom"><div class="objective"><small>ВАША ЗАДАЧА</small><strong id="objective">Найдите выход из комнаты.</strong></div><div class="status"><span>РАССУДОК <span class="meter"><i id="sanity"></i></span></span><span id="shotsStat">СНИМКИ 0/9</span></div></div>
+ <button id="pauseBtn" type="button" aria-label="Открыть меню">Ⅱ МЕНЮ · ESC</button><div id="crosshair"></div><div id="prompt"></div>
 </div>
-<script>
-(()=>{'use strict';
-const $=id=>document.getElementById(id);
-const IMAGES={
- exterior:'https://www.texttoimage.org/cdn/2025/week38/a-dark-eerie-abandoned-old-hotel-at-night-gothic-a-68cadbfe3a2c7-img2.webp',
- road:'https://talefy.ai/_next/image?q=75&url=https%3A%2F%2Fimagedelivery.net%2FSsDLG1D5taD2wTzn3glocA%2Fid-6ff42444-43ae-4ba1-85a1-c4ac8ed21caf%2Fquizimage&w=1920',
- lobby:'https://images.unsplash.com/photo-1677129667171-92abd8740fa3?auto=format&fit=crop&w=2200&q=85',
- corridor:'https://images.unsplash.com/photo-1763142106375-fb47c275ed45?auto=format&fit=crop&w=2200&q=85',
- oldHall:'https://ik.imagekit.io/storybird/images/d907395c-5a94-448d-a2e2-6cefc6f22a4d/0_386520460.webp?tr=q-85',
- maid:'https://media1.tenor.com/m/nlYV4at3ptgAAAAd/demon-ghost.gif',
- scream:'https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif'
+<div id="mobile"><div id="movePad"><button data-key="w">▲</button><button data-key="a">◀</button><button data-key="s">▼</button><button data-key="d">▶</button></div><div id="mobileActions"><button id="mobileUse">ДЕЙСТВИЕ</button><button id="mobilePhoto">ФОТО</button><button id="mobileTorch">СВЕТ</button></div></div>
+<div id="title"><div class="titlePanel"><div class="eyebrow">Интерактивный хоррор · DELUXE WEBGL EXPERIENCE</div><h1>НОЧНОЙ<br><span>ЭТАЖ</span></h1><div class="eyebrow">Комната 626 · Отель, который не отпускает</div><p>Ты свернул с трассы из-за ливня. В отеле 626 тебя уже ждали — и приготовили ключ с твоим именем.</p><div class="thinRule"></div><div class="menuBtns"><button class="mainBtn" id="start">Новая игра</button><button class="ghostBtn" id="episodes">Выбор эпизода</button><button class="ghostBtn" id="settingsTitle">Настройки</button><button class="ghostBtn" id="how">Как играть</button></div><div class="menuMusic"><span class="musicDot"></span><span>ORIGINAL AMBIENT SCORE</span><span class="musicBars"><i></i><i></i><i></i><i></i></span><span id="musicStatus">МУЗЫКА ГОТОВА</span></div><div class="smallprint">WASD — движение · МЫШЬ — осмотр · E — взаимодействие · F — фотоаппарат · G — фонарь · SHIFT — бег · ESC — меню<br>На телефоне используйте экранные кнопки. Камера и микрофон необязательны.<br><span style="color:#b79a6b">REAL 3D WEBGL PLAYTEST · v8.0</span></div></div></div>
+<div id="modal"><div class="panel" id="panelContent"></div></div>
+<div id="help"><div class="panel"><h2>КАК ИГРАТЬ</h2><ul><li>WASD — передвижение по локации.</li><li>Мышь — осмотр. Нажмите по экрану, чтобы захватить курсор.</li><li>E — использовать предмет, дверь или механизм.</li><li>F — сделать снимок в испытании с горничной; G — включить или выключить фонарь.</li><li>SHIFT — ускориться. Бег повышает шум и привлекает внимание.</li><li>ESC или кнопка МЕНЮ — пауза, выбор эпизода и настройки.</li><li>На телефоне доступны сенсорные кнопки.</li></ul><div class="panelActions"><button id="helpClose">Понятно</button></div></div></div>
+<div id="pauseMenu"><div class="screenCard"><div class="screenHead"><div><h2>ПАУЗА</h2><p>Вы остановились. Отель продолжает слушать.</p></div><button class="screenClose" id="pauseClose">ЗАКРЫТЬ ✕</button></div><div class="pauseLayout"><div class="pauseMenuList"><button class="primary" id="resumeGame">▶ Продолжить</button><button id="replayStage">↻ Переиграть эту сцену</button><button id="pauseScenes">▤ Выбрать эпизод</button><button id="pauseSettings">⚙ Настройки</button><button id="toTitle">⌂ В главное меню</button></div><div class="pauseInfo"><div class="eyebrow">ТЕКУЩЕЕ ИСПЫТАНИЕ</div><h2 id="pauseStageTitle" style="font-weight:400;font-size:32px;margin:0 0 8px">КОРИДОР</h2><p id="pauseStageDesc">Найдите путь к комнате 626.</p><p style="font:10px 'IBM Plex Mono',monospace;letter-spacing:.12em;color:#a88b5f">ПРОГРЕСС <span id="pauseProgress">02 / 10</span></p></div></div></div></div>
+<div id="sceneSelect"><div class="screenCard"><div class="screenHead"><div><h2>ВЫБОР ЭПИЗОДА</h2><p>Каждая дверь ведёт в отдельную историю</p></div><button class="screenClose" id="sceneBack">НАЗАД ✕</button></div><div class="sceneGrid" id="sceneGrid"></div></div></div>
+<div id="settingsPanel"><div class="screenCard"><div class="screenHead"><div><h2>НАСТРОЙКИ</h2><p>Звук, изображение и управление</p></div><button class="screenClose" id="settingsClose">НАЗАД ✕</button></div><div class="settingsGrid"><label class="setting">Таинственная музыка <input id="musicEnabled" type="checkbox" checked></label><label class="setting">Атмосферный фон <input id="ambienceEnabled" type="checkbox" checked></label><label class="setting">Громкость мастера <input id="masterVolume" type="range" min="0" max="100" value="72"><span class="value" id="volumeValue">72%</span></label><label class="setting">Громкость музыки <input id="musicVolume" type="range" min="0" max="100" value="62"><span class="value" id="musicValue">62%</span></label><label class="setting">Качество графики <select id="quality"><option value="cinematic">Кинематографичное</option><option value="ultra">Ультра</option><option value="high">Высокое</option><option value="balanced" selected>Сбалансированное</option><option value="low">Производительное</option></select></label><label class="setting">Чувствительность мыши <input id="mouseSensitivity" type="range" min="35" max="120" value="72"><span class="value" id="sensitivityValue">72%</span></label></div><div class="settingsFoot"><button class="screenAction alt" id="settingsDefault">ПО УМОЛЧАНИЮ</button><button class="screenAction" id="settingsApply">ПРИМЕНИТЬ</button></div></div></div>
+<div id="cinema"><img id="cinemaImg" alt="Кинематографическая сцена"><div class="cap" id="cinemaCap"></div><button id="cinemaSkip" type="button">ПРОПУСТИТЬ · ESC</button></div>
+<div id="dialoguePanel" aria-live="polite"><div class="dialogueCard"><div class="dialoguePortrait"><span>626</span><small>НОЧНОЙ ЭТАЖ</small></div><div class="dialogueBody"><div class="dialogueTop"><span id="dialogueSpeaker">АДМИНИСТРАТОР</span><span id="dialogueChapter">ХОЛЛ · 02:26</span></div><p id="dialogueText"></p><div class="dialogueFoot"><small id="dialogueHint">НАЖМИТЕ, ЧТОБЫ ПРОДОЛЖИТЬ</small><button id="dialogueNext">ПРОДОЛЖИТЬ <b>›</b></button></div></div></div></div>
+<div id="flash"></div>
+<div id="ending"><div class="endingBox"><div class="eyebrow">Ночь ещё не закончилась</div><h2>Вы покинули отель.</h2><p>По крайней мере, так показалось. В зеркале заднего вида кто-то сидит на заднем сиденье. И он всё это время смотрел на вас.</p><div class="menuBtns" style="justify-content:center"><button class="mainBtn" id="restart">Начать заново</button></div></div></div>
+<div id="loading"><div>ОТЕЛЬ ПРОСЫПАЕТСЯ</div><div class="bar"><i></i></div><div style="color:#716758;font-size:9px;letter-spacing:.1em">ЗАГРУЗКА 3D-ОТЕЛЯ · THREE.JS</div></div>
+</div>
+<script type="module">
+(async()=>{
+const $=s=>document.querySelector(s);
+const remoteAssets={
+ 'title_corridor.jpg':'https://hangar1publishing.com/cdn/shop/articles/99ca073be3b597d1eb215d847cf6c484.png?v=1710346717',
+ 'hotel_corridor_reference.png':'https://static.wixstatic.com/media/b03536_07f422bccec140e68fdb92cbcb714120~mv2.png/v1/fill/w_1400,h_900,al_c,q_90/usm_0.66_1.00_0.01/b03536_07f422bccec140e68fdb92cbcb714120~mv2.png',
+ 'intro_01_road.gif':'https://img.magnific.com/premium-photo/car-driving-through-rain-storm-road_1207067-16519.jpg?q=80&semt=ais_hybrid&w=1280',
+ 'intro_02_hotel.gif':'https://res.cloudinary.com/jerrick/image/upload/c_scale%2Cf_jpg%2Cq_auto/64450d50286221001d9deafe.png',
+ 'intro_03_bell.gif':'https://images.rawpixel.com/image_social_landscape/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTExL3Jhd3BpeGVsb2ZmaWNlNF9hX2NpbmVtYXRpY19zeW1tZXRyaWNhbF9mcm9udF92aWV3X29mYV92aW50YWdlX2FkZTZkMmUzLTQ5OTItNDFhNC1hYWJkLWU2ZmQzOWJjYjA1XzEuanBn.jpg',
+ 'intro_04_reception.gif':'https://www.serbenovoffice.com/munich-night-cityscape-luxury-hotel-lobby-dark-atm.jpg',
+ 'concierge_handover.gif':'https://images.unsplash.com/photo-1677129667171-92abd8740fa3?auto=format&fit=crop&w=1800&q=85',
+ 'intro_05_key626.gif':'https://images.unsplash.com/photo-1680832033936-c1c0709e6f6b?auto=format&fit=crop&w=1600&q=85',
+ 'maid_stare.gif':'https://hangar1publishing.com/cdn/shop/articles/99ca073be3b597d1eb215d847cf6c484.png?v=1710346717',
+ 'maid_approach.gif':'https://hangar1publishing.com/cdn/shop/articles/99ca073be3b597d1eb215d847cf6c484.png?v=1710346717',
+ 'maid_stagger.gif':'https://hangar1publishing.com/cdn/shop/articles/99ca073be3b597d1eb215d847cf6c484.png?v=1710346717',
+ 'maid_lunge.gif':'https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif',
+ 'maid_charge.gif':'https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif'
 };
-const scenes=[
-{title:'02:17 · СТАРАЯ ТРАССА',text:'Ты возвращался поздно. Ливень почти полностью скрыл дорогу, навигатор погас, а двигатель начал глохнуть. Впереди не было ни одного фонаря.',img:IMAGES.road,meta:'ПРОЛОГ · 01 / 06'},
-{title:'ОТЕЛЬ У ДОРОГИ',text:'За поворотом появился старый отель. На карте его не было, но в окнах горел свет. Ты оставил машину у входа и решил попросить помощи.',img:IMAGES.exterior,meta:'ПРОЛОГ · 02 / 06'},
-{title:'ПОСЛЕДНИЙ ГОСТЬ',text:'В холле пахло пылью и полированным деревом. За стойкой никого не было. Колокольчик на стойке тихо звякнул сам по себе.',img:IMAGES.lobby,meta:'ПРОЛОГ · 03 / 06'},
-{title:'ОН УЖЕ ЖДАЛ',text:'Из темноты вышел администратор. Он не спросил твоё имя — оно уже было записано в журнале регистрации.',img:IMAGES.lobby,meta:'ПРОЛОГ · 04 / 06'},
-{title:'ПОСЛЕДНИЙ КЛЮЧ',text:'Старик подвинул к тебе латунный ключ. На бирке было выбито 626. «Шестой этаж. И не открывайте дверь после трёх стуков».',img:IMAGES.lobby,meta:'ПРОЛОГ · 05 / 06'},
-{title:'КОРИДОР ШЕСТОГО ЭТАЖА',text:'Лифт открылся. На этаже было тихо. Слишком тихо. В конце коридора стояла женщина в старой униформе горничной.',img:IMAGES.oldHall,meta:'ПРОЛОГ · 06 / 06'}
-];
-let introIndex=0,photos=0,screen='menu',paused=false,soundOn=true,sfxOn=true,volume=.45,audio=null,master=null,clock=137;
-const move={x:0,depth:0,yaw:0,pitch:0,keys:new Set(),active:false,locked:false,drag:false,lastX:0,lastY:0,maidBase:10.8,maidWalk:0,stepClock:0};
-let lastFrame=performance.now(),walkPhase=0,ended=false;
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');screen=id;}
-function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2300);}
-function initAudio(){if(audio)return;audio=new(window.AudioContext||window.webkitAudioContext)();master=audio.createGain();master.gain.value=volume;master.connect(audio.destination);const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.075;osc.connect(gain);gain.connect(master);osc.start();const lfo=audio.createOscillator(),lg=audio.createGain();lfo.frequency.value=.075;lg.gain.value=4.5;lfo.connect(lg);lg.connect(osc.frequency);lfo.start();}
-function tone(freq=160,d=.2,type='sine'){if(!sfxOn)return;initAudio();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(25,freq*.5),audio.currentTime+d);g.gain.setValueAtTime(.06,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+d);o.connect(g);g.connect(master);o.start();o.stop(audio.currentTime+d);}
-function preload(){Object.values(IMAGES).forEach(u=>{if(u.startsWith('http')){const i=new Image();i.src=u;}});}
-function renderIntro(){const s=scenes[introIndex];$('filmMeta').textContent=s.meta;$('filmTitle').textContent=s.title;$('filmText').textContent=s.text;$('filmImg').src=s.img;$('filmVisual').style.backgroundImage='url("'+s.img+'")';$('filmImg').style.display='block';$('dots').innerHTML=scenes.map((_,i)=>'<i class="'+(i===introIndex?'on':'')+'"></i>').join('');$('nextIntro').textContent=introIndex===scenes.length-1?'Войти в отель →':'Далее →';}
-function startIntro(){initAudio();audio.resume();tone(62,.8);introIndex=0;renderIntro();show('intro');}
-function nextIntro(){introIndex++;tone(130,.16);if(introIndex>=scenes.length){startGame();return;}renderIntro();}
-function startGame(){
- photos=0;ended=false;move.x=0;move.depth=0;move.yaw=0;move.pitch=0;move.maidBase=10.8;move.maidWalk=0;move.keys.clear();move.active=false;
- $('gameImage').style.backgroundImage='url("'+IMAGES.corridor+'")';$('gameImage').style.backgroundSize='110% 110%';$('gameImage').style.backgroundPosition='50% 50%';$('gameImage').style.transform='scale(1)';
- $('maid').src=IMAGES.maid;$('maid').style.display='block';$('maid').style.left='50%';$('maid').style.top='50%';$('maid').style.opacity='.96';$('maid').style.transform='translate(-50%,-52%) scale(.55)';$('maid').classList.add('visible');$('maid').style.filter='grayscale(.88) brightness(.67) contrast(1.2)';
- $('attack').classList.remove('show');$('photoPanel').style.display='block';$('shots').textContent='СНИМКИ · 0 / 3';$('objective').textContent='Найди горничную в коридоре и сделай три удачных снимка.';$('objNo').textContent='ЭПИЗОД 3 / 10';$('objHint').textContent='WASD — движение · мышь — осмотр · F — фото · S — отступить';$('clock').textContent='02:17';$('distanceLabel').textContent='ДИСТАНЦИЯ: 11 М';$('crosshair').classList.remove('target');
- show('game');$('controlOverlay').style.display='flex';if(document.pointerLockElement)document.exitPointerLock();
- toast('Сначала прочитай инструкцию по управлению.');
-}
-function enterControls(){
- move.active=true;$('controlOverlay').style.display='none';initAudio();if(audio.state==='suspended')audio.resume();
- if(matchMedia('(pointer:fine)').matches&&$('game').requestPointerLock){try{$('game').requestPointerLock();}catch(e){toast('Можешь осматриваться, зажав левую кнопку мыши.');}}
- else toast('Осмотр — проводи пальцем по экрану. Движение — стрелками слева.');
-}
-function currentDistance(){return move.maidBase-move.depth-move.maidWalk;}
-function aimData(){const dist=currentDistance();const angle=(Math.atan2(-move.x,Math.max(1,dist))*180/Math.PI)-move.yaw;return{dist,angle,visible:Math.abs(angle)<48,centered:Math.abs(angle)<5.5&&dist>2.4&&dist<10.8};}
-function renderView(){
- const a=aimData();const yaw=Math.max(-75,Math.min(75,move.yaw));const bgX=50-yaw*.34-move.x*6.5;const bgY=50+move.pitch*.2+move.depth*.32;
- const zoom=110+Math.max(-2,move.depth)*1.8+Math.abs(yaw)*.07;
- $('gameImage').style.backgroundSize=zoom+'% '+(zoom*.99)+'%';$('gameImage').style.backgroundPosition=bgX+'% '+bgY+'%';
- $('gameImage').style.transform='translate3d(0,'+(Math.sin(walkPhase)*1.8)+'px,0)';
- const sx=Math.max(-15,Math.min(115,50+a.angle*1.45));const scale=Math.max(.38,Math.min(1.45,.52+(10.5-a.dist)*.075));
- $('maid').style.left=sx+'%';$('maid').style.top=(50+move.pitch*.16)+'%';$('maid').style.transform='translate(-50%,-52%) scale('+scale+')';
- $('maid').style.opacity=a.visible?'.96':'0';
- $('crosshair').classList.toggle('target',a.centered);
- $('distanceLabel').textContent='ДИСТАНЦИЯ: '+Math.max(0,a.dist).toFixed(1)+' М';
-}
-function scare(reason){
- if(ended)return;ended=true;move.active=false;move.keys.clear();if(document.pointerLockElement)document.exitPointerLock();
- $('maid').style.opacity='0';$('attack').classList.add('show');tone(42,.8,'sawtooth');
- $('end').querySelector('.kicker').textContent=reason==='caught'?'ТЫ НЕ УСПЕЛ ОТСТУПИТЬ':'ЭПИЗОД ЗАВЕРШЁН';
- $('end').querySelector('h2').textContent=reason==='caught'?'Она оказалась слишком близко.':'Она запомнила тебя.';
- $('end').querySelector('p').textContent=reason==='caught'?'Горничная догнала тебя. Начни заново, двигайся осторожнее и не позволяй ей подойти вплотную.':'Три снимка готовы. На последнем кадре за твоим плечом видна ещё одна фигура.';
- show('end');
-}
-function takePhoto(){
- if(screen!=='game'||!move.active||ended)return;
- const a=aimData();
- if(!a.visible){toast('Горничная вне поля зрения. Оглядись мышью.');return;}
- if(Math.abs(a.angle)>=5.5){toast('Наведи центральный прицел прямо на горничную.');return;}
- if(a.dist>10.8){toast('Слишком далеко. Подойди ближе клавишей W.');return;}
- if(a.dist<2.4){scare('caught');return;}
- photos++;$('shots').textContent='СНИМКИ · '+photos+' / 3';
- $('flash').classList.remove('go');void $('flash').offsetWidth;$('flash').classList.add('go');tone(900,.11,'triangle');setTimeout(()=>tone(90,.35),80);
- move.maidBase+=2.45;move.maidWalk=Math.max(0,move.maidWalk-1.2);
- if(photos===1){$('objective').textContent='Первый снимок готов. Она отступила — иди за ней.';toast('УДАЧНЫЙ СНИМОК · 1/3');}
- else if(photos===2){$('objective').textContent='Остался последний кадр. Она двигается быстрее.';$('maid').style.filter='grayscale(1) brightness(.82) contrast(1.4)';toast('УДАЧНЫЙ СНИМОК · 2/3');}
- else{toast('ТРЕТИЙ СНИМОК ГОТОВ');setTimeout(()=>scare('complete'),550);}
-}
-function updateMove(dt){
- if(screen!=='game'||!move.active||paused||ended)return;
- let f=(move.keys.has('KeyW')?1:0)-(move.keys.has('KeyS')?1:0);
- let s=(move.keys.has('KeyD')?1:0)-(move.keys.has('KeyA')?1:0);
- const running=move.keys.has('ShiftLeft')||move.keys.has('ShiftRight');
- const speed=running?3.4:2.15;const len=Math.hypot(f,s)||1;f/=len;s/=len;
- if(f||s){
-  const r=move.yaw*Math.PI/180;
-  move.x+=(s*Math.cos(r)+f*Math.sin(r))*speed*dt;
-  move.depth+=(f*Math.cos(r)-s*Math.sin(r))*speed*dt;
-  move.x=Math.max(-2.7,Math.min(2.7,move.x));move.depth=Math.max(-3,Math.min(8.3,move.depth));
-  walkPhase+=dt*(running?13:8);
-  move.stepClock+=dt;if(move.stepClock>(running?.31:.48)){move.stepClock=0;tone(running?78:58,.055,'triangle');}
+const assetUrl=name=>{const key=String(name).split('/').pop();return window.__GAME_ASSETS__?.[name]||window.__GAME_ASSETS__?.[key]||remoteAssets[key]||`assets/${key}`;};
+const THREE=await import('three');
+const [{PointerLockControls},{GLTFLoader},{EffectComposer},{RenderPass},{SSAOPass},{GTAOPass},{UnrealBloomPass},{ShaderPass},{OutputPass},{RoomEnvironment}]=await Promise.all([
+ import('three/addons/controls/PointerLockControls.js'),import('three/addons/loaders/GLTFLoader.js'),import('three/addons/postprocessing/EffectComposer.js'),import('three/addons/postprocessing/RenderPass.js'),import('three/addons/postprocessing/SSAOPass.js'),import('three/addons/postprocessing/GTAOPass.js'),import('three/addons/postprocessing/UnrealBloomPass.js'),import('three/addons/postprocessing/ShaderPass.js'),import('three/addons/postprocessing/OutputPass.js'),import('three/addons/environments/RoomEnvironment.js')
+]);
+const gsap=window.gsap||null;
+const canvas=$('#viewport');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x080706);scene.fog=new THREE.FogExp2(0x100d0a,.023);
+// Neutral studio environment improves physically based reflections on lacquered wood and aged brass.
+const pmrem=new THREE.PMREMGenerator(renderer);const roomEnv=new RoomEnvironment();scene.environment=pmrem.fromScene(roomEnv,.04).texture;pmrem.dispose();
+const camera=new THREE.PerspectiveCamera(74,innerWidth/innerHeight,.08,90);camera.position.set(0,1.65,5);scene.add(camera);
+const flashlight=new THREE.SpotLight(0xd6e3ef,13,24,Math.PI/7,.56,1.55);flashlight.position.set(0,0,0);flashlight.castShadow=true;flashlight.shadow.mapSize.set(1024,1024);flashlight.shadow.bias=-.00022;const flashlightTarget=new THREE.Object3D();flashlightTarget.position.set(0,-.02,-1);camera.add(flashlight);camera.add(flashlightTarget);flashlight.target=flashlightTarget;let flashlightOn=true;flashlight.visible=true;
+const controls=new PointerLockControls(camera,canvas);controls.pointerSpeed=.72;
+const composer=new EffectComposer(renderer);composer.addPass(new RenderPass(scene,camera));const ssao=new SSAOPass(scene,camera,innerWidth,innerHeight);ssao.kernelRadius=14;ssao.minDistance=.004;ssao.maxDistance=.12;composer.addPass(ssao);const gtaoPass=new GTAOPass(scene,camera,innerWidth,innerHeight);gtaoPass.output=GTAOPass.OUTPUT.Denoise;gtaoPass.blendIntensity=.92;gtaoPass.enabled=false;composer.addPass(gtaoPass);const bloomPass=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight),.32,.48,.82);composer.addPass(bloomPass);
+const film=new ShaderPass({uniforms:{tDiffuse:{value:null},time:{value:0},strength:{value:.12}},vertexShader:'varying vec2 vUv; void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'uniform sampler2D tDiffuse;uniform float time;uniform float strength;varying vec2 vUv;float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}void main(){vec4 c=texture2D(tDiffuse,vUv);float vig=smoothstep(1.12,.22,length((vUv-.5)*vec2(.92,1.0)));float n=hash(vUv*vec2(950.0,550.0)+time)-.5;float scan=sin(vUv.y*780.0)*.012; c.rgb*=mix(.64,1.0,vig);c.rgb+=n*strength*.18+scan;c.rgb*=vec3(1.0,.96,.88);gl_FragColor=c;}' });composer.addPass(film);composer.addPass(new OutputPass());
+let world=new THREE.Group();scene.add(world);let decor=new THREE.Group();scene.add(decor);let actors=new THREE.Group();scene.add(actors);
+const gltfLoader=new GLTFLoader();const modelCache=new Map();let modelEpoch=0;
+function cachedGLB(name){if(!modelCache.has(name))modelCache.set(name,gltfLoader.loadAsync(assetUrl(name+'.glb')));return modelCache.get(name);}
+async function attachGLB(name,parent,pos=[0,0,0],scale=1,rotation=0,epoch=modelEpoch){if(!window.__GAME_ASSETS__?.[name+'.glb'])return null;try{const gltf=await cachedGLB(name);if(epoch!==modelEpoch)return null;const root=gltf.scene.clone(true);root.userData.heroProp=parent===camera;root.position.set(...pos);root.scale.setScalar(scale);root.rotation.y=rotation;root.traverse(o=>{if(o.isMesh){o.geometry=o.geometry.clone();o.castShadow=true;o.receiveShadow=true;const cloneMat=m=>{const c=m.clone();for(const k of ['map','normalMap','roughnessMap','metalnessMap','aoMap','emissiveMap','bumpMap','alphaMap'])if(c[k])c[k]=c[k].clone();c.envMapIntensity=1.05;return c;};o.material=Array.isArray(o.material)?o.material.map(cloneMat):cloneMat(o.material);}});parent.add(root);return root;}catch(err){console.warn('GLB load failed:',name,err);return null;}}
+function mountStageModels(n){const token=++modelEpoch;if(n===1){attachGLB('vintage_suitcase',world,[3.15,.03,-2.8],1.0,.28,token);attachGLB('key_626',world,[1.15,.18,-3.6],.8,-.25,token);}if(n===2||n===3){attachGLB('reception_desk',world,[-3.45,0,-13.8],.9,0,token);attachGLB('service_bell',world,[-3.45,1.24,-13.8],.82,0,token);attachGLB('rotary_phone',world,[-2.72,1.22,-13.72],.72,-.18,token);attachGLB('key_626',world,[-4.15,1.20,-13.75],.62,.18,token);attachGLB('vintage_suitcase',world,[3.42,.04,-27.5],.92,-.12,token);}if(n===3){attachGLB('film_camera',camera,[.42,-.27,-.72],.52,0,token);}}
+const tex={};const flickerLights=[];const particleSystems=[];
+function canvasTexture(draw,repeatX=1,repeatY=1){const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d');draw(x,c);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(repeatX,repeatY);t.anisotropy=renderer.capabilities.getMaxAnisotropy();return t;}
+// High-resolution PBR texture sets: albedo + derived height/normal + roughness maps.
+function proceduralMap(name,kind,rx=1,ry=1){
+ const c=document.createElement('canvas');c.width=1024;c.height=1024;const x=c.getContext('2d');
+ const palettes={oak:['#21160f','#4d3020','#956541'],wallpaper:['#39332b','#88724d','#b49a69'],carpet:['#341719','#7b3030','#c29b68'],brass:['#3b2a17','#927044','#d1b078']};
+ const p=palettes[name]||palettes.oak;
+ if(kind==='color'){
+  x.fillStyle=p[0];x.fillRect(0,0,1024,1024);
+  if(name==='oak'){
+   for(let i=0;i<180;i++){const yy=i*6+Math.random()*5;x.beginPath();x.moveTo(0,yy);x.bezierCurveTo(260,yy-9+Math.random()*18,700,yy+10,1024,yy-5+Math.random()*12);x.strokeStyle=i%7===0?'#b17b4b33':'#09060430';x.lineWidth=i%7===0?2:1;x.stroke();}
+   for(let i=0;i<10;i++){const xx=Math.random()*1024,yy=Math.random()*1024;x.strokeStyle='#c18b5540';x.lineWidth=2;x.beginPath();x.ellipse(xx,yy,18+Math.random()*24,7+Math.random()*10,Math.random(),0,Math.PI*2);x.stroke();}
+  }else if(name==='wallpaper'){
+   x.fillStyle='#514737';x.fillRect(0,0,1024,1024);
+   for(let yy=0;yy<1024;yy+=128)for(let xx=0;xx<1024;xx+=128){
+    x.save();x.translate(xx+64,yy+64);x.strokeStyle='#b69a695c';x.lineWidth=2.5;
+    x.beginPath();x.moveTo(0,-52);x.bezierCurveTo(54,-22,40,35,0,50);x.bezierCurveTo(-40,35,-54,-22,0,-52);x.stroke();
+    x.beginPath();x.ellipse(0,0,20,37,0,0,Math.PI*2);x.stroke();
+    for(let k=0;k<4;k++){const a=k*Math.PI/2;x.beginPath();x.ellipse(Math.cos(a)*27,Math.sin(a)*27,10,18,a,0,Math.PI*2);x.stroke();}
+    x.fillStyle='#b69a6970';x.beginPath();x.arc(0,0,5,0,Math.PI*2);x.fill();x.restore();
+   }
+  }else if(name==='carpet'){
+   x.fillStyle='#431d21';x.fillRect(0,0,1024,1024);
+   for(let yy=0;yy<1024;yy+=64)for(let xx=0;xx<1024;xx+=64){x.save();x.translate(xx+32,yy+32);x.strokeStyle='#c19b68a0';x.lineWidth=2;x.beginPath();x.moveTo(0,-26);x.lineTo(25,0);x.lineTo(0,26);x.lineTo(-25,0);x.closePath();x.stroke();x.strokeStyle='#7f3437';x.beginPath();x.arc(0,0,13,0,Math.PI*2);x.stroke();x.fillStyle='#b38a5d';x.fillRect(-3,-3,6,6);x.restore();}
+   x.strokeStyle='#d0ad7655';x.lineWidth=12;x.strokeRect(18,18,988,988);x.strokeStyle='#160d0d';x.lineWidth=5;x.strokeRect(40,40,944,944);
+  }else{
+   x.fillStyle='#7d5c2e';x.fillRect(0,0,1024,1024);
+   for(let i=0;i<1600;i++){const a=Math.random();x.strokeStyle=a>.55?'#e0bd7866':'#2d1d0e55';x.lineWidth=Math.random()*2+0.3;x.beginPath();x.moveTo(Math.random()*1024,Math.random()*1024);x.lineTo(Math.random()*1024,Math.random()*1024);x.stroke();}
+   for(let i=0;i<40;i++){x.strokeStyle='#e0bd7844';x.lineWidth=1;x.beginPath();x.arc(Math.random()*1024,Math.random()*1024,8+Math.random()*40,0,Math.PI*2);x.stroke();}
+  }
+  // Fine grain gives a photographed, aged surface rather than a flat vector fill.
+  for(let i=0;i<12000;i++){const a=Math.random()*.10;x.fillStyle=`rgba(0,0,0,${a})`;x.fillRect(Math.random()*1024,Math.random()*1024,1+Math.random()*2,1+Math.random()*2);}
+ }else if(kind==='height'){
+  x.fillStyle='#858585';x.fillRect(0,0,1024,1024);
+  for(let i=0;i<22000;i++){const v=115+Math.random()*85;x.fillStyle=`rgb(${v},${v},${v})`;x.fillRect(Math.random()*1024,Math.random()*1024,1+Math.random()*3,1+Math.random()*3);}
+  if(name==='wallpaper'||name==='carpet'){for(let y=0;y<1024;y+=64)for(let xx=0;xx<1024;xx+=64){x.strokeStyle='#bcbcbc';x.lineWidth=2;x.strokeRect(xx+7,y+7,50,50);}}
+ }else if(kind==='normal'){
+  x.fillStyle='rgb(128,128,255)';x.fillRect(0,0,1024,1024);
+  for(let i=0;i<16000;i++){const v=Math.random()*24-12;x.fillStyle=`rgb(${128+v},${128-v},255)`;x.fillRect(Math.random()*1024,Math.random()*1024,2+Math.random()*2,2+Math.random()*2);}
+ }else{
+  const bases={oak:180,wallpaper:220,carpet:245,brass:115};const v=bases[name]||190;x.fillStyle=`rgb(${v},${v},${v})`;x.fillRect(0,0,1024,1024);
+  for(let i=0;i<10000;i++){const n=Math.random()*42-21;const q=Math.max(0,Math.min(255,v+n));x.fillStyle=`rgb(${q},${q},${q})`;x.fillRect(Math.random()*1024,Math.random()*1024,2,1+Math.random()*3);}
  }
- move.maidWalk+=dt*(photos>=2?.22:.14);
- renderView();
- const a=aimData();
- $('shoot').disabled=!a.centered||a.dist>10.8||a.dist<2.4;
- $('shoot').style.opacity=$('shoot').disabled?'.55':'1';
- if(a.dist<=2.2)scare('caught');
+ const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);t.anisotropy=renderer.capabilities.getMaxAnisotropy();t.colorSpace=kind==='color'?THREE.SRGBColorSpace:THREE.NoColorSpace;t.needsUpdate=true;return t;
 }
-function pause(){if(screen==='game'){paused=true;move.active=false;move.keys.clear();if(document.pointerLockElement)document.exitPointerLock();show('pause');}}
-function resume(){paused=false;show('game');enterControls();}
-function openEpisodes(){const names=['Пролог','Коридор','Горничная','Лестница','Ребёнок','Комната 626','Код','Фотографии','Телефон','Финал'];$('episodeGrid').innerHTML=names.map((n,i)=>'<button class="episode" data-n="'+i+'"><b>'+(i+1)+'. '+n+'</b><span>'+(i<3?'ДОСТУПНО В ДЕМО':'СКОРО')+'</span></button>').join('');$('episodeGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{const n=+b.dataset.n;if(n===0)startIntro();else if(n===1||n===2)startGame();else toast('Этот эпизод будет добавлен позже.');});show('episodes');}
-function goMenu(){move.active=false;move.keys.clear();paused=false;if(document.pointerLockElement)document.exitPointerLock();$('attack').classList.remove('show');show('menu');}
-$('newGame').onclick=startIntro;$('continue').onclick=startGame;$('episodeOpen').onclick=openEpisodes;$('settingsOpen').onclick=()=>show('settings');$('nextIntro').onclick=nextIntro;$('skipIntro').onclick=()=>{introIndex=scenes.length-1;renderIntro();};$('shoot').onclick=takePhoto;$('touchPhoto').onclick=takePhoto;$('startLook').onclick=enterControls;
-$('resume').onclick=resume;$('replay').onclick=startGame;$('pauseEpisodes').onclick=openEpisodes;$('toMenu').onclick=goMenu;$('episodesBack').onclick=()=>show('menu');$('settingsBack').onclick=()=>show('menu');$('again').onclick=startGame;$('endMenu').onclick=goMenu;
-$('soundToggle').onchange=e=>{soundOn=e.target.checked;if(master)master.gain.setTargetAtTime(soundOn?volume:0,audio.currentTime,.2);};$('sfxToggle').onchange=e=>sfxOn=e.target.checked;$('volume').oninput=e=>{volume=+e.target.value;if(master&&soundOn)master.gain.setTargetAtTime(volume,audio.currentTime,.1);};
-document.addEventListener('pointerlockchange',()=>{move.locked=document.pointerLockElement===$('game');});
-document.addEventListener('pointerlockerror',()=>toast('Захват мыши недоступен. Используй зажатую левую кнопку для осмотра.'));
-document.addEventListener('mousemove',e=>{
- if(screen!=='game'||!move.active)return;
- if(move.locked){move.yaw=Math.max(-75,Math.min(75,move.yaw+e.movementX*.12));move.pitch=Math.max(-18,Math.min(18,move.pitch-e.movementY*.09));}
- else if(move.drag){const dx=e.clientX-move.lastX,dy=e.clientY-move.lastY;move.lastX=e.clientX;move.lastY=e.clientY;move.yaw=Math.max(-75,Math.min(75,move.yaw+dx*.22));move.pitch=Math.max(-18,Math.min(18,move.pitch-dy*.16));}
- if(screen==='game')renderView();
-});
-$('game').addEventListener('mousedown',e=>{if(screen==='game'&&move.active&&!move.locked&&e.button===0&&!e.target.closest('button')&&!e.target.closest('#controlOverlay')){move.drag=true;move.lastX=e.clientX;move.lastY=e.clientY;}});
-document.addEventListener('mouseup',()=>move.drag=false);
-$('game').addEventListener('click',e=>{if(screen==='game'&&move.active&&!move.locked&&e.target===$('gameImage')){move.drag=false;move.lastX=e.clientX;move.lastY=e.clientY;}});
-$('game').addEventListener('touchstart',e=>{if(screen!=='game'||!move.active)return;const t=e.touches[0];move.lastX=t.clientX;move.lastY=t.clientY;},{passive:true});
-$('game').addEventListener('touchmove',e=>{if(screen!=='game'||!move.active||e.target.closest('#touchControls'))return;const t=e.touches[0],dx=t.clientX-move.lastX,dy=t.clientY-move.lastY;move.lastX=t.clientX;move.lastY=t.clientY;move.yaw=Math.max(-75,Math.min(75,move.yaw+dx*.2));move.pitch=Math.max(-18,Math.min(18,move.pitch-dy*.15));renderView();},{passive:true});
-document.querySelectorAll('[data-move]').forEach(b=>{
- const code=b.dataset.move;
- const down=e=>{e.preventDefault();move.keys.add(code);};const up=e=>{e.preventDefault();move.keys.delete(code);};
- b.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,up));
-});
-addEventListener('keydown',e=>{
- if(['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight'].includes(e.code)&&screen==='game'&&move.active){e.preventDefault();move.keys.add(e.code);}
- if(e.code==='Escape'){if(screen==='game')pause();else if(screen==='pause')resume();else if(screen!=='menu')show('menu');}
- if((e.code==='KeyF'||e.code==='Space')&&screen==='game'){e.preventDefault();takePhoto();}
- if(e.code==='Enter'&&screen==='intro')nextIntro();
-});
-addEventListener('keyup',e=>move.keys.delete(e.code));
-addEventListener('blur',()=>move.keys.clear());
-$('soundToggle').checked=true;
-function frame(now){const dt=Math.min(.05,(now-lastFrame)/1000);lastFrame=now;updateMove(dt);requestAnimationFrame(frame);}
-requestAnimationFrame(frame);
-let timerSeconds=137;setInterval(()=>{if(screen==='game'&&move.active&&!paused){timerSeconds++;$('clock').textContent='02:'+String(timerSeconds%60).padStart(2,'0');}},1000);
-preload();
-})();
+function loadPBR(name,rx,ry,{roughness=.82,metalness=0,bumpScale=.045,normalScale=.38}={}){
+ const color=proceduralMap(name,'color',rx,ry),height=proceduralMap(name,'height',rx,ry),normal=proceduralMap(name,'normal',rx,ry),rough=proceduralMap(name,'roughness',rx,ry);
+ return new THREE.MeshStandardMaterial({map:color,bumpMap:height,bumpScale,normalMap:normal,normalScale:new THREE.Vector2(normalScale,normalScale),roughnessMap:rough,roughness,metalness,envMapIntensity:name==='brass'?.82:.38});
+}
+const mat=(color,roughness=.78,metalness=0,extra={})=>new THREE.MeshStandardMaterial({color,roughness,metalness,...extra});
+const mats={wood:loadPBR('oak',2.0,2.5,{roughness:.7,bumpScale:.04,normalScale:.42}),wall:loadPBR('wallpaper',2.2,2.2,{roughness:.94,bumpScale:.065,normalScale:.62}),carpet:loadPBR('carpet',1.2,7.0,{roughness:.98,bumpScale:.09,normalScale:.85}),brass:loadPBR('brass',1,1,{roughness:.28,metalness:.76,bumpScale:.012,normalScale:.2}),ceiling:loadPBR('oak',.85,3.4,{roughness:.94,bumpScale:.018,normalScale:.22}),dark:mat(0x17110d,.82),black:mat(0x060606,.34,.35),cream:mat(0xc2b397,.83),glass:new THREE.MeshPhysicalMaterial({color:0x96a4a0,roughness:.12,metalness:.2,transmission:.22,thickness:.2,transparent:true,opacity:.35})};
+const torchModel=new THREE.Group();camera.add(torchModel);torchModel.position.set(.40,-.34,-.72);torchModel.rotation.set(.13,-.16,-.12);const torchBody=new THREE.Mesh(new THREE.CylinderGeometry(.047,.064,.31,20),mat(0x111416,.3,.62));torchBody.rotation.x=Math.PI/2;torchModel.add(torchBody);const torchRim=new THREE.Mesh(new THREE.TorusGeometry(.052,.009,8,20),mats.brass);torchRim.rotation.x=Math.PI/2;torchRim.position.z=-.16;torchModel.add(torchRim);const torchLens=new THREE.Mesh(new THREE.CircleGeometry(.043,20),new THREE.MeshBasicMaterial({color:0xdce9f2}));torchLens.position.z=-.162;torchModel.add(torchLens);const torchGrip=new THREE.Mesh(new THREE.CylinderGeometry(.052,.055,.12,16),mat(0x202326,.6,.18));torchGrip.rotation.x=Math.PI/2;torchGrip.position.z=.12;torchModel.add(torchGrip);
+const colliderMeshes=[];let collisionCache=[];
+const box=(parent,x,y,z,w,h,d,material,cast=true,receive=true)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=cast;m.receiveShadow=receive;parent.add(m);const transparent=material?.transparent&&material.opacity===0;if(cast&&receive&&!transparent&&h>.42&&w>.22&&d>.22)colliderMeshes.push(m);return m;};
+function rebuildCollisionCache(){scene.updateMatrixWorld(true);collisionCache=[];for(const mesh of colliderMeshes){if(!mesh.parent)continue;const b=new THREE.Box3().setFromObject(mesh);if(!Number.isFinite(b.min.x)||b.max.y<.18||b.min.y>3.2)continue;collisionCache.push({minX:b.min.x,maxX:b.max.x,minZ:b.min.z,maxZ:b.max.z,minY:b.min.y,maxY:b.max.y});}}
+function blockedAt(x,z){if(stage===4)return false;const radius=.30,feet=.08,head=1.86;for(const b of collisionCache){if(head<b.minY||feet>b.maxY)continue;if(x+radius>b.minX&&x-radius<b.maxX&&z+radius>b.minZ&&z-radius<b.maxZ)return true;}return false;}
+const cyl=(parent,x,y,z,r1,r2,h,material,segments=16)=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,segments),material);m.position.set(x,y,z);m.castShadow=true;parent.add(m);return m;};
+const sphere=(parent,x,y,z,r,material)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(r,16,12),material);m.position.set(x,y,z);m.castShadow=true;parent.add(m);return m;};
+// Bone-driven character construction. Each clothing/limb mesh is parented to a named joint,
+// so the character is an articulated 3D rig rather than a flat image plane.
+function makeRiggedActor(kind='maid'){
+ const admin=kind==='admin';const rig=new THREE.Group();rig.name=admin?'Concierge_Rig':'Maid_Rig';
+ const C=admin?{skin:0xa88b70,hair:0x77736d,coat:0x171a1c,vest:0x292a28,shirt:0xc9c0ae,apron:0x252627,trim:0xa78959,shoe:0x100f0e}:{skin:0xb19a86,hair:0x171514,coat:0x171515,vest:0x211d1a,shirt:0xbfb5a5,apron:0xc2b49a,trim:0xe1d5c1,shoe:0x100d0c};
+ const skin=mat(C.skin,.86),hair=mat(C.hair,.93),coat=mat(C.coat,.88),vest=mat(C.vest,.84),shirt=mat(C.shirt,.92),apron=mat(C.apron,.96),trim=mat(C.trim,.8),shoe=mat(C.shoe,.55,.12),eyeWhite=mat(0xd0c8b8,.55),iris=mat(admin?0x6c6558:0x9a8c78,.4),pupil=mat(0x100e0d,.2),mouth=mat(0x241817,.95),button=mat(0x9b8057,.38,.62);
+ const bones={};const bone=(name,parent,pos)=>{const b=new THREE.Bone();b.name=name;b.position.set(...pos);if(parent)parent.add(b);else rig.add(b);bones[name]=b;return b;};
+ const root=bone('root',null,[0,0,0]),pelvis=bone('pelvis',root,[0,.91,0]),spine=bone('spine',pelvis,[0,.05,0]),chest=bone('chest',spine,[0,.34,0]),neck=bone('neck',chest,[0,.39,0]),head=bone('head',neck,[0,.13,0]);
+ const arm={};for(const side of ['L','R']){const sign=side==='L'?-1:1;arm[side]={upper:bone(side+'_upper_arm',chest,[sign*.27,.23,0]),lower:null,hand:null};arm[side].lower=bone(side+'_forearm',arm[side].upper,[sign*.02,-.34,0]);arm[side].hand=bone(side+'_hand',arm[side].lower,[sign*.01,-.31,.015]);}
+ const leg={};for(const side of ['L','R']){const sign=side==='L'?-1:1;leg[side]={upper:bone(side+'_thigh',pelvis,[sign*.145,-.08,0]),lower:null,foot:null};leg[side].lower=bone(side+'_shin',leg[side].upper,[0,-.43,0]);leg[side].foot=bone(side+'_foot',leg[side].lower,[0,-.42,.055]);}
+ const capsule=(parent,r,len,material,pos=[0,0,0],scale=[1,1,1])=>{const m=new THREE.Mesh(new THREE.CapsuleGeometry(r,len,5,10),material);m.position.set(...pos);m.scale.set(...scale);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;};
+ const ellipsoid=(parent,material,pos,scale,detail=20)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(1,detail,16),material);m.position.set(...pos);m.scale.set(...scale);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;};
+ // Torso, waist and layered uniform.
+ capsule(chest,.205,.43,coat,[0,.02,0],[1.12,1.0,.83]);ellipsoid(spine,vest,[0,-.01,.025],[.205,.24,.15]);
+ if(admin){const shirtFront=box(chest,0,.01,.185,.17,.39,.025,shirt,false);const vestFront=box(chest,0,-.02,.205,.24,.42,.026,vest,false);const tie=box(chest,0,-.04,.227,.052,.34,.026,mat(0x5a2520,.72),false);tie.rotation.z=.02;for(let y of [-.10,.02,.12])sphere(chest,0,y,.24,.018,button);}
+ else{const collar=ellipsoid(chest,trim,[0,.20,.02],[.28,.075,.19]);collar.rotation.z=Math.PI;const bib=box(chest,0,-.015,.176,.30,.34,.025,apron,false);const bibTop=box(chest,0,.16,.174,.25,.055,.028,trim,false);}
+ // Maid's broad skirt / concierge coat-tail: tapered, double-layered cloth silhouette.
+ if(!admin){const skirt=new THREE.Mesh(new THREE.CylinderGeometry(.22,.40,.78,28,2,true),coat);skirt.position.set(0,-.34,0);skirt.castShadow=true;pelvis.add(skirt);const apronPanel=new THREE.Mesh(new THREE.CylinderGeometry(.19,.29,.70,24,1,true,Math.PI*.74,Math.PI*.52),apron);apronPanel.position.set(0,-.35,.045);apronPanel.rotation.y=Math.PI;apronPanel.castShadow=true;pelvis.add(apronPanel);const waist= new THREE.Mesh(new THREE.TorusGeometry(.24,.035,8,32),trim);waist.position.y=-.015;pelvis.add(waist);for(let i=0;i<9;i++){const x=-.26+i*.065;const ruffle=ellipsoid(pelvis,trim,[x,-.01,.18],[.045,.06,.025],12);ruffle.rotation.z=(i-4)*.03;}}
+ else{const coatTail=box(pelvis,0,-.32,-.04,.49,.65,.10,coat,false);coatTail.rotation.x=-.06;}
+ // Shoulder joints, sleeves, forearms, cuff and articulated hands.
+ for(const side of ['L','R']){const sign=side==='L'?-1:1;const a=arm[side];capsule(a.upper,.105,.31,coat,[0,-.16,0]);capsule(a.lower,.078,.28,admin?coat:shirt,[0,-.15,.01]);const cuff=ellipsoid(a.lower,admin?shirt:trim,[0,-.285,.01],[.082,.035,.085]);ellipsoid(a.hand,skin,[0,-.055,.015],[.072,.095,.055]);for(let f=0;f<4;f++){const finger=capsule(a.hand,.014,.085,skin,[sign*(f-1.5)*.029,-.14,.022],[1,1,1]);finger.rotation.z=(f-1.5)*.12;}}
+ // Legs and shoes. The maid has dark stockings under the skirt; the concierge has tailored trousers.
+ for(const side of ['L','R']){const l=leg[side];capsule(l.upper,.105,.39,admin?coat:coat,[0,-.19,0]);capsule(l.lower,.078,.36,admin?coat:mat(0x181616,.9),[0,-.18,.01]);const boot=box(l.foot,0,-.035,.075,.18,.105,.30,shoe,false);boot.rotation.x=-.03;}
+ // Detailed face: planes, socket shadow, eye highlights, bridge, mouth, hair and period headwear.
+ ellipsoid(head,skin,[0,0,0],[.205,.255,.185],28);ellipsoid(head,hair,[0,.155,-.025],[.218,.145,.19],24);
+ for(const sign of [-1,1]){ellipsoid(head,skin,[sign*.196,.01,-.005],[.052,.075,.05],14);ellipsoid(head,mat(0x332a24,.96),[sign*.078,.035,.157],[.052,.035,.02],16);ellipsoid(head,eyeWhite,[sign*.078,.035,.174],[.034,.023,.012],14);ellipsoid(head,iris,[sign*.078,.035,.185],[.015,.019,.008],12);ellipsoid(head,pupil,[sign*.078,.035,.191],[.008,.013,.006],10);const brow=box(head,sign*.078,.092,.166,.09,.018,.023,hair,false);brow.rotation.z=sign*-.08;}
+ ellipsoid(head,skin,[0,-.006,.19],[.035,.07,.045],14);ellipsoid(head,mouth,[0,-.112,.16],[.065,.025,.012],16);
+ if(admin){ellipsoid(head,hair,[0,-.05,.165],[.105,.035,.04],18);const sideburnL=ellipsoid(head,hair,[-.17,.01,.015],[.045,.12,.08]);const sideburnR=ellipsoid(head,hair,[.17,.01,.015],[.045,.12,.08]);ellipsoid(head,shirt,[0,-.205,.0],[.105,.045,.10]);}
+ else{const bonnet=new THREE.Mesh(new THREE.TorusGeometry(.195,.045,10,30),trim);bonnet.position.set(0,.208,-.005);bonnet.rotation.x=.18;head.add(bonnet);ellipsoid(head,trim,[0,.225,-.035],[.18,.055,.12]);for(let i=0;i<7;i++){const x=-.18+i*.06;const curl=ellipsoid(head,trim,[x,.18,.08],[.035,.045,.035],12);}}
+ const allBones=Object.values(bones);const skeleton=new THREE.Skeleton(allBones);rig.userData.skeleton=skeleton;rig.userData.rigType=kind;
+ const baseRot={};for(const [name,b] of Object.entries(bones))baseRot[name]=b.rotation.clone();
+ function update(t,state='idle',dt=0){for(const [name,b] of Object.entries(bones))b.rotation.copy(baseRot[name]);const walk=state==='walk'?1:state==='chase'?1.6:0;const phase=t*(state==='chase'?11:6.2);if(walk){leg.L.upper.rotation.x=Math.sin(phase)*.48*walk;leg.R.upper.rotation.x=-Math.sin(phase)*.48*walk;leg.L.lower.rotation.x=Math.max(0,-Math.sin(phase+.45))*.55;leg.R.lower.rotation.x=Math.max(0,Math.sin(phase+.45))*.55;arm.L.upper.rotation.x=-Math.sin(phase)*.32*walk;arm.R.upper.rotation.x=Math.sin(phase)*.32*walk;arm.L.lower.rotation.x=-.08;arm.R.lower.rotation.x=-.08;chest.rotation.x=state==='chase'?.17:.035;}
+  if(state==='idle'){chest.rotation.x=Math.sin(t*1.15)*.018;head.rotation.y=Math.sin(t*.42)*.12;head.rotation.z=Math.sin(t*.68)*.025;}
+  if(state==='watch'){chest.rotation.x=.025;head.rotation.y=Math.sin(t*.8)*.36;head.rotation.z=Math.sin(t*.53)*.045;}
+  if(state==='talk'){chest.rotation.x=Math.sin(t*2.7)*.025;head.rotation.x=Math.sin(t*3.2)*.025;head.rotation.y=Math.sin(t*1.1)*.08;arm.R.upper.rotation.x=-.32+Math.sin(t*2.4)*.05;arm.R.lower.rotation.x=-.12;}
+  if(state==='gesture'){chest.rotation.x=-.04;head.rotation.y=-.12;arm.R.upper.rotation.x=-.88;arm.R.upper.rotation.z=-.18;arm.R.lower.rotation.x=-.38;arm.R.hand.rotation.x=-.18;}
+  if(state==='handover'){chest.rotation.x=-.08;head.rotation.x=-.08;head.rotation.y=-.08;arm.R.upper.rotation.x=-1.10;arm.R.upper.rotation.z=-.12;arm.R.lower.rotation.x=-.45;arm.R.hand.rotation.x=-.15;arm.L.upper.rotation.x=-.28;}
+  if(state==='flinch'){chest.rotation.x=.28;head.rotation.x=-.18;head.rotation.z=.14;arm.L.upper.rotation.x=-.82;arm.R.upper.rotation.x=-.82;arm.L.lower.rotation.x=-.25;arm.R.lower.rotation.x=-.25;}
+  if(state==='lunge'){chest.rotation.x=.48;head.rotation.x=-.16;head.rotation.z=Math.sin(t*16)*.07;arm.L.upper.rotation.x=-1.15;arm.R.upper.rotation.x=-1.15;arm.L.upper.rotation.z=.34;arm.R.upper.rotation.z=-.34;arm.L.lower.rotation.x=-.22;arm.R.lower.rotation.x=-.22;leg.L.upper.rotation.x=-.18;leg.R.upper.rotation.x=.38;}
+  if(state==='stagger'){chest.rotation.x=-.18;chest.rotation.z=Math.sin(t*9)*.16;head.rotation.z=Math.sin(t*8)*.18;arm.L.upper.rotation.x=-.52;arm.R.upper.rotation.x=-.52;}
+ }
+ rig.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});return {group:rig,bones,skeleton,update,state:'idle'};
+}
+// If the user runs the included Blender exporter, swap the in-code fallback for its
+// animated, skinned GLB automatically. The fallback remains playable if those files are absent.
+async function tryUpgradeActor(actor,modelName,epoch=modelEpoch){try{const url=assetUrl(modelName+'.glb');const head=await fetch(url,{method:'HEAD'});if(!head.ok)return;const gltf=await cachedGLB(modelName);if(epoch!==modelEpoch||!actor?.mesh)return;const imported=gltf.scene.clone(true);imported.position.set(0,0,0);imported.rotation.set(0,0,0);imported.scale.setScalar(1);actor.mesh.clear();actor.mesh.add(imported);actor.mixer=new THREE.AnimationMixer(imported);actor.actions={};for(const clip of gltf.animations||[]){const key=clip.name.toLowerCase();actor.actions[key]=actor.mixer.clipAction(clip);}actor.activeAction=null;actor._importedRig=true;console.info('Loaded Blender rig:',modelName);}catch(err){console.info('Using procedural character rig:',modelName);}}
+function animateActor(actor,state,dt,t){if(actor?.mixer){const keys=Object.keys(actor.actions||{});let match=null;const terms=state==='idle'?['idle','look']:state==='watch'?['look','idle']:state==='walk'?['walk']:state==='chase'?['walk','run']:state==='lunge'?['lunge','attack']:state==='flinch'?['stagger','flinch']:state==='stagger'?['stagger']:state==='talk'?['talk','idle']:state==='gesture'?['gesture','talk']:state==='handover'?['handover','gesture']:[];for(const term of terms){match=keys.find(k=>k.includes(term));if(match)break;}if(match&&actor.activeAction!==match){const next=actor.actions[match];if(actor.actions[actor.activeAction])actor.actions[actor.activeAction].fadeOut(.22);next.reset().fadeIn(.22).play();actor.activeAction=match;}actor.mixer.update(dt);}else actor?.rig?.update(t,state,dt);}
+function makeArtTexture(kind='portrait',variant=0){return canvasTexture(c=>{c.fillStyle='#17120f';c.fillRect(0,0,512,512);c.fillStyle='#5f4b38';c.fillRect(22,22,468,468);c.fillStyle='#181512';c.fillRect(36,36,440,440);if(kind==='portrait'||kind==='target'){const cx=250+((variant%3)-1)*15,skin=kind==='target'?'#b69b7d':['#a68c6d','#8f7967','#b29a80','#9d8369'][variant%4];c.fillStyle=skin;c.beginPath();c.ellipse(cx,195,kind==='target'?72:66+(variant%2)*8,105+(variant%3)*4,0,0,Math.PI*2);c.fill();c.fillStyle=kind==='target'?'#090909':['#171412','#201a17','#0d0b0a'][variant%3];c.beginPath();if(kind==='target'){c.moveTo(cx-75,190);c.quadraticCurveTo(cx-90,48,cx+4,66);c.quadraticCurveTo(cx+90,60,cx+80,192);c.lineTo(cx+56,130);c.lineTo(cx-48,128);}else{c.moveTo(cx-72,194);c.quadraticCurveTo(cx-102,50,cx+5,70);c.quadraticCurveTo(cx+95,56,cx+72,205);c.lineTo(cx+48,138);c.lineTo(cx-48,141);}c.fill();c.fillStyle='#101010';c.fillRect(cx-115,305,230,138);c.fillStyle='#d4c3a6';c.fillRect(cx-12,320,24,95);c.fillStyle='#0a0807';c.beginPath();c.moveTo(cx-12,320);c.lineTo(cx+12,320);c.lineTo(cx,372);c.fill();c.fillStyle='#17120f';c.beginPath();c.ellipse(cx-26,195,8,4,0,0,Math.PI*2);c.ellipse(cx+26,195,8,4,0,0,Math.PI*2);c.fill();if(variant%3===1){c.strokeStyle='#bfae92';c.lineWidth=6;c.strokeRect(cx-58,177,40,25);c.strokeRect(cx+18,177,40,25);c.beginPath();c.moveTo(cx-18,189);c.lineTo(cx+18,189);c.stroke();}if(kind==='target'){c.strokeStyle='#9b322d';c.lineWidth=5;c.beginPath();c.moveTo(cx-14,150);c.lineTo(cx+5,180);c.stroke();}}else{c.strokeStyle='#a98a5d';c.lineWidth=6;c.strokeRect(65,65,380,380);c.font='bold 62px Georgia';c.fillStyle='#aa8c5f';c.textAlign='center';c.fillText('626',256,280);}},1,1);}
+function addSconce(x,z){const side=x<0?1:-1,g=new THREE.Group();g.position.set(x,0,z);world.add(g);
+ const plate=box(g,0,2.62,0,.24,.48,.075,mats.brass,false);plate.rotation.z=0;
+ const mount=cyl(g,side*.13,2.7,.02,.055,.055,.34,mats.brass,12);mount.rotation.z=Math.PI/2;
+ const arm=new THREE.Mesh(new THREE.TorusGeometry(.18,.025,8,22,Math.PI*.82),mats.brass);arm.position.set(side*.2,2.77,.02);arm.rotation.z=side>0?Math.PI*.1:Math.PI*.9;g.add(arm);
+ const stem=cyl(g,side*.28,2.91,.03,.045,.045,.25,mats.brass,12);stem.rotation.z=Math.PI/2;
+ const shadeGeo=new THREE.LatheGeometry([new THREE.Vector2(0,0),new THREE.Vector2(.09,.035),new THREE.Vector2(.19,.13),new THREE.Vector2(.24,.25),new THREE.Vector2(.21,.29),new THREE.Vector2(.12,.26),new THREE.Vector2(.08,.22)],20);
+ const shade=new THREE.Mesh(shadeGeo,new THREE.MeshPhysicalMaterial({color:0xd5b77e,roughness:.7,metalness:.05,emissive:0x9a5c20,emissiveIntensity:.32,side:THREE.DoubleSide}));shade.position.set(side*.3,3.02,.03);g.add(shade);
+ const bulb=sphere(g,side*.3,2.83,.03,.075,new THREE.MeshBasicMaterial({color:0xffdba0}));
+ const l=new THREE.PointLight(0xe4ad6a,2.35,11,1.7);l.position.set(x+side*.31,2.82,z+.05);l.castShadow=flickerLights.length<3;if(l.castShadow)l.shadow.mapSize.set(768,768);l.shadow.bias=-.0005;world.add(l);flickerLights.push({light:l,base:2.35,phase:Math.random()*6.28});return l;}
+function addDoor(x,z,num,rot=0){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;world.add(g);
+ const slab=box(g,0,1.47,0,1.58,2.94,.2,mats.wood);box(g,0,1.47,.112,1.39,2.73,.028,mats.dark);
+ // Raised moulding, recessed panels, beveled rails and a period brass escutcheon.
+ for(const y of [.72,2.13]){box(g,0,y,.145,1.12,.94,.07,mats.wood);box(g,0,y,.185,1.00,.81,.018,mats.dark);box(g,0,y-.42,.205,1.02,.035,.025,mats.brass,false);box(g,0,y+.42,.205,1.02,.035,.025,mats.brass,false);}
+ for(const xx of [-.53,.53]){box(g,xx,1.47,.19,.035,2.0,.03,mats.brass,false);}
+ const handle=new THREE.Group();handle.position.set(.55,1.35,.25);g.add(handle);sphere(handle,0,0,.01,.075,mats.brass);const lever=cyl(handle,-.09,0,.035,.035,.035,.2,mats.brass,12);lever.rotation.z=Math.PI/2;
+ const plate=box(g,.55,1.35,.22,.18,.29,.035,mats.brass,false);plate.rotation.z=.05;
+ const sign=box(g,0,2.7,.19,.48,.22,.055,mats.brass,false);const t=canvasTexture(c=>{c.fillStyle='#806642';c.fillRect(0,0,512,512);c.strokeStyle='#d0b27b';c.lineWidth=10;c.strokeRect(20,20,472,472);c.fillStyle='#18110b';c.font='bold 145px Georgia';c.textAlign='center';c.textBaseline='middle';c.fillText(String(num),256,265);},1,1);sign.material=new THREE.MeshStandardMaterial({map:t,roughness:.38,metalness:.68});
+ const hinge1=cyl(g,-.68,2.36,.14,.035,.035,.22,mats.brass,10);hinge1.rotation.z=Math.PI/2;const hinge2=cyl(g,-.68,.56,.14,.035,.035,.22,mats.brass,10);hinge2.rotation.z=Math.PI/2;
+ return {group:g,leaf:slab,number:num};}
+const interactables=[];let focus=null;
+function hotspot(mesh,label,fn){mesh.userData.hotspot=true;interactables.push({mesh,label,fn});return mesh;}
+function addFrame(x,y,z,rotationY=0){const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=rotationY;world.add(g);box(g,0,0,0,1.16,1.42,.09,mats.brass);const art=new THREE.Mesh(new THREE.PlaneGeometry(1.02,1.28),new THREE.MeshStandardMaterial({map:makeArtTexture('portrait'),roughness:.88,metalness:0}));art.position.z=.055;g.add(art);return g;}
+function resetWorld(){modelEpoch++;for(const c of [...camera.children])if(c.userData.heroProp){camera.remove(c);c.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){const a=Array.isArray(o.material)?o.material:[o.material];a.forEach(m=>{for(const k of ['map','normalMap','roughnessMap','metalnessMap','aoMap','emissiveMap','bumpMap','alphaMap'])if(m[k])m[k].dispose();m.dispose();});}});}colliderMeshes.length=0;collisionCache=[];const shared=new Set(Object.values(mats));for(const group of [world,decor,actors]){for(const o of [...group.children]){group.remove(o);o.traverse(child=>{if(child.geometry)child.geometry.dispose();if(child.material){const mm=Array.isArray(child.material)?child.material:[child.material];mm.forEach(m=>{if(!shared.has(m)){if(m.map&&!Object.values(tex).includes(m.map))m.map.dispose();m.dispose();}});}});}}flickerLights.length=0;particleSystems.length=0;interactables.length=0;focus=null;$('#prompt').style.display='none';}
+function addDust(count=120,zStart=-28,zEnd=6){const g=new THREE.BufferGeometry();const a=new Float32Array(count*3);for(let i=0;i<count;i++){a[i*3]=(Math.random()-.5)*9;a[i*3+1]=.25+Math.random()*3.4;a[i*3+2]=zStart+Math.random()*(zEnd-zStart);}g.setAttribute('position',new THREE.BufferAttribute(a,3));const m=new THREE.PointsMaterial({color:0xc6a77b,size:.026,transparent:true,opacity:.28,depthWrite:false,blending:THREE.AdditiveBlending});const pts=new THREE.Points(g,m);decor.add(pts);particleSystems.push(pts);return pts;}
+function roomBase(name='room'){scene.fog=new THREE.FogExp2(0x100d0a,.032);addDust(85,-9,6);box(world,0,-.17,0,11,.3,14,mats.carpet);box(world,0,4.2,0,11,.3,14,mats.ceiling);box(world,0,2.0,-7,11,4.2,.3,mats.wall);box(world,0,2.0,7,11,4.2,.3,mats.wood);box(world,-5.5,2,0,.3,4,14,mats.wall);box(world,5.5,2,0,.3,4,14,mats.wall);box(world,0,.75,-6.78,10.6,1.2,.12,mats.wood);box(world,0,.75,6.78,10.6,1.2,.12,mats.wood);for(const x of [-5.3,5.3]){box(world,x,1.44,0,.12,.12,13.8,mats.brass,false);box(world,x,3.88,0,.12,.09,13.8,mats.wood,false);}for(let x of [-3.8,3.8]){addSconce(x,-3);addSconce(x,3);}addChandelier(-.5);const amb=new THREE.HemisphereLight(0x8b7960,0x090706,.42);world.add(amb);}
+function addChandelier(z){const g=new THREE.Group();g.position.set(0,4.0,z);world.add(g);const ring=new THREE.Mesh(new THREE.TorusGeometry(.48,.035,10,32),mats.brass);ring.rotation.x=Math.PI/2;g.add(ring);cyl(g,0,.18,0,.05,.05,.44,mats.brass,12);for(let i=0;i<5;i++){const a=i*Math.PI*2/5;const x=Math.cos(a)*.38,zz=Math.sin(a)*.38;const arm=cyl(g,x,.0,zz,.025,.025,.42,mats.brass,10);arm.rotation.z=Math.PI/2;const candle=cyl(g,x,.26,zz,.045,.05,.25,mats.cream,10);const flame=sphere(g,x,.42,zz,.045,new THREE.MeshBasicMaterial({color:0xffd18a}));}const light=new THREE.PointLight(0xffc985,.9,9,1.8);light.position.set(0,-.22,0);g.add(light);flickerLights.push({light,base:.9,phase:Math.random()*6.28});return g;}
+function addConsoleTable(x,z,side=1){
+ const g=new THREE.Group();g.position.set(x,0,z);world.add(g);
+ box(g,0,.86,0,1.42,.13,.78,mats.wood);box(g,0,.93,0,1.34,.035,.70,mats.brass,false);
+ for(const xx of [-.58,.58])for(const zz of [-.28,.28])box(g,xx,.43,zz,.085,.82,.085,mats.wood);
+ box(g,0,.68,-.405,.82,.28,.045,mats.dark);box(g,0,.69,-.438,.72,.035,.025,mats.brass,false);
+ sphere(g,0,.69,-.47,.045,mats.brass);
+ // An aged ceramic vase with individually modelled neck and lip.
+ const vaseMat=mat(0x4a3122,.28,.22,{clearcoat:.38,clearcoatRoughness:.23});
+ const vase=new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(.07,0),new THREE.Vector2(.14,.08),new THREE.Vector2(.20,.26),new THREE.Vector2(.18,.46),new THREE.Vector2(.105,.61),new THREE.Vector2(.095,.72),new THREE.Vector2(.12,.75)],28),vaseMat);
+ vase.position.set(-.36,1.0,.04);vase.castShadow=true;g.add(vase);
+ const stemMat=mat(0x29351e,.95);for(let i=0;i<5;i++){const a=i*2.4,xx=-.36+Math.cos(a)*(.12+i*.015),zz=.04+Math.sin(a)*(.12+i*.015);const curve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.36,1.68,.04),new THREE.Vector3(xx,1.92,zz),new THREE.Vector3(xx*1.25,2.16+(i%2)*.12,zz*1.25)]);g.add(new THREE.Mesh(new THREE.TubeGeometry(curve,12,.012,5,false),stemMat));const flower=sphere(g,xx*1.25,2.18+(i%2)*.12,zz*1.25,.075,mat(i%2?0x7e2631:0x9a6e4b,.82));flower.scale.set(1,.72,1);}
+ const books=box(g,.35,1.04,-.04,.34,.09,.46,mat(0x34201a,.85),false);books.rotation.y=.18;box(g,.35,1.10,-.04,.32,.02,.45,mat(0xb69b6b,.72),false);
+ return g;
+}
+function addWallSculpture(x,z,side){
+ const g=new THREE.Group();g.position.set(x,2.45,z);g.rotation.y=side<0?Math.PI/2:-Math.PI/2;world.add(g);
+ box(g,0,0,0,1.12,1.38,.09,mats.brass,false);box(g,0,0,.055,1.00,1.26,.035,mats.dark,false);
+ const bust=new THREE.Group();bust.position.z=.085;g.add(bust);const stone=mat(0x777064,.9);sphere(bust,0,.12,0,.25,stone).scale.set(.72,1.18,.58);sphere(bust,0,.45,0,.19,stone).scale.set(.78,1.0,.78);const neck=cyl(bust,0,.23,0,.1,.12,.24,stone,16);neck.rotation.z=0;
+ const frameMat=mats.brass;for(const y of [-.66,.66])box(g,0,y,.10,1.05,.025,.02,frameMat,false);return g;
+}
+function addFloorDetails(){
+ // Inlaid runner edges and subtle seams make the carpet read as a fitted hotel runner.
+ for(const x of [-2.06,2.06]){box(world,x,.018,-18,.055,.028,53,mats.brass,false);box(world,x*1.045,.018,-18,.022,.018,53,mats.wood,false);}
+ for(let z=-5;z>-45;z-=4.2){box(world,0,.012,z,3.78,.012,.018,mat(0x6c4b36,.99),false,false);}
+ // Small, irregular polished patches catch local highlights without making the entire floor wet.
+ const wetMat=new THREE.MeshPhysicalMaterial({color:0x54453a,roughness:.14,metalness:.08,transparent:true,opacity:.20,clearcoat:1,clearcoatRoughness:.08,depthWrite:false});
+ for(let i=0;i<16;i++){const p=new THREE.Mesh(new THREE.CircleGeometry(.18+Math.random()*.34,20),wetMat);p.rotation.x=-Math.PI/2;p.scale.set(1.3,.6+Math.random()*.8,1);p.position.set((Math.random()-.5)*3.5,.026,-5-Math.random()*38);world.add(p);}
+}
+function corridor(){scene.fog=new THREE.FogExp2(0x0b0908,.024);addDust(260,-48,7);box(world,0,-.18,-18,10,.36,54,mats.carpet);box(world,0,4.35,-18,10,.3,54,mats.ceiling);box(world,-5,2.1,-18,.34,4.5,54,mats.wall);box(world,5,2.1,-18,.34,4.5,54,mats.wall);box(world,-4.78,.72,-18,.12,1.35,54,mats.wood);box(world,4.78,.72,-18,.12,1.35,54,mats.wood);
+ // Architectural trim, dado panels and runner borders add scale and believable construction.
+ for(const x of [-4.77,4.77]){box(world,x,1.52,-18,.14,.12,54,mats.brass,false);box(world,x,2.38,-18,.14,.1,54,mats.wood);box(world,x,3.98,-18,.14,.12,54,mats.wood);}
+ for(const x of [-1.92,1.92]){box(world,x,.012,-18,.07,.025,53,mats.brass,false);}
+ for(let z=-4;z>-43;z-=7){for(let x of [-4.78,4.78]){const d=addDoor(x,z,200+Math.abs(z)*5,x<0?Math.PI/2:-Math.PI/2);addFrame(x<0?-4.72:4.72,2.55,z+2,x<0?Math.PI/2:-Math.PI/2);}addSconce(-4.45,z-2);addSconce(4.45,z-5);if(Math.abs(z)%14<1)addChandelier(z-1.7);}
+ for(let z=-4;z>-44;z-=3.5){const sphereLamp=new THREE.Mesh(new THREE.SphereGeometry(.12,14,10),new THREE.MeshBasicMaterial({color:0xe8c28a}));sphereLamp.position.set(0,4.05,z);world.add(sphereLamp);const l=new THREE.PointLight(0xc48b51,.56,8,2);l.position.copy(sphereLamp.position);world.add(l);}
+ // Period furniture, botanical dressing, sculpted wall details and a moonlit end window.
+ addFloorDetails();addConsoleTable(-3.62,-15,1);addConsoleTable(3.62,-29,-1);addWallSculpture(-4.77,-23,1);addWallSculpture(4.77,-36,-1);
+ // A distant arched window gives the corridor a readable vanishing point and cool/warm contrast.
+ const win=new THREE.Group();win.position.set(0,2.45,-45.8);world.add(win);box(win,0,0,0,3.4,3.5,.18,mats.wood);box(win,0,0,.11,3.08,3.18,.035,new THREE.MeshPhysicalMaterial({color:0x34434b,roughness:.18,metalness:.18,emissive:0x14212b,emissiveIntensity:.35,transparent:true,opacity:.9}));
+ const arch=new THREE.Mesh(new THREE.TorusGeometry(1.52,.09,10,48,Math.PI),mats.wood);arch.position.set(0,1.48,.15);arch.scale.set(1,1.03,1);win.add(arch);box(win,0,-.42,.18,.08,2.25,.07,mats.brass,false);box(win,0,.58,.18,3.0,.065,.07,mats.brass,false);for(const x of [-.72,.72])box(win,x,-.4,.18,.05,1.85,.05,mats.brass,false);
+ const moon=new THREE.PointLight(0x8faec7,1.65,18,1.7);moon.position.set(0,2.3,-44.4);world.add(moon);
+  // Brass luggage trolley with rails, shelves and casters as a recognizable hotel prop.
+ const cart=new THREE.Group();cart.position.set(3.65,0,-11);world.add(cart);for(let x of [-.38,.38]){cyl(cart,x,.13,0,.1,.1,.08,mats.black,14).rotation.x=Math.PI/2;box(cart,x,1.0,0,.055,1.9,.055,mats.brass,false);box(cart,x,1.92,0,.07,.08,.07,mats.brass,false);}for(let y of [.48,1.08,1.68]){box(cart,0,y,0,.78,.06,.72,mats.brass,false);box(cart,0,y-.06,0,.72,.035,.65,mats.wood);}const exit=addDoor(0,-44.65,626,0);hotspot(exit.group,'ДВЕРЬ 626 · НАЖМИТЕ E',()=>{if(stage===2){if(!hasKey){showToast('Дверь не поддаётся. Нужен латунный ключ 626.');return;}changeStage(3);}else if(stage===3&&shots>=9){changeStage(4);}else showToast('Дверь заперта. Нужно выполнить испытание.');});box(world,0,.3,-47,9,.5,.5,mats.wood);}
+function bedroom(){roomBase();
+ box(world,-1,.58,-2.1,3.25,.52,4.05,mats.wood);for(const x of [-2.58,.58])for(const z of [-4.05,-.15])box(world,x,.34,z,.16,.7,.16,mats.brass,false);
+ box(world,-1,.91,-2.15,3.08,.28,3.82,mats.cream);box(world,-1,1.08,-3.48,2.88,.18,.92,mats.cream);box(world,-1,1.31,-3.91,3.15,.64,.18,mats.wood);
+ const duvet=box(world,-1,1.075,-1.55,2.88,.16,2.65,new THREE.MeshStandardMaterial({color:0x8d8170,roughness:.97,bumpMap:mats.carpet.bumpMap,bumpScale:.018,normalMap:mats.carpet.normalMap,normalScale:new THREE.Vector2(.12,.12)}));
+ for(let i=0;i<7;i++){const fold=box(world,-2.22+i*.4,1.165,-1.7,.012,.012,2.28,mat(0x5a5044,.99),false);fold.rotation.y=(i-3)*.012;}
+ // Bedside table, drawer pulls, aged clock and a warm shaded lamp.
+ box(world,-3.05,.72,-1.65,.92,.16,1.0,mats.wood);for(let x of [-3.42,-2.68])for(let z of [-2.02,-1.28])box(world,x,.36,z,.09,.72,.09,mats.wood);box(world,-3.05,.93,-2.12,.72,.3,.04,mats.dark);sphere(world,-3.05,.94,-2.19,.045,mats.brass);
+ const clock=cyl(world,-3.05,1.35,-1.72,.24,.24,.08,mats.brass,28);clock.rotation.x=Math.PI/2;const clockFace=new THREE.Mesh(new THREE.CircleGeometry(.205,32),new THREE.MeshBasicMaterial({color:0xd7c9a5}));clockFace.position.set(-3.05,1.35,-1.665);world.add(clockFace);
+ cyl(world,-2.8,1.18,-1.35,.14,.18,.12,mats.brass,20);cyl(world,-2.8,1.42,-1.35,.035,.035,.42,mats.brass,12);const lampShade=new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(.09,0),new THREE.Vector2(.18,.1),new THREE.Vector2(.21,.28),new THREE.Vector2(.13,.34),new THREE.Vector2(.07,.31)],18),new THREE.MeshPhysicalMaterial({color:0xd7bd8a,roughness:.68,emissive:0x805020,emissiveIntensity:.28,side:THREE.DoubleSide}));lampShade.position.set(-2.8,1.58,-1.35);world.add(lampShade);const lamp=new THREE.PointLight(0xe7b16b,1.5,6,1.8);lamp.position.set(-2.8,1.55,-1.35);world.add(lamp);
+ const note=box(world,-3.05,1.045,-1.64,.46,.025,.34,mats.cream,false);note.rotation.y=-.16;hotspot(note,'ПРОЧИТАТЬ ЗАПИСКУ · E',()=>{showToast('На обороте: «Если услышишь звонок после 02:17 — не открывай. Комната 626 не числится на плане».');sanity=Math.max(0,sanity-1);updateStatus();});const door=addDoor(0,-6.6,201,0);hotspot(door.group,'ОТКРЫТЬ ДВЕРЬ · E',()=>changeStage(2));}
+function stairs(){roomBase();for(let i=0;i<13;i++){const st=box(world,0,.18+i*.22,-4-i*.72,4,.36,1.1,mats.wood);box(world,0,.38+i*.22,-4.38-i*.72,4,.04,.18,mats.brass,false);}box(world,-2.2,1.4,-8,.12,2.6,9,mats.brass);box(world,2.2,1.4,-8,.12,2.6,9,mats.brass);const door=addDoor(0,-14,626,0);door.group.position.y=.8;hotspot(door.group,'ПОДНЯТЬСЯ К ВЫХОДУ · E',()=>changeStage(5));}
+function nursery(){roomBase();
+ box(world,0,1.12,-2.5,2.72,.22,2.02,mats.wood);box(world,0,2.04,-3.48,2.74,.12,.14,mats.brass,false);box(world,0,2.04,-1.52,2.74,.12,.14,mats.brass,false);
+ for(let x of [-1.25,1.25])for(let z of [-3.35,-1.65]){cyl(world,x,1.68,z,.065,.065,1.05,mats.brass,12);sphere(world,x,2.25,z,.09,mats.brass);}
+ for(let x=-1.1;x<=1.1;x+=.22){box(world,x,1.62,-3.35,.035,.92,.035,mats.cream,false);box(world,x,1.62,-1.65,.035,.92,.035,mats.cream,false);}
+ // A small worn teddy bear on the mattress: separate rounded volumes and stitched eyes.
+ const bear=new THREE.Group();bear.position.set(.18,1.4,-2.48);world.add(bear);const plush=mat(0x6b4931,.98),muzzle=mat(0xb5906c,.95),eye=mat(0x080706,.28);
+ sphere(bear,0,.18,0,.29,plush);sphere(bear,0,.57,.02,.23,plush);for(let x of [-.18,.18]){sphere(bear,x,.78,0,.105,plush);sphere(bear,x,.78,.04,.05,muzzle);sphere(bear,x*.48,.59,.215,.025,eye);}sphere(bear,0,.49,.23,.075,muzzle);sphere(bear,0,.52,.29,.022,eye);for(let x of [-.32,.32]){const arm=sphere(bear,x,.25,.03,.13,plush);arm.scale.set(.8,1.25,.8);}for(let x of [-.13,.13])sphere(bear,x,-.05,.04,.14,plush);
+ const mobile=new THREE.Group();world.add(mobile);cyl(mobile,0,2.72,-2.35,.018,.018,1.1,mats.brass,8);for(let i=0;i<5;i++){const star=new THREE.Mesh(new THREE.OctahedronGeometry(.12),mat(0xb89b67,.3,.2,{emissive:0x44301a,emissiveIntensity:.4}));star.position.set(-.9+i*.45,2.48,-2.3+(i%2)*.3);mobile.add(star);}
+ hotspot(box(world,0,1.6,-2.4,3.4,1.8,.2,new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false}),false,false),'УСПОКОИТЬ КОЛЫБЕЛЬ · E',()=>openNursery());}
+function mirrorRoom(){roomBase();const frame=box(world,0,2.15,-6.5,2.3,3.1,.2,mats.brass);const mirror=new THREE.Mesh(new THREE.PlaneGeometry(2.05,2.8),new THREE.MeshPhysicalMaterial({color:0x26313a,metalness:.8,roughness:.16,transparent:true,opacity:.72,clearcoat:1}));mirror.position.set(0,2.15,-6.36);world.add(mirror);hotspot(frame,'ПОСМОТРЕТЬ В ЗЕРКАЛО · E',()=>{runCinema('assets/maid_stare.gif','В отражении кто-то стоит за вашей спиной…',1600,()=>{});sanity=Math.max(10,sanity-16);updateStatus();});const drawer=box(world,-2.6,.6,-3.4,.9,1.2,.8,mats.wood);hotspot(drawer,'ОТКРЫТЬ ЯЩИК · E',()=>{showToast('Внутри лежит ключ от комнаты 626.');hasKey=true;setTimeout(()=>changeStage(7),650);});}
+function codeRoom(){roomBase();const desk=box(world,0,.72,-3.8,3.2,.16,1.25,mats.wood);box(world,0,1.12,-3.8,1.8,.62,.08,mats.black);const note=box(world,-1.2,1.1,-3.2,.62,.02,.8,mats.cream,false);const panel=box(world,0,1.42,-3.25,.9,.86,.12,mats.brass);hotspot(panel,'ВВЕСТИ КОД · E',()=>openCode());}
+function photoRoom(){roomBase();box(world,0,2.2,-6.75,9.7,3.5,.2,mats.dark);for(let i=0;i<9;i++){const x=-3.8+(i%3)*3.8,y=3.15-Math.floor(i/3)*1.2;const frame=box(world,x,y,-6.5,1.0,.92,.08,mats.brass);const art=new THREE.Mesh(new THREE.PlaneGeometry(.84,.76),new THREE.MeshBasicMaterial({map:makeArtTexture(i===4?'target':'portrait',i)}));art.position.set(x,y,-6.44);world.add(art);hotspot(frame,`ФОТОГРАФИЯ ${i+1} · E`,()=>{if(i===4){showToast('Вы нашли своё фото.');setTimeout(()=>changeStage(9),700);}else{sanity=Math.max(8,sanity-7);updateStatus();showToast('Это не вы. Лица на снимках меняются.');}});} }
+let phoneTex=null;
+function gifCanvasTexture(src,transparent=false){
+ const c=document.createElement('canvas');c.width=724;c.height=241;const cx=c.getContext('2d');const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter;
+ const isPhone=String(src).includes('phone');const material=new THREE.MeshBasicMaterial({map:t,transparent,alphaTest:transparent?.03:0,side:THREE.DoubleSide,depthWrite:!transparent});
+ function update(){const time=performance.now()/1000;cx.clearRect(0,0,c.width,c.height);if(isPhone){cx.fillStyle='rgba(18,12,8,.92)';cx.fillRect(0,0,c.width,c.height);cx.strokeStyle='rgba(185,145,85,.8)';cx.lineWidth=5;cx.beginPath();cx.moveTo(220,145);cx.bezierCurveTo(240,25,480,25,504,145);cx.stroke();cx.fillStyle='#b99a68';cx.beginPath();cx.arc(220,145,22,0,Math.PI*2);cx.arc(504,145,22,0,Math.PI*2);cx.fill();for(let i=0;i<7;i++){const x=280+i*24,y=70+Math.sin(time*2+i*.45)*5;cx.fillStyle=`rgba(196,151,92,${.3+.7*Math.abs(Math.sin(time*1.6+i))})`;cx.beginPath();cx.arc(x,y,5,0,Math.PI*2);cx.fill();}}else{const pulse=.7+.3*Math.sin(time*3);cx.fillStyle=`rgba(8,7,6,${.15*pulse})`;cx.fillRect(0,0,c.width,c.height);cx.fillStyle=`rgba(206,195,174,${.4*pulse})`;cx.beginPath();cx.ellipse(360,98,34,44,0,0,Math.PI*2);cx.fill();cx.fillStyle=`rgba(16,13,12,${.9*pulse})`;cx.beginPath();cx.moveTo(323,138);cx.lineTo(397,138);cx.lineTo(432,241);cx.lineTo(286,241);cx.closePath();cx.fill();}t.needsUpdate=true;}
+ update();return {img:null,canvas:c,ctx:cx,texture:t,material,update};
+}
+const gifAssets={maid:gifCanvasTexture('assets/maid_attack_alpha.gif',true),phone:gifCanvasTexture('assets/phone_haunted.gif',false)};
+function phoneRoom(){roomBase();box(world,0,.75,-3.2,3.5,.22,1.8,mats.wood);for(let x of [-1.3,1.3])for(let z of [-3.8,-2.6])box(world,x,.35,z,.16,.8,.16,mats.wood);const phone=new THREE.Group();phone.position.set(0,1.0,-3.1);world.add(phone);
+ const body=box(phone,0,.05,0,1.02,.32,.68,mats.black);const bevel=box(phone,0,.22,-.02,.72,.05,.48,mats.brass,false);bevel.material=mat(0x211a14,.34,.72);
+ const dial=new THREE.Mesh(new THREE.CylinderGeometry(.255,.255,.065,40),mats.brass);dial.position.set(0,.235,.1);phone.add(dial);const dialInset=new THREE.Mesh(new THREE.CylinderGeometry(.207,.207,.02,40),mat(0x100e0c,.36,.55));dialInset.position.set(0,.275,.1);phone.add(dialInset);
+ for(let i=0;i<10;i++){const a=i*Math.PI*2/10;const x=Math.cos(a)*.16,z=.1+Math.sin(a)*.16;const hole=new THREE.Mesh(new THREE.CylinderGeometry(.028,.028,.018,12),mats.black);hole.position.set(x,.291,z);phone.add(hole);}
+ const centerPlate=new THREE.Mesh(new THREE.CircleGeometry(.075,28),new THREE.MeshStandardMaterial({color:0xd1bd91,roughness:.5,metalness:.22}));centerPlate.rotation.x=-Math.PI/2;centerPlate.position.set(0,.292,.1);phone.add(centerPlate);
+ // Curved handset and coiled cord — the GIF is a subtle motion layer behind the physical object.
+ const handsetCurve=new THREE.CatmullRomCurve3([new THREE.Vector3(-.42,.49,.12),new THREE.Vector3(-.34,.63,.12),new THREE.Vector3(-.16,.68,.12),new THREE.Vector3(0,.7,.12),new THREE.Vector3(.16,.68,.12),new THREE.Vector3(.34,.63,.12),new THREE.Vector3(.42,.49,.12)]);const handset=new THREE.Mesh(new THREE.TubeGeometry(handsetCurve,36,.095,12,false),mats.black);phone.add(handset);
+ for(let x of [-.4,.4]){const cap=sphere(phone,x,.49,.12,.12,mats.black);cap.scale.set(1.25,.68,1);}
+ const cordPoints=[];for(let i=0;i<90;i++){const t=i/89,ang=t*Math.PI*2*12;cordPoints.push(new THREE.Vector3(-.46+Math.sin(ang)*.045,.31-t*.18,.34+Math.cos(ang)*.045));}const cord=new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(cordPoints),180,.018,7,false),mats.black);phone.add(cord);
+ const gifPlane=new THREE.Mesh(new THREE.PlaneGeometry(1.9,.63),gifAssets.phone.material);gifPlane.position.set(0,.86,-.02);gifPlane.visible=false;phone.add(gifPlane);hotspot(body,'ПОДНЯТЬ ТРУБКУ · E',()=>{gifPlane.visible=true;openPhone();});}
+function finale(){scene.fog=new THREE.FogExp2(0x06090d,.018);box(world,0,-.2,-17,18,.4,60,mat(0x15191c,.9));box(world,0,5,-18,18,.4,60,mats.dark);for(let x of [-8,8])box(world,x,2,-17,.4,4,60,mat(0x171b1d));for(let z=-4;z>-52;z-=7){const l=new THREE.PointLight(0x8495a1,1.4,10);l.position.set(0,4,z);world.add(l);}const car=box(world,0,1.1,-4,3.2,1.2,5.2,mat(0x090b0d,.3,.5));box(world,0,1.85,-4,2.7,.72,2.8,mat(0x111a20,.22,.55));for(let x of [-1.4,1.4])for(let z of [-5.7,-2.3]){const wh=cyl(world,x,.55,z,.46,.46,.2,mats.black,24);wh.rotation.z=Math.PI/2;}const door=box(world,0,1.1,-8,2.4,2.2,.1,mats.brass);hotspot(car,'ЗАПУСТИТЬ ДВИГАТЕЛЬ · E',()=>{runCinema('assets/maid_charge.gif','В зеркале заднего вида появляется лицо…',2400,()=>{$('#ending').style.display='flex';controls.unlock();});});}
+function corridorWithMaid(){corridor();const rig=makeRiggedActor('maid');rig.group.scale.setScalar(.98);rig.group.position.set(0,0,-26);actors.add(rig.group);maid={mesh:rig.group,rig,z:-26,active:true,stun:0,mode:0,attackCooldown:2.5,flinch:0};}
+function setupMaid(){corridorWithMaid();shots=0;maid.z=-26;maid.mesh.position.z=maid.z;}
+function createStage(n){resetWorld();stage=n;clock=299;clockAccum=0;$('#clock').textContent='04:59';$('#stageName').textContent=names[n-1];$('#stageNum').textContent=`ИСПЫТАНИЕ ${String(n).padStart(2,'0')} / 10`;$('#objective').textContent=objectives[n-1];$('#shotsStat').textContent=n===3?`СНИМКИ ${shots}/9`:'';maid=null;camera.position.set(0,1.65,5);camera.rotation.set(0,0,0);sanity=Math.max(18,sanity);nurseryCount=0;nurseryManual=false;switch(n){case 1:bedroom();break;case 2:corridor();break;case 3:setupMaid();break;case 4:stairs();break;case 5:nursery();break;case 6:mirrorRoom();break;case 7:codeRoom();break;case 8:photoRoom();break;case 9:phoneRoom();break;case 10:finale();break;}rebuildCollisionCache();rebuildCollisionCache();mountStageModels(n);/* Built-in articulated 3D maid rig is used; optional Blender GLB is not required. */$('#hud').style.display='block';$('#crosshair').style.display='block';$('#pauseBtn').style.display='block';updateStatus();}
+const names=['ПРОБУЖДЕНИЕ','КОРИДОР','ГОРНИЧНАЯ','ЛЕСТНИЦА','РЕБЁНОК','КОМНАТА 626','КОД','ФОТОГРАФИИ','ТЕЛЕФОН','ФИНАЛ'];
+const objectives=['Осмотрите комнату и найдите выход.','Найдите дверь с номером 626.','Сделайте девять снимков горничной, пока она не добралась до вас.','Поднимитесь по лестнице. Не оборачивайтесь.','Успокойте колыбель пятью тихими нажатиями.','Проверьте зеркало и найдите ключ.','Введите код, спрятанный в рисунках.','Найдите свою фотографию среди чужих лиц.','Поднимите трубку и выполните голосовые инструкции.','Доберитесь до машины и уезжайте.'];
+let stage=1,shots=0,sanity=100,nurseryCount=0,nurseryManual=false,hasKey=false,maid=null,gameOn=false,clock=179,clockAccum=0,keys={},touchKeys={},lastTime=performance.now(),toastTimer=null,phoneSeq=[],phoneStep=0,movingNow=false,footstepTimer=0;
+function toggleFlashlight(){flashlightOn=!flashlightOn;flashlight.intensity=flashlightOn?13:0;torchLens.material.color.setHex(flashlightOn?0xdce9f2:0x25292d);showToast(flashlightOn?'ФОНАРЬ ВКЛЮЧЁН':'ФОНАРЬ ВЫКЛЮЧЕН');if(audioCtx)playTone(flashlightOn?740:280,.07,.025);}
+function updateStatus(){$('#sanity').style.width=sanity+'%';$('#shotsStat').textContent=stage===3?`СНИМКИ ${shots}/9`:stage===5?`ТИШИНА ${nurseryCount}/5`:'';}
+function showToast(s){const p=$('#prompt');p.style.display='block';p.innerHTML=s;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{if(!focus)p.style.display='none';},1900);}
+function changeStage(n){if(n>10){$('#ending').style.display='flex';return;}createStage(n);showToast(`ЭПИЗОД ${n} · ${names[n-1]}`);if(n===3){maid.active=true;runCinema('assets/maid_approach.gif','В дальнем конце коридора кто-то остановился…',2100,()=>showToast('Она заметила вас. Камера готова — F.'));}if(n===4){runCinema('assets/maid_stagger.gif','На лестнице слышны шаги сверху…',1500,()=>{});} }
+let micStream=null,micFrame=0,micProgress=0,micLast=0;function stopMic(){if(micFrame)cancelAnimationFrame(micFrame);micFrame=0;if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;}}function openNursery(){if(nurseryManual){nurseryCount++;updateStatus();playTone(220+Math.random()*80,.24,.04);showToast(`Колыбель качается… ${nurseryCount}/5`);if(nurseryCount>=5)setTimeout(()=>changeStage(6),700);return;}const content=$('#panelContent');content.innerHTML='<h2>ТИШИНА В ДЕТСКОЙ</h2><p>Колыбель качается сама. Попробуйте напеть тихую мелодию. Микрофон используется только локально и не записывает звук.</p><div class="panelActions"><button id="micStart">ИСПОЛЬЗОВАТЬ МИКРОФОН</button><button class="secondary" id="manualQuiet">БЕЗ МИКРОФОНА</button></div>';$('#modal').style.display='flex';$('#micStart').onclick=startMicChallenge;$('#manualQuiet').onclick=()=>{nurseryManual=true;$('#modal').style.display='none';showToast('Нажимайте E пять раз, медленно и спокойно.');};}async function startMicChallenge(){try{if(!navigator.mediaDevices?.getUserMedia)throw new Error('Микрофон недоступен в этом контексте.');micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});const ctx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();await ctx.resume();const source=ctx.createMediaStreamSource(micStream),analyser=ctx.createAnalyser();analyser.fftSize=512;source.connect(analyser);const data=new Uint8Array(analyser.fftSize);micProgress=0;micLast=performance.now();const content=$('#panelContent');content.innerHTML='<h2>НАПЕВАЙТЕ ТИХО</h2><p>Удерживайте ровный, негромкий звук. Когда шкала заполнится, колыбель успокоится.</p><div class="meter" style="width:100%;height:8px;margin:14px 0"><i id="micMeter" style="width:0;background:#b69a69"></i></div><div class="panelActions"><button id="micStop" class="secondary">ОСТАНОВИТЬ</button></div>';$('#micStop').onclick=()=>{stopMic();$('#modal').style.display='none';};const tick=now=>{if(!micStream)return;analyser.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const v=(data[i]-128)/128;sum+=v*v;}const rms=Math.sqrt(sum/data.length);const dt=Math.min(.06,(now-micLast)/1000);micLast=now;if(rms>.018&&rms<.24)micProgress+=dt;else micProgress=Math.max(0,micProgress-dt*.5);$('#micMeter').style.width=Math.min(100,micProgress/3.4*100)+'%';if(micProgress>=3.4){stopMic();$('#modal').style.display='none';showToast('Колыбель затихла. Дверь открыта.');changeStage(6);return;}micFrame=requestAnimationFrame(tick);};micFrame=requestAnimationFrame(tick);}catch(err){stopMic();const content=$('#panelContent');content.innerHTML='<h2>МИКРОФОН НЕДОСТУПЕН</h2><p>Разрешение не получено или браузер не поддерживает микрофон здесь. Можно пройти испытание без него.</p><div class="panelActions"><button id="manualQuiet2">ПРОДОЛЖИТЬ БЕЗ МИКРОФОНА</button></div>';$('#manualQuiet2').onclick=()=>{nurseryManual=true;$('#modal').style.display='none';showToast('Нажимайте E пять раз, медленно и спокойно.');};}}
+function openCode(){const content=$('#panelContent');content.innerHTML='<h2>КОДОВЫЙ ЗАМОК</h2><p>На листе нарисованы три символа. Внизу страницы кто-то написал три цифры.</p><input class="input" id="codeInput" maxlength="3" inputmode="numeric" placeholder="•••"><div class="keypad" id="nums"></div><div class="panelActions"><button id="codeOk">ОТКРЫТЬ</button><button class="secondary" id="codeCancel">НАЗАД</button></div>';for(let n=1;n<=9;n++){const b=document.createElement('button');b.textContent=n;b.onclick=()=>$('#codeInput').value=($('#codeInput').value+n).slice(-3);$('#nums').append(b);}$('#modal').style.display='flex';$('#codeOk').onclick=()=>{if($('#codeInput').value==='626'){$('#modal').style.display='none';changeStage(8);}else{$('#codeInput').value='';showToast('Код неверный. Из коридора доносится шаг.');sanity=Math.max(10,sanity-6);updateStatus();}};$('#codeCancel').onclick=()=>$('#modal').style.display='none';}
+function openPhone(){phoneSeq=['A','D','A'];phoneStep=0;renderPhone();$('#modal').style.display='flex';}
+function renderPhone(){const content=$('#panelContent');content.innerHTML=`<h2>ВХОДЯЩИЙ ЗВОНОК</h2><p>«Хорошо… теперь поверните ${phoneStep===0?'налево':phoneStep===1?'направо':'налево'}… не кладите трубку»</p><div class="panelActions"><button data-dir="A">НАЛЕВО</button><button data-dir="D">НАПРАВО</button><button data-dir="W">ВПЕРЁД</button></div><div class="smallprint" style="margin:18px auto 0">ИНСТРУКЦИЯ ${phoneStep+1} / 3</div>`;content.querySelectorAll('[data-dir]').forEach(b=>b.onclick=()=>{const val=b.dataset.dir;if(val===phoneSeq[phoneStep]){phoneStep++;if(phoneStep===3){$('#modal').style.display='none';changeStage(10);}else renderPhone();}else{phoneStep=0;sanity=Math.max(8,sanity-5);updateStatus();renderPhone();}});}
+function runCinema(src,caption,duration=1500,after=()=>{}){$('#cinemaImg').onerror=()=>{$('#cinemaImg').onerror=null;$('#cinemaImg').src='https://hangar1publishing.com/cdn/shop/articles/99ca073be3b597d1eb215d847cf6c484.png?v=1710346717';};$('#cinemaImg').src=assetUrl(src.replace(/^assets\//,''));$('#cinemaCap').textContent=caption;$('#cinema').style.display='flex';controls.unlock();setTimeout(()=>{$('#cinema').style.display='none';after();},duration);}
+function photo(){if(stage!==3||!maid||maid.stun>0)return;const to=maid.mesh.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0,1.28,0));const dist=camera.position.distanceTo(to);const aim=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);const targetDir=to.clone().sub(camera.position).normalize();const dot=aim.dot(targetDir);if(dot>.91&&dist<34&&dist>2.2){shots++;maid.stun=1.25;maid.flinch=.72;maid.z=Math.max(-31,maid.z-3.5);$('#shotsStat').textContent=`СНИМКИ ${shots}/9`;flash();showToast(`СНИМОК ${shots}/9 · ПОПАЛИ В КАДР`);playTone(920,.07,.09);if(shots>=9){maid.active=false;animateActor(maid,'stagger',0,performance.now()/1000);runCinema('assets/maid_charge.gif','Вспышка освещает пустой коридор…',1800,()=>changeStage(4));}else if(shots===3||shots===6){maid.mode++;setTimeout(()=>showToast('Она отступила. Но ненадолго.'),700);}updateStatus();}else{sanity=Math.max(5,sanity-10);updateStatus();flash();showToast('СНИМОК НЕ ЗАСЧИТАН · Наведите прицел на горничную и держите её в центре кадра.');if(maid.z>-13)runCinema('assets/maid_lunge.gif','ОНА БРОСАЕТСЯ НА ВАС',1050,()=>{camera.position.x+=(Math.random()-.5)*.6;});}}
+function flash(){const f=$('#flash');f.style.transition='none';f.style.opacity='1';setTimeout(()=>{f.style.transition='opacity .65s';f.style.opacity='0';},70);}
+let audioCtx=null,hum=null,audioMaster=null,musicBus=null,ambienceBus=null,sfxBus=null,musicTimer=null,musicEnabled=true,ambienceEnabled=true,masterVolume=.72,musicVolume=.62,qualityMode='balanced';
+function makeImpulse(ctx,seconds=4.2,decay=2.8){const len=Math.floor(ctx.sampleRate*seconds),buf=ctx.createBuffer(2,len,ctx.sampleRate);for(let ch=0;ch<2;ch++){const d=buf.getChannelData(ch);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,decay);}return buf;}
+function startAudio(){try{if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();audioMaster=audioCtx.createGain();audioMaster.gain.value=masterVolume;audioMaster.connect(audioCtx.destination);const convolver=audioCtx.createConvolver();convolver.buffer=makeImpulse(audioCtx);const wet=audioCtx.createGain();wet.gain.value=.24;const dry=audioCtx.createGain();dry.gain.value=.88;musicBus=audioCtx.createGain();musicBus.gain.value=musicEnabled?musicVolume:0;ambienceBus=audioCtx.createGain();ambienceBus.gain.value=ambienceEnabled?.38:0;sfxBus=audioCtx.createGain();sfxBus.gain.value=.75;musicBus.connect(dry).connect(audioMaster);musicBus.connect(convolver).connect(wet).connect(audioMaster);ambienceBus.connect(audioMaster);sfxBus.connect(audioMaster);
+ // Deep bowed-glass drone, softly shifting minor-second harmony, and slow filter movement.
+ const low=audioCtx.createOscillator(),lowGain=audioCtx.createGain();low.type='sine';low.frequency.value=43.65;lowGain.gain.value=.12;low.connect(lowGain).connect(ambienceBus);low.start();const sub=audioCtx.createOscillator(),subGain=audioCtx.createGain();sub.type='triangle';sub.frequency.value=55;sub.detune.value=-7;subGain.gain.value=.035;sub.connect(subGain).connect(ambienceBus);sub.start();
+ const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=680;filter.Q.value=.45;const padGain=audioCtx.createGain();padGain.gain.value=.035;filter.connect(padGain).connect(musicBus);
+ const padNotes=[110,130.81,164.81,196];const pads=padNotes.map((hz,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=i===2?'triangle':'sine';o.frequency.value=hz;g.gain.value=i===3?.16:.27;o.connect(g).connect(filter);o.start();return o;});
+ const lfo=audioCtx.createOscillator(),lfoGain=audioCtx.createGain();lfo.frequency.value=.035;lfoGain.gain.value=220;lfo.connect(lfoGain).connect(filter.frequency);lfo.start();
+ const masterLfo=audioCtx.createOscillator(),masterLfoGain=audioCtx.createGain();masterLfo.frequency.value=.08;masterLfoGain.gain.value=.012;masterLfo.connect(masterLfoGain).connect(padGain.gain);masterLfo.start();
+ const chords=[[110,130.81,164.81,196],[98,123.47,146.83,185],[87.31,110,130.81,164.81],[103.83,123.47,155.56,174.61]];let chord=0;function changeChord(){chord=(chord+1)%chords.length;pads.forEach((o,i)=>o.frequency.setTargetAtTime(chords[chord][i],audioCtx.currentTime,3.8));filter.frequency.setTargetAtTime(480+Math.random()*480,audioCtx.currentTime,4);}
+ function bell(freq,dur=4.6){const o=audioCtx.createOscillator(),g=audioCtx.createGain(),f=audioCtx.createBiquadFilter();o.type='sine';o.frequency.value=freq;f.type='highpass';f.frequency.value=240;g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.linearRampToValueAtTime(.075,audioCtx.currentTime+.035);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.connect(f).connect(g).connect(musicBus);o.start();o.stop(audioCtx.currentTime+dur+.1);}
+ const motif=[392,329.63,440,293.66,349.23,261.63,392];let mi=0;function musicPhrase(){if(!musicEnabled||!audioCtx||audioCtx.state!=='running')return;bell(motif[mi%motif.length],4.8);if(mi%4===3)bell(motif[(mi+3)%motif.length]*2,.9);mi++;if(mi%5===0)changeChord();}
+ setTimeout(musicPhrase,360);musicTimer=setInterval(musicPhrase,6900);
+ // A restrained irregular metallic tick and distant room creak are part of the original score.
+ const roomNoise=audioCtx.createBufferSource();const nb=audioCtx.createBuffer(1,audioCtx.sampleRate*2,audioCtx.sampleRate);const nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=(Math.random()*2-1)*.025;roomNoise.buffer=nb;roomNoise.loop=true;const nf=audioCtx.createBiquadFilter();nf.type='lowpass';nf.frequency.value=175;const ng=audioCtx.createGain();ng.gain.value=.12;roomNoise.connect(nf).connect(ng).connect(ambienceBus);roomNoise.start();hum={low,sub,roomNoise};
+ }if(audioCtx.state==='suspended')audioCtx.resume();$('#musicStatus').textContent=musicEnabled?'МУЗЫКА ВКЛЮЧЕНА':'МУЗЫКА ВЫКЛЮЧЕНА';}catch(e){console.warn('Audio unavailable',e);}}
+function setMusic(on){musicEnabled=!!on;if(musicBus&&audioCtx)musicBus.gain.setTargetAtTime(musicEnabled?musicVolume:0,audioCtx.currentTime,.35);$('#musicStatus').textContent=musicEnabled?'МУЗЫКА ВКЛЮЧЕНА':'МУЗЫКА ВЫКЛЮЧЕНА';}
+function setAmbience(on){ambienceEnabled=!!on;if(ambienceBus&&audioCtx)ambienceBus.gain.setTargetAtTime(ambienceEnabled?.38:0,audioCtx.currentTime,.3);}
+function setMasterVolume(v){masterVolume=Math.max(0,Math.min(1,v));if(audioMaster&&audioCtx)audioMaster.gain.setTargetAtTime(masterVolume,audioCtx.currentTime,.12);}
+function setMusicVolume(v){musicVolume=Math.max(0,Math.min(1,v));if(musicBus&&audioCtx)musicBus.gain.setTargetAtTime(musicEnabled?musicVolume:0,audioCtx.currentTime,.12);}
+function playTone(freq=420,dur=.12,gain=.08){if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=freq;g.gain.setValueAtTime(gain,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.connect(g).connect(sfxBus||audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur);}
+const ray=new THREE.Raycaster();const center=new THREE.Vector2(0,0);
+function updateFocus(){ray.setFromCamera(center,camera);const hits=ray.intersectObjects(interactables.map(i=>i.mesh),true);focus=null;if(hits.length){const h=hits[0];if(camera.position.distanceTo(h.point)<3.4){let item=interactables.find(i=>i.mesh===h.object);if(!item){let p=h.object;while(p&&!item){item=interactables.find(i=>i.mesh===p);p=p.parent;}}if(item)focus=item;}}const p=$('#prompt');if(focus){p.style.display='block';p.innerHTML=focus.label+' <b> [E]</b>';}else if(p.style.display!=='none'&&p.innerHTML.includes('[E]'))p.style.display='none';}
+function interact(){if($('#modal').style.display==='flex'||$('#dialoguePanel').classList.contains('show'))return;if(focus){focus.fn();return;}if(stage===3){photo();return;}if(stage===0){showToast('Посмотрите на латунный ключ 626 на стойке.');return;}showToast('Подойдите ближе и наведите взгляд на предмет.');}
+function onKey(e,down){const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift'].includes(k)){keys[k]=down;e.preventDefault();}if(down&&!e.repeat){if(k==='e')interact();if(k==='f')photo();if(k==='g')toggleFlashlight();if(k==='escape'){if(prologueRunning){skipPrologue();return;}if($('#dialoguePanel').classList.contains('show')){nextReceptionDialogue();return;}if($('#sceneSelect').style.display==='flex')$('#sceneBack').click();else if($('#settingsPanel').style.display==='flex')closeSettings();else if($('#pauseMenu').style.display==='flex')resumeGame();else if(gameOn)pauseGame();}}}
+window.addEventListener('keydown',e=>onKey(e,true));window.addEventListener('keyup',e=>onKey(e,false));window.addEventListener('blur',()=>{keys={};touchKeys={};});$('#mobileUse').onclick=interact;$('#mobilePhoto').onclick=photo;$('#mobileTorch').onclick=toggleFlashlight;document.querySelectorAll('#movePad button').forEach(b=>{const k=b.dataset.key;b.addEventListener('pointerdown',e=>{e.preventDefault();touchKeys[k]=true;});['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,()=>touchKeys[k]=false));});
+let touchLast=null;canvas.addEventListener('touchstart',e=>{if(e.touches.length){touchLast=[e.touches[0].clientX,e.touches[0].clientY];}},{passive:true});canvas.addEventListener('touchmove',e=>{if(!touchLast||!e.touches.length)return;const t=e.touches[0],dx=t.clientX-touchLast[0],dy=t.clientY-touchLast[1];camera.rotation.order='YXZ';camera.rotation.y-=dx*.004;camera.rotation.x-=dy*.003;camera.rotation.x=Math.max(-1.35,Math.min(1.35,camera.rotation.x));touchLast=[t.clientX,t.clientY];},{passive:true});canvas.addEventListener('touchend',()=>touchLast=null);
+function lockGamePointer(){if(matchMedia('(pointer:fine)').matches&&gameOn&&$('#pauseMenu').style.display!=='flex')controls.lock();}
+let receptionAdmin=null,introKeyAnchor=null,introKeyAvailable=false,introKeyTaken=false,introKeyMoving=0,introDialogueIndex=0;
+const receptionLines=[
+ 'Доброй ночи. Дорога сегодня совсем неприветлива. Вы, должно быть, устали.',
+ 'Мы вас ожидали. В журнале уже есть запись — хотя вы ещё не называли своего имени.',
+ 'В вашем номере тепло. Шестой этаж, коридор направо. Лифт работает только для постояльцев.',
+ 'И ещё одно. Если ночью зазвонит телефон — не отвечайте. Даже если услышите знакомый голос.',
+ 'Ваш ключ. Комната 626. Возьмите его и не задерживайтесь в холле.'
+];
+function showReceptionLine(){const panel=$('#dialoguePanel');panel.classList.add('show');$('#dialogueSpeaker').textContent='АДМИНИСТРАТОР';$('#dialogueChapter').textContent='РЕГИСТРАЦИЯ · 02:26';$('#dialogueText').textContent=receptionLines[introDialogueIndex];$('#dialogueHint').textContent='АДМИНИСТРАТОР СМОТРИТ ПРЯМО НА ВАС';$('#dialogueNext').innerHTML=introDialogueIndex===receptionLines.length-1?'ПОСМОТРЕТЬ НА КЛЮЧ <b>›</b>':'ПРОДОЛЖИТЬ <b>›</b>';if(receptionAdmin)animateActor(receptionAdmin,introDialogueIndex===receptionLines.length-1?'handover':'talk',0,performance.now()/1000);}
+function buildReceptionPrologue(){resetWorld();stage=0;clock=9999;clockAccum=0;scene.fog=new THREE.FogExp2(0x17110c,.018);scene.background=new THREE.Color(0x090806);addDust(180,-20,7);
+ box(world,0,-.18,-7,18,.36,20,mats.carpet);box(world,0,5.2,-7,18,.32,20,mats.ceiling);box(world,-9,2.5,-7,.35,5,20,mats.wall);box(world,9,2.5,-7,.35,5,20,mats.wall);box(world,0,2.5,-17,18,5,.35,mats.wall);
+ for(const x of [-7.8,-5.8,5.8,7.8]){box(world,x,2.5,-8,.28,5,.34,mats.wood);box(world,x,2.45,-7.76,.18,4.75,.08,mats.brass,false);}
+ addChandelier(-7.5);addSconce(-8,-4);addSconce(8,-4);addSconce(-8,-11);addSconce(8,-11);
+ // Reception counter with layered walnut panels, mouldings, carved feet and a polished top.
+ const desk=new THREE.Group();desk.position.set(0,0,-1.35);world.add(desk);box(desk,0,.76,0,6.2,1.48,1.42,mats.wood);box(desk,0,1.53,-.02,6.38,.17,1.58,mats.brass,false);box(desk,0,1.63,-.02,6.30,.12,1.5,mat(0x281a12,.24,.25,{clearcoat:.9,clearcoatRoughness:.12}),true,true);
+ for(const x of [-2.75,-1.85,-.95,0,.95,1.85,2.75]){box(desk,x,.78,.73,.065,1.12,.06,mats.brass,false);box(desk,x,.78,.69,.46,.84,.035,mats.dark,false);box(desk,x,.78,.665,.34,.70,.025,mats.wood,false);}
+ for(const y of [.16,1.39])box(desk,0,y,.78,5.95,.055,.045,mats.brass,false);
+ // Key cubbies and hotel records behind the concierge.
+ const cabinet=new THREE.Group();cabinet.position.set(0,0,-5.35);world.add(cabinet);box(cabinet,0,2.65,-.1,6.4,3.35,.42,mats.wood);box(cabinet,0,2.65,.14,6.08,3.03,.08,mats.dark,false);
+ for(let row=0;row<3;row++)for(let col=0;col<9;col++){const x=-2.7+col*.675,y=1.65+row*.92;box(cabinet,x,y,.22,.58,.76,.08,mats.wood,false);box(cabinet,x,y,.275,.49,.66,.035,mats.dark,false);const hook=cyl(cabinet,x,y-.13,.34,.025,.025,.18,mats.brass,10);hook.rotation.x=Math.PI/2;const tag=box(cabinet,x,y+.12,.32,.23,.15,.035,mats.brass,false);}
+ // Desk objects are real imported GLB assets; simple fallback meshes remain if a model fails to load.
+ const bellAnchor=new THREE.Group();bellAnchor.position.set(-1.75,1.70,-1.45);world.add(bellAnchor);sphere(bellAnchor,0,-.07,0,.17,mats.brass);cyl(bellAnchor,0,.02,0,.14,.19,.1,mats.brass,22);
+ const phoneAnchor=new THREE.Group();phoneAnchor.position.set(1.75,1.68,-1.36);world.add(phoneAnchor);cyl(phoneAnchor,0,0,0,.22,.25,.22,mats.black,24);const dial=new THREE.Mesh(new THREE.TorusGeometry(.14,.022,8,28),mats.brass);dial.position.y=.13;phoneAnchor.add(dial);
+ const ledger=box(world,-.4,1.73,-1.3,1.22,.10,.83,mat(0x3a2418,.78),true);ledger.rotation.y=-.08;box(world,-.4,1.79,-1.3,1.13,.016,.75,mats.cream,false);hotspot(ledger,'ОСМОТРЕТЬ ЖУРНАЛ · E',()=>showToast('В журнале уже стоит подпись. Чернила ещё не высохли. Рядом указано: «626».'));
+ // The concierge is a full articulated 3D character, placed behind the counter.
+ const rig=makeRiggedActor('admin');rig.group.scale.setScalar(1.02);rig.group.position.set(.15,0,-3.15);rig.group.lookAt(camera.position.x,1.25,camera.position.z);actors.add(rig.group);receptionAdmin={rig,mesh:rig.group,group:rig.group,gesture:'talk'};if(window.__GAME_ASSETS__?.concierge_rigged)tryUpgradeActor(receptionAdmin,'concierge_rigged');
+ // Key is a separate, pickable model on the countertop.
+ introKeyAnchor=new THREE.Group();introKeyAnchor.position.set(.55,1.72,-.62);world.add(introKeyAnchor);const keyRing=new THREE.Mesh(new THREE.TorusGeometry(.12,.025,10,24),mats.brass);keyRing.position.set(-.06,0,.02);introKeyAnchor.add(keyRing);const keyShaft=box(introKeyAnchor,.10,-.015,.02,.34,.045,.055,mats.brass,false);keyShaft.rotation.z=-.04;for(let i=0;i<3;i++)box(introKeyAnchor,.22+i*.055,-.07,.02,.035,.12,.045,mats.brass,false);attachGLB('key_626',introKeyAnchor,[0,-.02,.02],.42,.08,modelEpoch);
+ hotspot(introKeyAnchor,'ВЗЯТЬ ЛАТУННЫЙ КЛЮЧ 626 · E',()=>takeReceptionKey());
+ attachGLB('service_bell',bellAnchor,[0,0,0],.42,0,modelEpoch);attachGLB('rotary_phone',phoneAnchor,[0,0,0],.42,0,modelEpoch);attachGLB('reception_desk',world,[-6.5,0,-9.3],.78,Math.PI/2,modelEpoch);
+ camera.position.set(0,1.65,2.6);camera.rotation.set(0,0,0);camera.lookAt(0,1.42,-3.2);rebuildCollisionCache();gameOn=false;maid=null;introKeyAvailable=false;introKeyTaken=false;introKeyMoving=0;introDialogueIndex=0;$('#hud').style.display='none';$('#crosshair').style.display='none';$('#pauseBtn').style.display='none';$('#dialoguePanel').classList.remove('show');showReceptionLine();}
+function startReceptionEncounter(){startAudio();buildReceptionPrologue();}
+function nextReceptionDialogue(){if(introKeyTaken){$('#dialoguePanel').classList.remove('show');launchStage(1);return;}introDialogueIndex++;if(introDialogueIndex<receptionLines.length){showReceptionLine();return;}introKeyAvailable=true;$('#dialoguePanel').classList.remove('show');camera.lookAt(introKeyAnchor.position.x,introKeyAnchor.position.y,introKeyAnchor.position.z);gameOn=true;showToast('Посмотрите на ключ на стойке и нажмите E.');if(matchMedia('(pointer:fine)').matches)controls.lock();}
+function takeReceptionKey(){if(stage!==0||!introKeyAvailable||introKeyTaken)return;introKeyTaken=true;hasKey=true;gameOn=false;introKeyMoving=0;if(receptionAdmin)animateActor(receptionAdmin,'handover',0,performance.now()/1000);$('#dialoguePanel').classList.add('show');$('#dialogueSpeaker').textContent='АДМИНИСТРАТОР';$('#dialogueChapter').textContent='КЛЮЧ 626';$('#dialogueText').textContent='Не потеряйте его. Отель не любит, когда гости задерживаются внизу.';$('#dialogueHint').textContent='КЛЮЧ ПЕРЕДАН';$('#dialogueNext').innerHTML='ПОДНЯТЬСЯ НА ШЕСТОЙ ЭТАЖ <b>›</b>';$('#dialogueNext').onclick=()=>{$('#dialogueNext').onclick=nextReceptionDialogue;$('#dialoguePanel').classList.remove('show');launchStage(1);};if(audioCtx)playTone(610,.18,.045);}
+function updateReception(dt,now){if(stage!==0)return;const t=now/1000;if(receptionAdmin){animateActor(receptionAdmin,introKeyTaken?'handover':introKeyAvailable?'gesture':'talk',dt,t);receptionAdmin.group.lookAt(camera.position.x,1.3,camera.position.z);}if(introKeyTaken&&introKeyAnchor){introKeyMoving=Math.min(1,introKeyMoving+dt*.8);const target=new THREE.Vector3(camera.position.x, camera.position.y-.22, camera.position.z-.48);introKeyAnchor.position.lerp(target,Math.min(1,dt*2.7));introKeyAnchor.scale.setScalar(1-introKeyMoving*.5);}}
+$('#dialogueNext').onclick=nextReceptionDialogue;
+let prologueTimer=null,prologueRunning=false,prologueIndex=0;
+const prologueScenes=[
+ {src:'intro_01_road.gif',title:'02:17 · СТАРАЯ ТРАССА',text:'Ты возвращался поздно. Ливень почти полностью скрыл дорогу, а навигатор погас. Впереди внезапно замигали фары встречной машины — и двигатель заглох.'},
+ {src:'intro_02_hotel.gif',title:'ОТЕЛЬ У ДОРОГИ',text:'За поворотом появился старый отель. На карте его не было, но в окнах горел свет. Ты оставил машину у входа и решил попросить помощи.'},
+ {src:'intro_03_bell.gif',title:'ПОСЛЕДНИЙ ГОСТЬ',text:'В холле пахло пылью и полированным деревом. За стойкой стоял администратор. Он поднял глаза ещё до того, как ты успел позвонить в колокольчик.'},
+ {src:'intro_04_reception.gif',title:'ОН ЖДАЛ ТЕБЯ',text:'«Мы вас ожидали», — спокойно сказал он. В журнале регистрации уже была заполнена одна строка. В графе имени стояла сегодняшняя дата.'},
+ {src:'concierge_handover.gif',duration:6300,title:'ПОСЛЕДНИЙ КЛЮЧ',text:'Старик медленно достал из ящика латунный ключ и подвинул его к краю стойки. На металлической бирке было выбито число 626.'},
+ {src:'intro_05_key626.gif',title:'КОМНАТА 626',text:'«Шестой этаж. И что бы вы ни услышали ночью — не открывайте дверь». Администратор не улыбнулся. Лифт уже ждал с открытыми дверями.'}
+];
+function finishPrologue(){if(prologueTimer)clearTimeout(prologueTimer);prologueTimer=null;prologueRunning=false;$('#cinemaSkip').style.display='none';$('#cinema').style.display='none';$('#title').classList.add('hidden');startReceptionEncounter();}
+function playPrologueScene(){if(!prologueRunning)return;if(prologueIndex>=prologueScenes.length){finishPrologue();return;}const sc=prologueScenes[prologueIndex];const proImg=$('#cinemaImg');proImg.classList.remove('reveal');proImg.onerror=()=>{proImg.onerror=null;proImg.src='https://images.unsplash.com/photo-1677129667171-92abd8740fa3?auto=format&fit=crop&w=1800&q=85';};proImg.src=assetUrl(sc.src);void proImg.offsetWidth;proImg.classList.add('reveal');$('#cinemaCap').innerHTML=`<span style="display:block;color:#b99a68;font-size:10px;margin-bottom:8px">${sc.title}</span>${sc.text}`;$('#cinema').style.display='flex';prologueIndex++;prologueTimer=setTimeout(playPrologueScene,sc.duration||4200);}
+function startPrologue(){startAudio();$('#dialogueNext').onclick=nextReceptionDialogue;prologueIndex=0;prologueRunning=true;gameOn=false;$('#title').classList.add('hidden');$('#hud').style.display='none';$('#crosshair').style.display='none';$('#cinemaSkip').style.display='block';playPrologueScene();}
+function skipPrologue(){if(prologueRunning)finishPrologue();}
+$('#cinemaSkip').addEventListener('click',skipPrologue);
+function launchStage(n){startAudio();$('#dialoguePanel').classList.remove('show');gameOn=true;$('#title').classList.add('hidden');$('#pauseMenu').style.display='none';$('#sceneSelect').style.display='none';$('#settingsPanel').style.display='none';$('#ending').style.display='none';$('#hud').style.display='block';$('#crosshair').style.display='block';shots=0;sanity=100;hasKey=true;createStage(n);flashlightOn=true;flashlight.intensity=13;torchLens.material.color.setHex(0xdce9f2);lockGamePointer();}
+function pauseGame(){if(!gameOn||stage===0||$('#cinema').style.display==='flex'||$('#modal').style.display==='flex'||$('#ending').style.display==='flex')return;gameOn=false;stopMic();controls.unlock();$('#pauseMenu').style.display='flex';$('#pauseStageTitle').textContent=names[stage-1];$('#pauseStageDesc').textContent=objectives[stage-1];$('#pauseProgress').textContent=`${String(stage).padStart(2,'0')} / 10`;if(gsap){gsap.fromTo('.screenCard',{y:22,opacity:0},{y:0,opacity:1,duration:.35,ease:'power2.out'});}}
+function resumeGame(){if($('#sceneSelect').style.display==='flex'||$('#settingsPanel').style.display==='flex')return;$('#pauseMenu').style.display='none';gameOn=true;lockGamePointer();}
+function returnToTitle(){gameOn=false;$('#dialoguePanel').classList.remove('show');stopMic();controls.unlock();$('#pauseMenu').style.display='none';$('#sceneSelect').style.display='none';$('#settingsPanel').style.display='none';$('#ending').style.display='none';$('#hud').style.display='none';$('#crosshair').style.display='none';$('#title').classList.remove('hidden');if(gsap)gsap.fromTo('.titlePanel',{opacity:0,y:18},{opacity:1,y:0,duration:.7,ease:'power2.out'});}
+function showSceneSelect(origin='title'){sceneOrigin=origin;$('#pauseMenu').style.display='none';$('#sceneSelect').style.display='flex';const grid=$('#sceneGrid');grid.innerHTML='';names.forEach((name,i)=>{const b=document.createElement('button');b.className='sceneTile'+(i+1===stage?' active':'');b.innerHTML=`<span class="num">ЭПИЗОД ${String(i+1).padStart(2,'0')}</span><strong>${name}</strong><small>${objectives[i]}</small>`;b.onclick=()=>launchStage(i+1);grid.append(b);});if(gsap)gsap.fromTo('.sceneTile',{opacity:0,y:8},{opacity:1,y:0,stagger:.035,duration:.28,ease:'power1.out'});}
+function openSettings(){settingsOrigin=$('#pauseMenu').style.display==='flex'?'pause':$('#title').classList.contains('hidden')?'pause':'title';$('#pauseMenu').style.display='none';$('#settingsPanel').style.display='flex';$('#musicEnabled').checked=musicEnabled;$('#ambienceEnabled').checked=ambienceEnabled;$('#masterVolume').value=Math.round(masterVolume*100);$('#musicVolume').value=Math.round(musicVolume*100);$('#quality').value=qualityMode;$('#mouseSensitivity').value=Math.round(controls.pointerSpeed*100);syncSettingsLabels();if(gsap)gsap.fromTo('#settingsPanel .screenCard',{opacity:0,y:15},{opacity:1,y:0,duration:.28});}
+function syncSettingsLabels(){$('#volumeValue').textContent=$('#masterVolume').value+'%';$('#musicValue').textContent=$('#musicVolume').value+'%';$('#sensitivityValue').textContent=$('#mouseSensitivity').value+'%';}
+function closeSettings(){ $('#settingsPanel').style.display='none';if(settingsOrigin==='pause')$('#pauseMenu').style.display='flex';else $('#title').classList.remove('hidden');}
+function applySettings(){setMusic($('#musicEnabled').checked);setAmbience($('#ambienceEnabled').checked);setMasterVolume(Number($('#masterVolume').value)/100);setMusicVolume(Number($('#musicVolume').value)/100);controls.pointerSpeed=Number($('#mouseSensitivity').value)/100;qualityMode=$('#quality').value;const profiles={cinematic:{ratio:2.0,shadows:2048,ao:true,bloom:.40,grain:.075},ultra:{ratio:1.85,shadows:1536,ao:true,bloom:.36,grain:.09},high:{ratio:1.65,shadows:1024,ao:true,bloom:.32,grain:.11},balanced:{ratio:1.35,shadows:768,ao:true,bloom:.30,grain:.12},low:{ratio:1.0,shadows:512,ao:false,bloom:.20,grain:.08}};const q=profiles[qualityMode]||profiles.balanced;renderer.setPixelRatio(Math.min(devicePixelRatio,q.ratio));renderer.shadowMap.enabled=qualityMode!=='low';const useGTAO=qualityMode==='cinematic'||qualityMode==='ultra';gtaoPass.enabled=useGTAO;ssao.enabled=q.ao&&!useGTAO;bloomPass.strength=q.bloom;film.uniforms.strength.value=q.grain;for(const f of flickerLights){if(f.light.castShadow){f.light.shadow.mapSize.set(q.shadows,q.shadows);f.light.shadow.map?.dispose();f.light.shadow.needsUpdate=true;}}composer.setSize(innerWidth,innerHeight);renderer.setSize(innerWidth,innerHeight);showToast('НАСТРОЙКИ ПРИМЕНЕНЫ');}
+let sceneOrigin='title',settingsOrigin='title';
+$('#start').onclick=startPrologue;$('#episodes').onclick=()=>{startAudio();showSceneSelect('title');};$('#settingsTitle').onclick=()=>{startAudio();openSettings();};$('#how').onclick=()=>{startAudio();$('#help').style.display='flex';};$('#helpClose').onclick=()=>$('#help').style.display='none';$('#pauseBtn').onclick=pauseGame;$('#resumeGame').onclick=resumeGame;$('#pauseClose').onclick=resumeGame;$('#replayStage').onclick=()=>launchStage(stage);$('#pauseScenes').onclick=()=>showSceneSelect('pause');$('#pauseSettings').onclick=openSettings;$('#toTitle').onclick=returnToTitle;$('#sceneBack').onclick=()=>{ $('#sceneSelect').style.display='none';if(sceneOrigin==='pause')$('#pauseMenu').style.display='flex';else $('#title').classList.remove('hidden');};$('#settingsClose').onclick=closeSettings;$('#settingsApply').onclick=()=>{applySettings();closeSettings();};$('#settingsDefault').onclick=()=>{$('#musicEnabled').checked=true;$('#ambienceEnabled').checked=true;$('#masterVolume').value=72;$('#musicVolume').value=62;$('#quality').value='balanced';$('#mouseSensitivity').value=72;syncSettingsLabels();};['masterVolume','musicVolume','mouseSensitivity'].forEach(id=>$('#'+id).addEventListener('input',syncSettingsLabels));$('#musicEnabled').addEventListener('change',e=>setMusic(e.target.checked));$('#ambienceEnabled').addEventListener('change',e=>setAmbience(e.target.checked));$('#restart').onclick=()=>launchStage(1);
+$('#modal').addEventListener('click',e=>{if(e.target.id==='modal'){stopMic();$('#modal').style.display='none';}});canvas.addEventListener('click',()=>{if(gameOn&&!controls.isLocked&&matchMedia('(pointer:fine)').matches&&$('#modal').style.display!=='flex'&&!$('#dialoguePanel').classList.contains('show')&&$('#cinema').style.display!=='flex'&&$('#pauseMenu').style.display!=='flex')controls.lock();});
+function updateMaid(dt){if(!gameOn||!maid||!maid.active||$('#cinema').style.display==='flex')return;const t=performance.now()/1000;maid.attackCooldown=Math.max(0,maid.attackCooldown-dt);if(maid.stun>0){maid.stun-=dt;animateActor(maid,'flinch',dt,t);maid.mesh.visible=true;return;}maid.z+=dt*(maid.z>-9?1.28:.72);maid.mesh.position.z=maid.z;maid.mesh.lookAt(camera.position.x,1.18,camera.position.z);const d=camera.position.distanceTo(maid.mesh.position.clone().add(new THREE.Vector3(0,1.1,0)));let state=d<9?'chase':d<17?'walk':'watch';if(maid.flinch>0){maid.flinch-=dt;state='stagger';}if(d<7.2&&maid.attackCooldown<=0){state='lunge';maid.attackCooldown=5.5;animateActor(maid,state,dt,t);runCinema('assets/maid_lunge.gif','ОНА БРОСАЕТСЯ ИЗ ТЬМЫ',1150,()=>{sanity=Math.max(8,sanity-18);camera.position.x+=(Math.random()-.5)*.8;camera.position.z+=.45;updateStatus();});return;}animateActor(maid,state,dt,t);if(d<5.2){sanity=Math.max(0,sanity-dt*3.8);updateStatus();if(sanity<=0){runCinema('assets/maid_lunge.gif','ТЕМНОТА ПОГЛОТИЛА ВАС',1700,()=>{sanity=58;camera.position.set(0,1.65,5);maid.z=-25;maid.mesh.position.z=maid.z;updateStatus();});}}}
+function updateMove(dt){
+ movingNow=false;
+ if(!gameOn||$('#modal').style.display==='flex'||$('#dialoguePanel').classList.contains('show')||$('#cinema').style.display==='flex'||$('#ending').style.display==='flex')return;
+ const f=(keys.w||keys.arrowup||touchKeys.w?1:0)-(keys.s||keys.arrowdown||touchKeys.s?1:0);
+ const r=(keys.d||keys.arrowright||touchKeys.d?1:0)-(keys.a||keys.arrowleft||touchKeys.a?1:0);
+ if(!f&&!r)return;
+ movingNow=true;
+ const len=Math.hypot(f,r)||1,forwardInput=f/len,rightInput=r/len;
+ const speed=(keys.shift?4.7:2.55)*dt;
+ const oldX=camera.position.x,oldZ=camera.position.z;
+ if(controls.isLocked){controls.moveForward(forwardInput*speed);controls.moveRight(rightInput*speed);}
+ else{
+  const forward=new THREE.Vector3(0,0,-1).applyQuaternion(camera.quaternion);forward.y=0;forward.normalize();
+  const right=new THREE.Vector3().crossVectors(forward,new THREE.Vector3(0,1,0)).normalize().negate();
+  camera.position.addScaledVector(forward,forwardInput*speed);camera.position.addScaledVector(right,rightInput*speed);
+ }
+ let bx=4.25,bz0=5.5,bz1=-5.2;
+ if(stage===0){bx=3.9;bz0=4.2;bz1=-.1;}
+ else if(stage===2||stage===3){bx=4.25;bz0=7.5;bz1=-42.3;}
+ else if(stage===4){bx=1.65;bz0=5.5;bz1=-12.5;}
+ else if(stage===10){bx=7.4;bz0=7.5;bz1=-48;}
+ const candidateX=THREE.MathUtils.clamp(camera.position.x,-bx,bx);
+ const candidateZ=THREE.MathUtils.clamp(camera.position.z,bz1,bz0);
+ // Resolve each axis independently. Keep the previous coordinate when the swept
+ // position overlaps a solid collider, allowing the player to slide along walls.
+ const finalX=blockedAt(candidateX,oldZ)?oldX:candidateX;
+ const finalZ=blockedAt(finalX,candidateZ)?oldZ:candidateZ;
+ camera.position.x=finalX;camera.position.z=finalZ;
+ if(stage===4)camera.position.y=1.65+THREE.MathUtils.clamp((-camera.position.z-4)*.14,0,1.8);
+ else camera.position.y=1.65+Math.sin(performance.now()*.012)*.022;
+}
+function playFootstep(){if(!audioCtx||audioCtx.state!=='running')return;const len=Math.floor(audioCtx.sampleRate*.11),buf=audioCtx.createBuffer(1,len,audioCtx.sampleRate),data=buf.getChannelData(0);for(let i=0;i<len;i++){const t=i/len;data[i]=(Math.random()*2-1)*Math.pow(1-t,3);}const src=audioCtx.createBufferSource(),filter=audioCtx.createBiquadFilter(),gain=audioCtx.createGain();src.buffer=buf;filter.type='lowpass';filter.frequency.value=420;gain.gain.value=.085;src.connect(filter).connect(gain).connect(sfxBus||audioMaster);src.start();}
+function updateTimer(dt){if(!gameOn||stage===0)return;clockAccum+=dt;if(clockAccum>=1){clock--;clockAccum=0;if(clock<=0){clock=179;sanity=Math.max(10,sanity-12);updateStatus();showToast('Время истекло. Отель не любит опоздавших.');}$('#clock').textContent=`${String(Math.floor(clock/60)).padStart(2,'0')}:${String(clock%60).padStart(2,'0')}`;}}
+function animate(now){const dt=Math.min(.045,(now-lastTime)/1000);lastTime=now;updateMove(dt);if(gameOn&&movingNow){footstepTimer-=dt;if(footstepTimer<=0){playFootstep();footstepTimer=keys.shift ? .34 : .48;}}else footstepTimer=Math.min(footstepTimer,.18);updateTimer(dt);updateMaid(dt);updateReception(dt,now);for(const pts of particleSystems){const a=pts.geometry.attributes.position;for(let i=0;i<a.count;i++){a.array[i*3+1]+=.018*Math.sin(now*.001+i)*dt*5;if(a.array[i*3+1]>4)a.array[i*3+1]=.15;}a.needsUpdate=true;}gifAssets.phone.update();if(stage===5){const t=now*.001;decor.rotation.z=Math.sin(t*2)*.015;}if(stage===9){gifAssets.phone.update();}updateFocus();film.uniforms.time.value=now*.001;for(const f of flickerLights){const pulse=.95+Math.sin(now*.001*5+f.phase)*.025+(Math.random()-.5)*.018;f.light.intensity=f.base*pulse;}composer.render();requestAnimationFrame(animate);}
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);composer.setSize(innerWidth,innerHeight);}
+window.addEventListener('resize',resize);
+$('#loading').style.display='none';
+// Prepare a live rendered corridor under the title screen and animate the menu entrance.
+createStage(2);camera.position.set(0,1.65,6);camera.rotation.set(0,0,0);gameOn=false;$('#hud').style.display='none';$('#crosshair').style.display='none';
+if(gsap){gsap.fromTo('.titlePanel',{opacity:0,y:22},{opacity:1,y:0,duration:1.05,ease:'power3.out',delay:.12});gsap.to('.musicBars i',{scaleY:.35,repeat:-1,yoyo:true,stagger:.12,duration:.32,ease:'sine.inOut'});}
+$('#pauseBtn').style.display='none';
+requestAnimationFrame(animate);
+})().catch(err=>{console.error(err);const l=document.querySelector('#loading');if(l){l.style.display='flex';l.innerHTML='<div style="color:#d6a16a;font-size:14px">НЕ УДАЛОСЬ ЗАГРУЗИТЬ 3D-БИБЛИОТЕКУ</div><p style="max-width:420px;text-align:center;line-height:1.6;color:#a99d88">Проверьте подключение к интернету: игра использует Three.js с CDN. Запустите папку через локальный HTTP-сервер, а не напрямую через file://.</p><div style="font-size:10px;color:#766c5c">'+String(err).replace(/[<>&]/g,'')+'</div>';}});
 </script>
-</body>
-</html>
+</body></html>
