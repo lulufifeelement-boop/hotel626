@@ -266,7 +266,7 @@ document.addEventListener('mousemove',e=>{
  else if(move.drag){const dx=e.clientX-move.lastX,dy=e.clientY-move.lastY;move.lastX=e.clientX;move.lastY=e.clientY;move.yaw=Math.max(-75,Math.min(75,move.yaw+dx*.22));move.pitch=Math.max(-18,Math.min(18,move.pitch-dy*.16));}
  if(screen==='game')renderView();
 });
-$('game').addEventListener('mousedown',e=>{if(screen==='game'&&move.active&&!move.locked&&e.button===0){move.drag=true;move.lastX=e.clientX;move.lastY=e.clientY;}});
+$('game').addEventListener('mousedown',e=>{if(screen==='game'&&move.active&&!move.locked&&e.button===0&&!e.target.closest('button')&&!e.target.closest('#controlOverlay')){move.drag=true;move.lastX=e.clientX;move.lastY=e.clientY;}});
 document.addEventListener('mouseup',()=>move.drag=false);
 $('game').addEventListener('click',e=>{if(screen==='game'&&move.active&&!move.locked&&e.target===$('gameImage')){move.drag=false;move.lastX=e.clientX;move.lastY=e.clientY;}});
 $('game').addEventListener('touchstart',e=>{if(screen!=='game'||!move.active)return;const t=e.touches[0];move.lastX=t.clientX;move.lastY=t.clientY;},{passive:true});
