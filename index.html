@@ -73,6 +73,42 @@ h1 em{font-style:normal;color:#a53a31}.sub{font:10px 'IBM Plex Mono',monospace;l
 .setting{padding:13px 0;border-bottom:1px solid #765c3d55;display:flex;justify-content:space-between;align-items:center;font:12px 'IBM Plex Mono';gap:12px}
 #toast{position:absolute;top:15%;left:50%;transform:translate(-50%,-10px);opacity:0;padding:12px 18px;border:1px solid #a68151;background:#080706ec;z-index:50;font:10px 'IBM Plex Mono';letter-spacing:.1em;transition:.25s;pointer-events:none}#toast.show{opacity:1;transform:translate(-50%,0)}
 .credit{position:absolute;bottom:15px;right:18px;color:#9d917d;font:9px 'IBM Plex Mono';z-index:3}
+
+#game{touch-action:none;overflow:hidden;cursor:crosshair}
+.gameImage{will-change:background-position,background-size,transform;transition:filter .25s;transform-origin:center center}
+.gameVeil{z-index:1}
+#maid{z-index:2;will-change:left,top,transform,opacity;user-select:none}
+#attack{z-index:8}
+.gameHud{z-index:6}
+#crosshair{position:absolute;z-index:5;left:50%;top:50%;width:24px;height:24px;transform:translate(-50%,-50%);pointer-events:none;opacity:.82;transition:filter .12s,transform .12s}
+#crosshair:before,#crosshair:after{content:'';position:absolute;background:#e7ddc8;box-shadow:0 0 5px #000}
+#crosshair:before{width:1px;height:22px;left:11px;top:1px}
+#crosshair:after{height:1px;width:22px;top:11px;left:1px}
+#crosshair i,#crosshair b{position:absolute;width:4px;height:4px;border:1px solid #e7ddc8;border-radius:50%;left:9px;top:9px}
+#crosshair.target:before,#crosshair.target:after{background:#e1b56d;box-shadow:0 0 9px #e1b56d}
+#crosshair.target i{background:#b94a38;border-color:#ffd09a;transform:scale(1.8)}
+#controlOverlay{position:absolute;inset:0;z-index:12;background:#050403c9;backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;padding:18px}
+.controlCard{width:min(590px,95vw);border:1px solid #a17b4b99;background:linear-gradient(145deg,#17110beF,#080706f5);box-shadow:0 30px 100px #000;padding:clamp(20px,4vw,38px)}
+.controlCard h2{font-size:clamp(30px,5vw,44px);font-weight:400;margin:14px 0 20px}
+.controlList{display:grid;gap:10px;margin:18px 0}
+.controlList>div{display:flex;align-items:center;gap:5px;min-height:29px}
+.controlList span{font:11px 'IBM Plex Mono',monospace;color:#d0c1a6;margin-left:9px;line-height:1.4}
+kbd{display:inline-grid;place-items:center;min-width:27px;height:25px;border:1px solid #a88659;background:#21180f;color:#e8d7b6;font:10px 'IBM Plex Mono',monospace;padding:0 6px}
+.controlCard p{font:15px/1.55 'Cormorant Garamond',serif;color:#d3c6ad;margin:18px 0}
+.controlCard p b{color:#e2bd7d}
+.controlFoot{font:9px 'IBM Plex Mono',monospace;color:#94856c;margin-top:15px;line-height:1.5}
+#startLook{width:100%;justify-content:center;text-align:center}
+#touchControls{display:none;position:absolute;z-index:7;left:12px;right:12px;bottom:110px;align-items:flex-end;justify-content:space-between;pointer-events:none}
+.touchPad{display:grid;gap:5px;pointer-events:auto}
+.touchPad>button{margin:auto}
+.touchPad>div{display:flex;gap:5px}
+.touchPad button,#touchPhoto{width:48px;height:44px;border:1px solid #c3a06a88;background:#090806bb;color:#f1e2c6;backdrop-filter:blur(6px);font:16px 'IBM Plex Mono';border-radius:5px;touch-action:none}
+#touchPhoto{pointer-events:auto;width:86px;height:54px;background:#8e302ccc;font-size:11px}
+#game.active #touchControls.mobile{display:flex}
+#gameImage{background-repeat:no-repeat;background-size:110% 110%;background-position:50% 50%}
+#game.active .gameHud{pointer-events:none}
+#game.active .photoPanel{pointer-events:auto}
+@media(max-width:760px){.controlCard{max-height:92vh;overflow:auto}.controlList span{font-size:10px}#touchControls{bottom:105px}}
 @media(max-width:760px){#menu{align-items:flex-start;overflow:auto;display:none}#menu.active{display:block;padding:32px 22px}.menuLeft{width:100%;max-width:500px}.menuRight{width:100%;max-width:500px;margin:28px 0 60px}.bottomHints{position:static;margin:30px 0 0;flex-wrap:wrap}.film{grid-template-columns:1fr;max-height:94vh;overflow:auto}.filmVisual{min-height:240px;height:32vh}.filmCopy{min-height:340px}.objective{left:10px;bottom:10px;max-width:62vw;padding:9px}.photoPanel{right:10px;bottom:10px;padding:9px}.gameHud{padding:12px}.hudBrand{font-size:14px}}
 </style>
 </head>
@@ -99,12 +135,15 @@ h1 em{font-style:normal;color:#a53a31}.sub{font:10px 'IBM Plex Mono',monospace;l
  <section class="screen" id="intro"><div class="film"><div class="filmVisual" id="filmVisual"><img id="filmImg" alt="Кинематографическая сцена пролога"></div><div class="filmCopy"><div class="kicker" id="filmMeta">ПРОЛОГ · 01 / 06</div><h2 id="filmTitle">02:17 · СТАРАЯ ТРАССА</h2><p id="filmText"></p><div class="dots" id="dots"></div><div class="actions"><button class="btn" id="skipIntro">Пропустить</button><button class="btn primary" id="nextIntro">Далее →</button></div></div></div></section>
  <section class="screen" id="game">
   <div class="gameImage" id="gameImage"></div><div class="gameVeil"></div>
-  <img id="maid" alt="Призрачная фигура в коридоре" src="https://media1.tenor.com/m/nlYV4at3ptgAAAAd/demon-ghost.gif">
+  <img id="maid" alt="Призрачная горничная" src="https://media1.tenor.com/m/nlYV4at3ptgAAAAd/demon-ghost.gif">
   <img id="attack" alt="Внезапное появление призрака" src="https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif">
-  <div class="gameHud"><div class="hudTop"><div class="hudBrand">НОЧНОЙ ЭТАЖ <b>626</b><div class="kicker" id="chapter">ЭПИЗОД 2 · КОРИДОР</div></div><div class="timer"><span id="clock">02:17</span><br>НЕ ОГЛЯДЫВАЙСЯ</div></div>
-   <div class="objective"><span class="kicker" id="objNo">ЭПИЗОД 2 / 10</span><strong id="objective">Найди дверь 626 в дальнем конце коридора.</strong><span id="objHint">WASD — движение · E — осмотреть</span></div>
+  <div id="crosshair" aria-hidden="true"><i></i><b></b></div>
+  <div class="gameHud"><div class="hudTop"><div class="hudBrand">НОЧНОЙ ЭТАЖ <b>626</b><div class="kicker" id="chapter">ЭПИЗОД 3 · ГОРНИЧНАЯ</div></div><div class="timer"><span id="clock">02:17</span><br><span id="distanceLabel">ДИСТАНЦИЯ: 10 М</span></div></div>
+   <div class="objective"><span class="kicker" id="objNo">ЭПИЗОД 3 / 10</span><strong id="objective">Найди горничную в коридоре и сделай три удачных снимка.</strong><span id="objHint">WASD — ходьба · мышь — осмотр · F — фото · S — отступить</span></div>
    <div class="photoPanel" id="photoPanel" style="display:none"><div class="shots" id="shots">СНИМКИ · 0 / 3</div><button id="shoot">◉ СДЕЛАТЬ СНИМОК · F</button></div>
   </div>
+  <div id="controlOverlay"><div class="controlCard"><div class="kicker">УПРАВЛЕНИЕ · ПЕРВОЕ ЛИЦО</div><h2>Осмотрись. Она где-то впереди.</h2><div class="controlList"><div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Передвижение по коридору</span></div><div><kbd>МЫШЬ</kbd><span>Оглядеться по сторонам</span></div><div><kbd>SHIFT</kbd><span>Бежать быстрее</span></div><div><kbd>F</kbd><span>Сделать снимок, когда горничная в центре прицела</span></div><div><kbd>ESC</kbd><span>Пауза и меню</span></div></div><p><b>Задание:</b> найди её взглядом, подойди на расстояние примерно 4–10 метров, наведи центральный прицел и сделай три удачных фотографии. Если она подойдёт слишком близко — отступай клавишей S.</p><button class="btn primary" id="startLook">НАЧАТЬ ОСМОТР</button><div class="controlFoot">На телефоне — проведи пальцем по экрану, двигайся экранными стрелками.</div></div></div>
+  <div id="touchControls"><div class="touchPad"><button data-move="KeyW">▲</button><div><button data-move="KeyA">◀</button><button data-move="KeyS">▼</button><button data-move="KeyD">▶</button></div></div><button id="touchPhoto">◉ ФОТО</button></div>
  </section>
  <section class="screen" id="pause"><div class="modal"><div class="kicker">СИСТЕМА ОТЕЛЯ · ПАУЗА</div><h2>Остановись.</h2><p>Коридор никуда не исчезнет. Он просто ждёт.</p><div class="menuButtons"><button class="btn primary" id="resume">Продолжить</button><button class="btn" id="replay">Переиграть сцену</button><button class="btn" id="pauseEpisodes">Выбор эпизода</button><button class="btn" id="toMenu">В главное меню</button></div></div></section>
  <section class="screen" id="episodes"><div class="modal"><div class="kicker">АРХИВ · ДОСТУПНЫЕ СЦЕНЫ</div><h2>Выбор эпизода</h2><div class="grid" id="episodeGrid"></div><p class="kicker">Остальные главы будут добавляться по мере разработки.</p><button class="btn" id="episodesBack">Назад</button></div></section>
@@ -120,7 +159,6 @@ const IMAGES={
  road:'https://talefy.ai/_next/image?q=75&url=https%3A%2F%2Fimagedelivery.net%2FSsDLG1D5taD2wTzn3glocA%2Fid-6ff42444-43ae-4ba1-85a1-c4ac8ed21caf%2Fquizimage&w=1920',
  lobby:'https://images.unsplash.com/photo-1677129667171-92abd8740fa3?auto=format&fit=crop&w=2200&q=85',
  corridor:'https://images.unsplash.com/photo-1763142106375-fb47c275ed45?auto=format&fit=crop&w=2200&q=85',
- mist:'https://citysites1.b-cdn.net/wp-content/uploads/sites/12/2024/09/Ghost-in-misty-hallway.webp',
  oldHall:'https://ik.imagekit.io/storybird/images/d907395c-5a94-448d-a2e2-6cefc6f22a4d/0_386520460.webp?tr=q-85',
  maid:'https://media1.tenor.com/m/nlYV4at3ptgAAAAd/demon-ghost.gif',
  scream:'https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif'
@@ -133,32 +171,124 @@ const scenes=[
 {title:'ПОСЛЕДНИЙ КЛЮЧ',text:'Старик подвинул к тебе латунный ключ. На бирке было выбито 626. «Шестой этаж. И не открывайте дверь после трёх стуков».',img:IMAGES.lobby,meta:'ПРОЛОГ · 05 / 06'},
 {title:'КОРИДОР ШЕСТОГО ЭТАЖА',text:'Лифт открылся. На этаже было тихо. Слишком тихо. В конце коридора стояла женщина в старой униформе горничной.',img:IMAGES.oldHall,meta:'ПРОЛОГ · 06 / 06'}
 ];
-let introIndex=0,photos=0,screen='menu',started=false,paused=false,soundOn=true,sfxOn=true,volume=.45,audio=null,master=null,maidScale=.72,maidStage=0,clock=137;
+let introIndex=0,photos=0,screen='menu',paused=false,soundOn=true,sfxOn=true,volume=.45,audio=null,master=null,clock=137;
+const move={x:0,depth:0,yaw:0,pitch:0,keys:new Set(),active:false,locked:false,drag:false,lastX:0,lastY:0,maidBase:10.8,maidWalk:0,stepClock:0};
+let lastFrame=performance.now(),walkPhase=0,ended=false;
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');screen=id;}
-function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2200);}
-function initAudio(){if(audio)return;audio=new(window.AudioContext||window.webkitAudioContext)();master=audio.createGain();master.gain.value=volume;master.connect(audio.destination);const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.08;osc.connect(gain);gain.connect(master);osc.start();const lfo=audio.createOscillator(),lg=audio.createGain();lfo.frequency.value=.075;lg.gain.value=4.5;lfo.connect(lg);lg.connect(osc.frequency);lfo.start();}
+function toast(t){$('toast').textContent=t;$('toast').classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>$('toast').classList.remove('show'),2300);}
+function initAudio(){if(audio)return;audio=new(window.AudioContext||window.webkitAudioContext)();master=audio.createGain();master.gain.value=volume;master.connect(audio.destination);const osc=audio.createOscillator(),gain=audio.createGain();osc.type='sine';osc.frequency.value=48;gain.gain.value=.075;osc.connect(gain);gain.connect(master);osc.start();const lfo=audio.createOscillator(),lg=audio.createGain();lfo.frequency.value=.075;lg.gain.value=4.5;lfo.connect(lg);lg.connect(osc.frequency);lfo.start();}
 function tone(freq=160,d=.2,type='sine'){if(!sfxOn)return;initAudio();if(audio.state==='suspended')audio.resume();const o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.setValueAtTime(freq,audio.currentTime);o.frequency.exponentialRampToValueAtTime(Math.max(25,freq*.5),audio.currentTime+d);g.gain.setValueAtTime(.06,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+d);o.connect(g);g.connect(master);o.start();o.stop(audio.currentTime+d);}
-function setBackdrop(url,zoom=true){$('backdrop').style.backgroundImage='url("'+url+'")';$('backdrop').classList.toggle('zoom',zoom);}
 function preload(){Object.values(IMAGES).forEach(u=>{if(u.startsWith('http')){const i=new Image();i.src=u;}});}
 function renderIntro(){const s=scenes[introIndex];$('filmMeta').textContent=s.meta;$('filmTitle').textContent=s.title;$('filmText').textContent=s.text;$('filmImg').src=s.img;$('filmVisual').style.backgroundImage='url("'+s.img+'")';$('filmImg').style.display='block';$('dots').innerHTML=scenes.map((_,i)=>'<i class="'+(i===introIndex?'on':'')+'"></i>').join('');$('nextIntro').textContent=introIndex===scenes.length-1?'Войти в отель →':'Далее →';}
 function startIntro(){initAudio();audio.resume();tone(62,.8);introIndex=0;renderIntro();show('intro');}
 function nextIntro(){introIndex++;tone(130,.16);if(introIndex>=scenes.length){startGame();return;}renderIntro();}
-function startGame(){started=true;paused=false;photos=0;maidStage=0;$('gameImage').style.backgroundImage='url("'+IMAGES.corridor+'")';$('maid').src=IMAGES.maid;$('maid').classList.add('visible');$('maid').style.transform='translate(-50%,-52%) scale(.54)';$('maid').style.left='50%';$('maid').style.top='53%';$('attack').classList.remove('show');$('photoPanel').style.display='block';$('shots').textContent='СНИМКИ · 0 / 3';$('objective').textContent='Сфотографируй горничную три раза.';$('objNo').textContent='ЭПИЗОД 3 / 10';$('objHint').textContent='Нажми F или кнопку камеры. Не подходи ближе.';show('game');setTimeout(()=>toast('Она стоит в конце коридора. Наведи камеру…'),650);setTimeout(()=>{$('gameImage').classList.add('pulse');},900);}
-function takePhoto(){if(screen!=='game'||photos>=3)return;photos++;$('shots').textContent='СНИМКИ · '+photos+' / 3';$('maid').style.transform='translate(-50%,-52%) scale('+(0.54+photos*.22)+')';$('maid').style.top=(53+photos*2)+'%';$('maid').style.left=(50+(photos%2?3:-2))+'%';$('flash').classList.remove('go');void $('flash').offsetWidth;$('flash').classList.add('go');tone(900,.11,'triangle');setTimeout(()=>tone(90,.4),80);toast('СНИМОК СОХРАНЁН · '+photos+'/3');if(photos===1){$('objective').textContent='Она сделала шаг. Не опускай камеру.';}if(photos===2){$('objective').textContent='Она приближается. Последний снимок!';$('maid').style.filter='grayscale(1) brightness(.8) contrast(1.35)';}if(photos===3){$('maid').style.opacity='0';setTimeout(()=>{$('attack').classList.add('show');tone(42,.7,'sawtooth');},350);setTimeout(()=>{show('end');},2100);}}
-function newGame(){startIntro();}
-function pause(){if(screen==='game'){paused=true;show('pause');}}
-function resume(){paused=false;show('game');}
-function openEpisodes(){const names=['Пролог','Коридор','Горничная','Лестница','Ребёнок','Комната 626','Код','Фотографии','Телефон','Финал'];$('episodeGrid').innerHTML=names.map((n,i)=>'<button class="episode" data-n="'+i+'"><b>'+(i+1)+'. '+n+'</b><span>'+(i<3?'ДОСТУПНО В ДЕМО':'СКОРО')+'</span></button>').join('');$('episodeGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{const n=+b.dataset.n;if(n===0)startIntro();else if(n===1||n===2)startGame();else toast('Эпизод будет добавлен в следующей сборке.');});show('episodes');}
-function goMenu(){started=false;paused=false;$('attack').classList.remove('show');show('menu');}
-$('newGame').onclick=newGame;$('continue').onclick=()=>startGame();$('episodeOpen').onclick=openEpisodes;$('settingsOpen').onclick=()=>show('settings');$('nextIntro').onclick=nextIntro;$('skipIntro').onclick=()=>{introIndex=scenes.length-1;renderIntro();};$('shoot').onclick=takePhoto;$('resume').onclick=resume;$('replay').onclick=startGame;$('pauseEpisodes').onclick=openEpisodes;$('toMenu').onclick=goMenu;$('episodesBack').onclick=()=>show('menu');$('settingsBack').onclick=()=>show('menu');$('again').onclick=startGame;$('endMenu').onclick=goMenu;
+function startGame(){
+ photos=0;ended=false;move.x=0;move.depth=0;move.yaw=0;move.pitch=0;move.maidBase=10.8;move.maidWalk=0;move.keys.clear();move.active=false;
+ $('gameImage').style.backgroundImage='url("'+IMAGES.corridor+'")';$('gameImage').style.backgroundSize='110% 110%';$('gameImage').style.backgroundPosition='50% 50%';$('gameImage').style.transform='scale(1)';
+ $('maid').src=IMAGES.maid;$('maid').style.display='block';$('maid').style.left='50%';$('maid').style.top='50%';$('maid').style.opacity='.96';$('maid').style.transform='translate(-50%,-52%) scale(.55)';$('maid').classList.add('visible');$('maid').style.filter='grayscale(.88) brightness(.67) contrast(1.2)';
+ $('attack').classList.remove('show');$('photoPanel').style.display='block';$('shots').textContent='СНИМКИ · 0 / 3';$('objective').textContent='Найди горничную в коридоре и сделай три удачных снимка.';$('objNo').textContent='ЭПИЗОД 3 / 10';$('objHint').textContent='WASD — движение · мышь — осмотр · F — фото · S — отступить';$('clock').textContent='02:17';$('distanceLabel').textContent='ДИСТАНЦИЯ: 11 М';$('crosshair').classList.remove('target');
+ show('game');$('controlOverlay').style.display='flex';if(document.pointerLockElement)document.exitPointerLock();
+ toast('Сначала прочитай инструкцию по управлению.');
+}
+function enterControls(){
+ move.active=true;$('controlOverlay').style.display='none';initAudio();if(audio.state==='suspended')audio.resume();
+ if(matchMedia('(pointer:fine)').matches&&$('game').requestPointerLock){try{$('game').requestPointerLock();}catch(e){toast('Можешь осматриваться, зажав левую кнопку мыши.');}}
+ else toast('Осмотр — проводи пальцем по экрану. Движение — стрелками слева.');
+}
+function currentDistance(){return move.maidBase-move.depth-move.maidWalk;}
+function aimData(){const dist=currentDistance();const angle=(Math.atan2(-move.x,Math.max(1,dist))*180/Math.PI)-move.yaw;return{dist,angle,visible:Math.abs(angle)<48,centered:Math.abs(angle)<5.5&&dist>2.4&&dist<10.8};}
+function renderView(){
+ const a=aimData();const yaw=Math.max(-75,Math.min(75,move.yaw));const bgX=50-yaw*.34-move.x*6.5;const bgY=50+move.pitch*.2+move.depth*.32;
+ const zoom=110+Math.max(-2,move.depth)*1.8+Math.abs(yaw)*.07;
+ $('gameImage').style.backgroundSize=zoom+'% '+(zoom*.99)+'%';$('gameImage').style.backgroundPosition=bgX+'% '+bgY+'%';
+ $('gameImage').style.transform='translate3d(0,'+(Math.sin(walkPhase)*1.8)+'px,0)';
+ const sx=Math.max(-15,Math.min(115,50+a.angle*1.45));const scale=Math.max(.38,Math.min(1.45,.52+(10.5-a.dist)*.075));
+ $('maid').style.left=sx+'%';$('maid').style.top=(50+move.pitch*.16)+'%';$('maid').style.transform='translate(-50%,-52%) scale('+scale+')';
+ $('maid').style.opacity=a.visible?'.96':'0';
+ $('crosshair').classList.toggle('target',a.centered);
+ $('distanceLabel').textContent='ДИСТАНЦИЯ: '+Math.max(0,a.dist).toFixed(1)+' М';
+}
+function scare(reason){
+ if(ended)return;ended=true;move.active=false;move.keys.clear();if(document.pointerLockElement)document.exitPointerLock();
+ $('maid').style.opacity='0';$('attack').classList.add('show');tone(42,.8,'sawtooth');
+ $('end').querySelector('.kicker').textContent=reason==='caught'?'ТЫ НЕ УСПЕЛ ОТСТУПИТЬ':'ЭПИЗОД ЗАВЕРШЁН';
+ $('end').querySelector('h2').textContent=reason==='caught'?'Она оказалась слишком близко.':'Она запомнила тебя.';
+ $('end').querySelector('p').textContent=reason==='caught'?'Горничная догнала тебя. Начни заново, двигайся осторожнее и не позволяй ей подойти вплотную.':'Три снимка готовы. На последнем кадре за твоим плечом видна ещё одна фигура.';
+ show('end');
+}
+function takePhoto(){
+ if(screen!=='game'||!move.active||ended)return;
+ const a=aimData();
+ if(!a.visible){toast('Горничная вне поля зрения. Оглядись мышью.');return;}
+ if(Math.abs(a.angle)>=5.5){toast('Наведи центральный прицел прямо на горничную.');return;}
+ if(a.dist>10.8){toast('Слишком далеко. Подойди ближе клавишей W.');return;}
+ if(a.dist<2.4){scare('caught');return;}
+ photos++;$('shots').textContent='СНИМКИ · '+photos+' / 3';
+ $('flash').classList.remove('go');void $('flash').offsetWidth;$('flash').classList.add('go');tone(900,.11,'triangle');setTimeout(()=>tone(90,.35),80);
+ move.maidBase+=2.45;move.maidWalk=Math.max(0,move.maidWalk-1.2);
+ if(photos===1){$('objective').textContent='Первый снимок готов. Она отступила — иди за ней.';toast('УДАЧНЫЙ СНИМОК · 1/3');}
+ else if(photos===2){$('objective').textContent='Остался последний кадр. Она двигается быстрее.';$('maid').style.filter='grayscale(1) brightness(.82) contrast(1.4)';toast('УДАЧНЫЙ СНИМОК · 2/3');}
+ else{toast('ТРЕТИЙ СНИМОК ГОТОВ');setTimeout(()=>scare('complete'),550);}
+}
+function updateMove(dt){
+ if(screen!=='game'||!move.active||paused||ended)return;
+ let f=(move.keys.has('KeyW')?1:0)-(move.keys.has('KeyS')?1:0);
+ let s=(move.keys.has('KeyD')?1:0)-(move.keys.has('KeyA')?1:0);
+ const running=move.keys.has('ShiftLeft')||move.keys.has('ShiftRight');
+ const speed=running?3.4:2.15;const len=Math.hypot(f,s)||1;f/=len;s/=len;
+ if(f||s){
+  const r=move.yaw*Math.PI/180;
+  move.x+=(s*Math.cos(r)+f*Math.sin(r))*speed*dt;
+  move.depth+=(f*Math.cos(r)-s*Math.sin(r))*speed*dt;
+  move.x=Math.max(-2.7,Math.min(2.7,move.x));move.depth=Math.max(-3,Math.min(8.3,move.depth));
+  walkPhase+=dt*(running?13:8);
+  move.stepClock+=dt;if(move.stepClock>(running?.31:.48)){move.stepClock=0;tone(running?78:58,.055,'triangle');}
+ }
+ move.maidWalk+=dt*(photos>=2?.22:.14);
+ renderView();
+ const a=aimData();
+ $('shoot').disabled=!a.centered||a.dist>10.8||a.dist<2.4;
+ $('shoot').style.opacity=$('shoot').disabled?'.55':'1';
+ if(a.dist<=2.2)scare('caught');
+}
+function pause(){if(screen==='game'){paused=true;move.active=false;move.keys.clear();if(document.pointerLockElement)document.exitPointerLock();show('pause');}}
+function resume(){paused=false;show('game');enterControls();}
+function openEpisodes(){const names=['Пролог','Коридор','Горничная','Лестница','Ребёнок','Комната 626','Код','Фотографии','Телефон','Финал'];$('episodeGrid').innerHTML=names.map((n,i)=>'<button class="episode" data-n="'+i+'"><b>'+(i+1)+'. '+n+'</b><span>'+(i<3?'ДОСТУПНО В ДЕМО':'СКОРО')+'</span></button>').join('');$('episodeGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>{const n=+b.dataset.n;if(n===0)startIntro();else if(n===1||n===2)startGame();else toast('Этот эпизод будет добавлен позже.');});show('episodes');}
+function goMenu(){move.active=false;move.keys.clear();paused=false;if(document.pointerLockElement)document.exitPointerLock();$('attack').classList.remove('show');show('menu');}
+$('newGame').onclick=startIntro;$('continue').onclick=startGame;$('episodeOpen').onclick=openEpisodes;$('settingsOpen').onclick=()=>show('settings');$('nextIntro').onclick=nextIntro;$('skipIntro').onclick=()=>{introIndex=scenes.length-1;renderIntro();};$('shoot').onclick=takePhoto;$('touchPhoto').onclick=takePhoto;$('startLook').onclick=enterControls;
+$('resume').onclick=resume;$('replay').onclick=startGame;$('pauseEpisodes').onclick=openEpisodes;$('toMenu').onclick=goMenu;$('episodesBack').onclick=()=>show('menu');$('settingsBack').onclick=()=>show('menu');$('again').onclick=startGame;$('endMenu').onclick=goMenu;
 $('soundToggle').onchange=e=>{soundOn=e.target.checked;if(master)master.gain.setTargetAtTime(soundOn?volume:0,audio.currentTime,.2);};$('sfxToggle').onchange=e=>sfxOn=e.target.checked;$('volume').oninput=e=>{volume=+e.target.value;if(master&&soundOn)master.gain.setTargetAtTime(volume,audio.currentTime,.1);};
-addEventListener('keydown',e=>{if(e.code==='Escape'){if(screen==='game')pause();else if(screen==='pause')resume();else if(screen!=='menu')show('menu');}if(e.code==='KeyF'&&screen==='game')takePhoto();if(e.code==='Enter'&&screen==='intro')nextIntro();if(e.code==='KeyE'&&screen==='game')toast('Дверь 626 заперта. Найди ключ на стойке регистрации.');});
-$('backdrop').addEventListener('click',()=>{if(screen==='menu')startIntro();});
-$('menu').addEventListener('click',e=>{if(e.target===$('menu'))startIntro();});
-$('gameImage').addEventListener('click',e=>{if(screen==='game'){const r=e.currentTarget.getBoundingClientRect();const x=(e.clientX-r.left)/r.width;if(x>.28&&x<.72)takePhoto();else toast('В объективе только пустые двери.');}});
-setInterval(()=>{if(screen==='game'&&!paused){clock++;$('clock').textContent='02:'+String(17+Math.floor(clock/60)).padStart(2,'0');}},1000);
-setInterval(()=>{if(screen==='menu')$('backdrop').classList.toggle('zoom');},9000);
-preload();setBackdrop(IMAGES.lobby,false);
+document.addEventListener('pointerlockchange',()=>{move.locked=document.pointerLockElement===$('game');});
+document.addEventListener('pointerlockerror',()=>toast('Захват мыши недоступен. Используй зажатую левую кнопку для осмотра.'));
+document.addEventListener('mousemove',e=>{
+ if(screen!=='game'||!move.active)return;
+ if(move.locked){move.yaw=Math.max(-75,Math.min(75,move.yaw+e.movementX*.12));move.pitch=Math.max(-18,Math.min(18,move.pitch-e.movementY*.09));}
+ else if(move.drag){const dx=e.clientX-move.lastX,dy=e.clientY-move.lastY;move.lastX=e.clientX;move.lastY=e.clientY;move.yaw=Math.max(-75,Math.min(75,move.yaw+dx*.22));move.pitch=Math.max(-18,Math.min(18,move.pitch-dy*.16));}
+ if(screen==='game')renderView();
+});
+$('game').addEventListener('mousedown',e=>{if(screen==='game'&&move.active&&!move.locked&&e.button===0){move.drag=true;move.lastX=e.clientX;move.lastY=e.clientY;}});
+document.addEventListener('mouseup',()=>move.drag=false);
+$('game').addEventListener('click',e=>{if(screen==='game'&&move.active&&!move.locked&&e.target===$('gameImage')){move.drag=false;move.lastX=e.clientX;move.lastY=e.clientY;}});
+$('game').addEventListener('touchstart',e=>{if(screen!=='game'||!move.active)return;const t=e.touches[0];move.lastX=t.clientX;move.lastY=t.clientY;},{passive:true});
+$('game').addEventListener('touchmove',e=>{if(screen!=='game'||!move.active||e.target.closest('#touchControls'))return;const t=e.touches[0],dx=t.clientX-move.lastX,dy=t.clientY-move.lastY;move.lastX=t.clientX;move.lastY=t.clientY;move.yaw=Math.max(-75,Math.min(75,move.yaw+dx*.2));move.pitch=Math.max(-18,Math.min(18,move.pitch-dy*.15));renderView();},{passive:true});
+document.querySelectorAll('[data-move]').forEach(b=>{
+ const code=b.dataset.move;
+ const down=e=>{e.preventDefault();move.keys.add(code);};const up=e=>{e.preventDefault();move.keys.delete(code);};
+ b.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,up));
+});
+addEventListener('keydown',e=>{
+ if(['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight'].includes(e.code)&&screen==='game'&&move.active){e.preventDefault();move.keys.add(e.code);}
+ if(e.code==='Escape'){if(screen==='game')pause();else if(screen==='pause')resume();else if(screen!=='menu')show('menu');}
+ if((e.code==='KeyF'||e.code==='Space')&&screen==='game'){e.preventDefault();takePhoto();}
+ if(e.code==='Enter'&&screen==='intro')nextIntro();
+});
+addEventListener('keyup',e=>move.keys.delete(e.code));
+addEventListener('blur',()=>move.keys.clear());
+$('soundToggle').checked=true;
+function frame(now){const dt=Math.min(.05,(now-lastFrame)/1000);lastFrame=now;updateMove(dt);requestAnimationFrame(frame);}
+requestAnimationFrame(frame);
+let timerSeconds=137;setInterval(()=>{if(screen==='game'&&move.active&&!paused){timerSeconds++;$('clock').textContent='02:'+String(timerSeconds%60).padStart(2,'0');}},1000);
+preload();
 })();
 </script>
 </body>
