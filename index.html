@@ -111,6 +111,52 @@ kbd{display:inline-grid;place-items:center;min-width:27px;height:25px;border:1px
 @media (pointer:coarse){#game.active #touchControls{display:flex}}
 @media(max-width:760px){.controlCard{max-height:92vh;overflow:auto}.controlList span{font-size:10px}#touchControls{bottom:105px}}
 @media(max-width:760px){#menu{align-items:flex-start;overflow:auto;display:none}#menu.active{display:block;padding:32px 22px}.menuLeft{width:100%;max-width:500px}.menuRight{width:100%;max-width:500px;margin:28px 0 60px}.bottomHints{position:static;margin:30px 0 0;flex-wrap:wrap}.film{grid-template-columns:1fr;max-height:94vh;overflow:auto}.filmVisual{min-height:240px;height:32vh}.filmCopy{min-height:340px}.objective{left:10px;bottom:10px;max-width:62vw;padding:9px}.photoPanel{right:10px;bottom:10px;padding:9px}.gameHud{padding:12px}.hudBrand{font-size:14px}}
+
+/* UX Pro Max pass: explicit controls, focus, readable HUD and reduced motion */
+:root{--ux-space-1:4px;--ux-space-2:8px;--ux-space-3:12px;--ux-space-4:16px;--ux-space-6:24px;--ux-motion:180ms}
+button,input{font:inherit}
+button{min-height:44px;touch-action:manipulation}
+button:focus-visible,input:focus-visible{outline:2px solid #e2bd7d;outline-offset:3px}
+.btn:active,#shoot:active,.touchPad button:active,#touchPhoto:active{transform:scale(.97);filter:brightness(1.18)}
+#menu .menuButtons{gap:10px}
+#menu .tagline{max-width:42ch}
+.objective{max-width:min(500px,58vw);font-size:11px;line-height:1.65;padding:14px 18px;backdrop-filter:blur(7px)}
+.objective strong{font-size:23px;line-height:1.16;margin:5px 0}
+#objHint{display:block;color:#d0b98e;margin-top:5px;font-size:10px;letter-spacing:.06em}
+.photoPanel{min-width:210px;backdrop-filter:blur(8px);border-color:#c6a66c88}
+#shoot{width:100%;min-height:48px;border-radius:2px;font:12px 'IBM Plex Mono';letter-spacing:.07em;transition:background .15s,opacity .15s,transform .15s}
+#shoot:disabled{cursor:not-allowed;filter:grayscale(.5)}
+#crosshair{width:28px;height:28px}
+#crosshair:before{height:26px;left:13px}
+#crosshair:after{width:26px;top:13px}
+#crosshair i,#crosshair b{left:11px;top:11px}
+#controlOverlay{background:#050403dc}
+.controlCard{border-color:#c1a06b9c;max-width:620px}
+.controlCard h2{line-height:1.02}
+.controlList>div{gap:6px}
+.controlList kbd{min-width:30px}
+.controlCard p{font-size:17px}
+.controlFoot{font-size:10px}
+#startLook{min-height:52px;font-size:19px}
+#touchControls{bottom:calc(126px + env(safe-area-inset-bottom));left:18px;right:18px}
+.touchPad button,#touchPhoto{width:54px;height:50px;font-size:17px;background:#100d09d9;border-color:#d0ad75}
+#touchPhoto{width:96px;height:58px;background:#8e302ce8}
+.gameHud{padding:clamp(14px,2vw,24px)}
+.hudBrand{font-size:20px}
+#toast{max-width:min(92vw,520px);text-align:center;line-height:1.45}
+@media(max-width:760px){
+ .objective{max-width:calc(100vw - 20px);bottom:calc(92px + env(safe-area-inset-bottom));left:10px;right:10px}
+ .photoPanel{right:10px;bottom:calc(205px + env(safe-area-inset-bottom));min-width:0}
+ .photoPanel #shoot{min-height:44px;padding:9px 12px}
+ #touchControls{bottom:calc(14px + env(safe-area-inset-bottom))}
+ .hudTop{padding:3px}
+ .timer{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+ #grain,#rain{animation:none}
+}
+
 </style>
 </head>
 <body>
@@ -140,7 +186,7 @@ kbd{display:inline-grid;place-items:center;min-width:27px;height:25px;border:1px
   <img id="attack" alt="Внезапное появление призрака" src="https://media1.tenor.com/m/BPOWHlZsfeEAAAAd/ghostly-scream-ghost-screaming.gif">
   <div id="crosshair" aria-hidden="true"><i></i><b></b></div>
   <div class="gameHud"><div class="hudTop"><div class="hudBrand">НОЧНОЙ ЭТАЖ <b>626</b><div class="kicker" id="chapter">ЭПИЗОД 3 · ГОРНИЧНАЯ</div></div><div class="timer"><span id="clock">02:17</span><br><span id="distanceLabel">ДИСТАНЦИЯ: 10 М</span></div></div>
-   <div class="objective"><span class="kicker" id="objNo">ЭПИЗОД 3 / 10</span><strong id="objective">Найди горничную в коридоре и сделай три удачных снимка.</strong><span id="objHint">WASD — ходьба · мышь — осмотр · F — фото · S — отступить</span></div>
+   <div class="objective"><span class="kicker" id="objNo">ЭПИЗОД 3 / 10</span><strong id="objective">Найди горничную: подойди на 4–10 м, наведи прицел и сделай 3 снимка.</strong><span id="objHint">WASD — ходьба · мышь — осмотр · F — фото · S — отступить</span></div>
    <div class="photoPanel" id="photoPanel" style="display:none"><div class="shots" id="shots">СНИМКИ · 0 / 3</div><button id="shoot">◉ СДЕЛАТЬ СНИМОК · F</button></div>
   </div>
   <div id="controlOverlay"><div class="controlCard"><div class="kicker">УПРАВЛЕНИЕ · ПЕРВОЕ ЛИЦО</div><h2>Осмотрись. Она где-то впереди.</h2><div class="controlList"><div><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Передвижение по коридору</span></div><div><kbd>МЫШЬ</kbd><span>Оглядеться по сторонам</span></div><div><kbd>SHIFT</kbd><span>Бежать быстрее</span></div><div><kbd>F</kbd><span>Сделать снимок, когда горничная в центре прицела</span></div><div><kbd>ESC</kbd><span>Пауза и меню</span></div></div><p><b>Задание:</b> найди её взглядом, подойди на расстояние примерно 4–10 метров, наведи центральный прицел и сделай три удачных фотографии. Если она подойдёт слишком близко — отступай клавишей S.</p><button class="btn primary" id="startLook">НАЧАТЬ ОСМОТР</button><div class="controlFoot">На телефоне — проведи пальцем по экрану, двигайся экранными стрелками.</div></div></div>
